@@ -1,0 +1,17 @@
+[project]
+name = "ragtrial"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.5.1",
+    "faiss-cpu>=1.13.2",
+    "ipykernel>=7.2.0",
+    "langchain>=1.2.10",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.14",
+    "pymupdf>=1.27.1",
+    "pypdf>=6.7.1",
+    "sentence-transformers>=5.2.3",
+]
