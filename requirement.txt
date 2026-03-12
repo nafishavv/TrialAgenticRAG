@@ -9,4 +9,5 @@ chromadb
 langchain-groq
 python-dotenv
 langchain_openai
+langchain_google_genai
 langgraph
