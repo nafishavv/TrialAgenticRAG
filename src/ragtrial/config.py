@@ -13,15 +13,18 @@ from dotenv import load_dotenv
 PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
 DATA_DIR: Path = PROJECT_ROOT / "data"
+RAW_DIR: Path = DATA_DIR / "raw"
+PROCESSED_DIR: Path = DATA_DIR / "processed"
 VECTOR_STORE_DIR: Path = DATA_DIR / "vector_stores"
-PROCESSED_DIR: Path = DATA_DIR
-RAW_DIR: Path = DATA_DIR
 
-DUKCAPIL_VECTOR_STORE: Path = DATA_DIR / "dukcapil_vector_store"
-OPD_VECTOR_STORE: Path = DATA_DIR / "opd_vector_store"
+DUKCAPIL_RAW_PDF: Path = RAW_DIR / "dukcapil" / "Buku-Saku-Dafduk-Capil-2023.pdf"
+OPD_RAW_PDF: Path = RAW_DIR / "opd" / "Nama dan Alamat OPD Kab Batang.pdf"
 
-DUKCAPIL_PROCESSED_PKL: Path = DATA_DIR / "cleaned_docs.pkl"
-OPD_PROCESSED_PKL: Path = DATA_DIR / "cleaned_opd_docs.pkl"
+DUKCAPIL_PROCESSED_PKL: Path = PROCESSED_DIR / "dukcapil.pkl"
+OPD_PROCESSED_PKL: Path = PROCESSED_DIR / "opd.pkl"
+
+DUKCAPIL_VECTOR_STORE: Path = VECTOR_STORE_DIR / "dukcapil"
+OPD_VECTOR_STORE: Path = VECTOR_STORE_DIR / "opd"
 
 
 def load_env() -> str:

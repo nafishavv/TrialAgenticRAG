@@ -1,0 +1,856 @@
+[
+  {
+    "page_content": "Nama OPD: Sekretariat Daerah\nTipe: Sekretariat\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: -\nNo. Telp: (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1",
+      "nama_opd": "Sekretariat Daerah",
+      "parent_opd": "",
+      "tipe": "Sekretariat",
+      "page": 1,
+      "has_email": false,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Pemerintahan\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_pemerintahan@batangkab.go.id\nNo. Telp: (0285) 392729, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.a",
+      "nama_opd": "Bagian Pemerintahan",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Kesejahteraan Rakyat\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_kesra@batangkab.go.id\nNo. Telp: (0285) 391412, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.b",
+      "nama_opd": "Bagian Kesejahteraan Rakyat",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Hukum\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_hukum@batangkab.go.id\nNo. Telp: (0285) 391810, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.c",
+      "nama_opd": "Bagian Hukum",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Pengendalian Pembangunan\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_dalbang@batangkab.go.id\nNo. Telp: (0285) 391929, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.d",
+      "nama_opd": "Bagian Pengendalian Pembangunan",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Perekonomian\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_perekonomian@batangkab.go.id\nNo. Telp: (0285) 392612, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.e",
+      "nama_opd": "Bagian Perekonomian",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Pengadaan Barang/Jasa\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_pbj@batangkab.go.id\nNo. Telp: (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.f",
+      "nama_opd": "Bagian Pengadaan Barang/Jasa",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Organisasi\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_organisasi@batangkab.go.id\nNo. Telp: (0285) 392950, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.g",
+      "nama_opd": "Bagian Organisasi",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Hubungan Masyarakat\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_humas@batangkab.go.id\nNo. Telp: (0285) 391304, (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.h",
+      "nama_opd": "Bagian Hubungan Masyarakat",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Bagian Umum\nBagian dari: Sekretariat Daerah\nTipe: Bagian\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bag_umum@batangkab.go.id\nNo. Telp: (0285) 391571",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "1.i",
+      "nama_opd": "Bagian Umum",
+      "parent_opd": "Sekretariat Daerah",
+      "tipe": "Bagian",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Sekretariat DPRD\nTipe: Sekretariat\nAlamat: Jl. Jenderal Sudirman No. 262 Batang\nEmail: sdprd@batangkab.go.id\nNo. Telp: (0285) 391146",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "2",
+      "nama_opd": "Sekretariat DPRD",
+      "parent_opd": "",
+      "tipe": "Sekretariat",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Inspektorat\nTipe: Inspektorat\nAlamat: Jl. Urip Sumoharjo No. 11 Batang\nEmail: inspektorat@batangkab.go.id\nNo. Telp: (0285) 391980",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "3",
+      "nama_opd": "Inspektorat",
+      "parent_opd": "",
+      "tipe": "Inspektorat",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Badan Perencanaan, Penelitian dan\nPengembangan\nTipe: Badan\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: perencanaandanlitbang@batangkab.go.id\nNo. Telp: (0285) 391131",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "4",
+      "nama_opd": "Badan Perencanaan, Penelitian dan\nPengembangan",
+      "parent_opd": "",
+      "tipe": "Badan",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Badan Pengelolaan Keuangan,\nPendapatan dan Aset Daerah\nTipe: Badan\nAlamat: Jl. Urip Sumoharjo No. 18 Batang\nEmail: bpkpad@batangkab.go.id\nNo. Telp: (0285) 391430",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "5",
+      "nama_opd": "Badan Pengelolaan Keuangan,\nPendapatan dan Aset Daerah",
+      "parent_opd": "",
+      "tipe": "Badan",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Badan Kepegawaian Daerah\nTipe: Badan\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: bkd@batangkab.go.id\nNo. Telp: (0285) 4493224",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "6",
+      "nama_opd": "Badan Kepegawaian Daerah",
+      "parent_opd": "",
+      "tipe": "Badan",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Pendidikan dan Kebudayaan\nTipe: Dinas\nAlamat: Jl. Slamet Riyadi No. 29 Batang\nEmail: disdikbud@batangkab.go.id\nNo. Telp: (0285) 391321",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "7",
+      "nama_opd": "Dinas Pendidikan dan Kebudayaan",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Satpol PP\nTipe: Satpol\nAlamat: Jl. Veteran No. 10 Batang\nEmail: satpolpp@batangkab.go.id\nNo. Telp: (0285) 391146",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "8",
+      "nama_opd": "Satpol PP",
+      "parent_opd": "",
+      "tipe": "Satpol",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Pemberdayaan Perempuan,\nPerlindungan Anak, Pengendalian\nPenduduk dan Keluarga Berencana\nTipe: Dinas\nAlamat: Jl. Dr. Sutomo No. 58 Batang\nEmail: dp3ap2kb@batangkab.go.id\nNo. Telp: (0285) 391271",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "9",
+      "nama_opd": "Dinas Pemberdayaan Perempuan,\nPerlindungan Anak, Pengendalian\nPenduduk dan Keluarga Berencana",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Pangan dan Pertanian\nTipe: Dinas\nAlamat: Jl. Dr. Wahidin No. 56 Batang\nEmail: dispaperta@batangkab.go.id\nNo. Telp: (0285) 391092",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "10",
+      "nama_opd": "Dinas Pangan dan Pertanian",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Lingkungan Hidup\nTipe: Dinas\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: dlh@batangkab.go.id\nNo. Telp: (0285) 392885",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "11",
+      "nama_opd": "Dinas Lingkungan Hidup",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Pariwisata, Kepemudaan dan Olahraga\nTipe: Dinas\nAlamat: Jl. Urip Sumoharjo No. 34 Batang\nEmail: disparpora@batangkab.go.id\nNo. Telp: (0285) 391141",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "12",
+      "nama_opd": "Dinas Pariwisata, Kepemudaan dan Olahraga",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 1,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Penanaman Modal, Pelayanan\nTerpadu Satu Pintu dan Tenaga Kerja\nTipe: Dinas\nAlamat: Jl. Urip Sumoharjo No. 13 Batang\nEmail: dpmptspnaker@batangkab.go.id\nNo. Telp: (0285) 4493081",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "13",
+      "nama_opd": "Dinas Penanaman Modal, Pelayanan\nTerpadu Satu Pintu dan Tenaga Kerja",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Perindustrian, Perdagangan,\nKoperasi dan UKM\nTipe: Dinas\nAlamat: Jl. Slamet Riyadi No. 27 Batang\nEmail: disperindagkopumkm@batangkab.go.id\nNo. Telp: (0285) 391079",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "14",
+      "nama_opd": "Dinas Perindustrian, Perdagangan,\nKoperasi dan UKM",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Kesehatan\nTipe: Dinas\nAlamat: Jl. Jendral Sudirman No. 17 Batang\nEmail: dinkes@batangkab.go.id\nNo. Telp: (0285) 391479",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "15",
+      "nama_opd": "Dinas Kesehatan",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Pekerjaan Umum dan Penataan\nRuang\nTipe: Dinas\nAlamat: Jl. Jendral Sudirman No. 272 Batang\nEmail: dpupr@batangkab.go.id\nNo. Telp: (0285) 391014",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "16",
+      "nama_opd": "Dinas Pekerjaan Umum dan Penataan\nRuang",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Perumahan Rakyat dan Kawasan\nPermukiman\nTipe: Dinas\nAlamat: Jl. Dr. Soetomo No. 18 Batang\nEmail: dprkp@batangkab.go.id\nNo. Telp: (0285) 392575",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "17",
+      "nama_opd": "Dinas Perumahan Rakyat dan Kawasan\nPermukiman",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Kependudukan dan Pencatatan\nSipil\nTipe: Dinas\nAlamat: Jl. Urip Sumoharjo No. 11A Batang\nEmail: disdukpencapil@batangkab.go.id\nNo. Telp: (0285) 391083",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "18",
+      "nama_opd": "Dinas Kependudukan dan Pencatatan\nSipil",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Pemberdayaan Masyarakat dan\nDesa\nTipe: Dinas\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: dispermades@batangkab.go.id\nNo. Telp: (0285) 391428",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "19",
+      "nama_opd": "Dinas Pemberdayaan Masyarakat dan\nDesa",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Perhubungan\nTipe: Dinas\nAlamat: Jl. Raya Kandeman Km 5 Batang\nEmail: dishub@batangkab.go.id\nNo. Telp: (0285) 391387",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "20",
+      "nama_opd": "Dinas Perhubungan",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Komunikasi dan Informatika\nTipe: Dinas\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: diskominfo@batangkab.go.id\nNo. Telp: (0285) 392219",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "21",
+      "nama_opd": "Dinas Komunikasi dan Informatika",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Kelautan, Perikanan dan\nPeternakan\nTipe: Dinas\nAlamat: Jl. RA Kartini No. 12 Batang\nEmail: dislutkannak@batangkab.go.id\nNo. Telp: (0285) 391749",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "22",
+      "nama_opd": "Dinas Kelautan, Perikanan dan\nPeternakan",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Sosial\nTipe: Dinas\nAlamat: Jl. Letjen Suprapto No. 4 Batang\nEmail: dinsos@batangkab.go.id\nNo. Telp: (0285) 392320",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "23",
+      "nama_opd": "Dinas Sosial",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Dinas Perpustakaan dan Kearsipan\nTipe: Dinas\nAlamat: Jl. Dr. Wahidin No. 54 Batang\nEmail: disperpuska@batangkab.go.id\nNo. Telp: (0285) 391015",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "24",
+      "nama_opd": "Dinas Perpustakaan dan Kearsipan",
+      "parent_opd": "",
+      "tipe": "Dinas",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Batang\nTipe: Kecamatan\nAlamat: Jl. Perintis Kemerdekaan No. 01 Batang\nEmail: kec_batang@batangkab.go.id\nNo. Telp: (0285) 391049",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25",
+      "nama_opd": "Kecamatan Batang",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Watesalit\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Perintis Kemerdekaan No. 02 Batang\nEmail: kel_watesalit@batangkab.go.id\nNo. Telp: (0285) 7905603",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.a",
+      "nama_opd": "Kelurahan Watesalit",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Kauman\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Dr. Wahidin No. 2 Batang\nEmail: kel_kauman@batangkab.go.id\nNo. Telp: (0285) 4493132",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.b",
+      "nama_opd": "Kelurahan Kauman",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Kasepuhan\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Lapangan Kanoman No. 7 Batang\nEmail: kel_kasepuhan@batangkab.go.id\nNo. Telp: (0285) 392268",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.c",
+      "nama_opd": "Kelurahan Kasepuhan",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Proyonanggan Selatan\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Garuda II No. 10 Dracik Kampus Batang\nEmail: kel_proyonangganselatan@batangkab.go.id\nNo. Telp: (0285) 4496078",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.d",
+      "nama_opd": "Kelurahan Proyonanggan Selatan",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Proyonanggan Tengah\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Dr. Cipto No. 28 Batang\nEmail: kel_proyonanggantengah@batangkab.go.id\nNo. Telp: (0285) 391208",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.e",
+      "nama_opd": "Kelurahan Proyonanggan Tengah",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Proyonanggan Utara\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Yos Sudarso Gg. Citarum No. 2 Batang\nEmail: kel_proyonangganutara@batangkab.go.id\nNo. Telp: -",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.f",
+      "nama_opd": "Kelurahan Proyonanggan Utara",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": false
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Karangasem Utara\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. RE Martadinata No. 233 Batang\nEmail: kel_karangasemutara@batangkab.go.id\nNo. Telp: (0285) 4494795",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.g",
+      "nama_opd": "Kelurahan Karangasem Utara",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Karangasem Selatan\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Lapangan Sekalong No. 1 Batang\nEmail: kel_karangasemselatan@batangkab.go.id\nNo. Telp: (0285) 7929677",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.h",
+      "nama_opd": "Kelurahan Karangasem Selatan",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kelurahan Sambong\nBagian dari: Kecamatan Batang\nTipe: Kelurahan\nAlamat: Jl. Kyai Sambong No. 12 Batang\nEmail: kel_sambong@batangkab.go.id\nNo. Telp: (0285) 392126",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "25.i",
+      "nama_opd": "Kelurahan Sambong",
+      "parent_opd": "Kecamatan Batang",
+      "tipe": "Kelurahan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Warungasem\nTipe: Kecamatan\nAlamat: Jl. Raya Warungasem No. 09\nEmail: kec_warungasem@batangkab.go.id\nNo. Telp: (0285) 4417885",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "26",
+      "nama_opd": "Kecamatan Warungasem",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Wonotunggal\nTipe: Kecamatan\nAlamat: Jl. Raya Tugu Wonotunggal No.01\nEmail: kec_wonotunggal@batangkab.go.id\nNo. Telp: (0285) 689005",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "27",
+      "nama_opd": "Kecamatan Wonotunggal",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 2,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Bandar\nTipe: Kecamatan\nAlamat: Jl. Raya Bandar No. 123\nEmail: kec_bandar@batangkab.go.id\nNo. Telp: (0285) 689002",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "28",
+      "nama_opd": "Kecamatan Bandar",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Blado\nTipe: Kecamatan\nAlamat: Jl. Raya Blado No. 02\nEmail: kec_blado@batangkab.go.id\nNo. Telp: (0285) 4486117",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "29",
+      "nama_opd": "Kecamatan Blado",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Reban\nTipe: Kecamatan\nAlamat: Jl. Raya Reban-Limpung\nEmail: kec_reban@batangkab.go.id\nNo. Telp: (0285) 4486835",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "30",
+      "nama_opd": "Kecamatan Reban",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Bawang\nTipe: Kecamatan\nAlamat: Jl. Raya Bawang No. 17\nEmail: kec_bawang@batangkab.go.id\nNo. Telp: (0285) 4486577",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "31",
+      "nama_opd": "Kecamatan Bawang",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Tersono\nTipe: Kecamatan\nAlamat: Jl. Raya Tersono No. 01\nEmail: kec_tersono@batangkab.go.id\nNo. Telp: (0285) 4468909",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "32",
+      "nama_opd": "Kecamatan Tersono",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Gringsing\nTipe: Kecamatan\nAlamat: Jl. Raya Plelen No. 24 Gringsing\nEmail: kec_gringsing@batangkab.go.id\nNo. Telp: (0285) 641001",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "33",
+      "nama_opd": "Kecamatan Gringsing",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Limpung\nTipe: Kecamatan\nAlamat: Jl. Raya Limpung No. 15\nEmail: kec_limpung@batangkab.go.id\nNo. Telp: (0285) 4468203",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "34",
+      "nama_opd": "Kecamatan Limpung",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Banyuputih\nTipe: Kecamatan\nAlamat: Jl. Raya Banyuputih-Limpung Km. 1 No. 242\nEmail: kec_banyuputih@batangkab.go.id\nNo. Telp: (0285) 4469002",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "35",
+      "nama_opd": "Kecamatan Banyuputih",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Pecalungan\nTipe: Kecamatan\nAlamat: Jl. Raya Pecalungan Km. 1\nEmail: kec_pecalungan@batangkab.go.id\nNo. Telp: -",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "36",
+      "nama_opd": "Kecamatan Pecalungan",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": false
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Subah\nTipe: Kecamatan\nAlamat: Jl. Raya Subah No. 1\nEmail: kec_subah@batangkab.go.id\nNo. Telp: (0285) 666205",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "37",
+      "nama_opd": "Kecamatan Subah",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Tulis\nTipe: Kecamatan\nAlamat: Jl. Raya Kaliboyo No. 1 Tulis\nEmail: kec_tulis@batangkab.go.id\nNo. Telp: (0285) 391608",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "38",
+      "nama_opd": "Kecamatan Tulis",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kecamatan Kandeman\nTipe: Kecamatan\nAlamat: Jl. Raya Kandeman\nEmail: kec_kandeman@batangkab.go.id\nNo. Telp: (0285) 391974",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "39",
+      "nama_opd": "Kecamatan Kandeman",
+      "parent_opd": "",
+      "tipe": "Kecamatan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Kantor Kesatuan Bangsa dan Politik\nTipe: Kantor\nAlamat: Jl. RA Kartini No. 1 Batang\nEmail: kesbangpol@batangkab.go.id\nNo. Telp: (0285) 392344",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "40",
+      "nama_opd": "Kantor Kesatuan Bangsa dan Politik",
+      "parent_opd": "",
+      "tipe": "Kantor",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: Badan Penanggulangan Bencana Daerah\nTipe: Badan\nAlamat: Jl. Gajah Mada Batang No. 74 Batang\nEmail: bpbd@batangkab.go.id\nNo. Telp: (0285) 391011",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "41",
+      "nama_opd": "Badan Penanggulangan Bencana Daerah",
+      "parent_opd": "",
+      "tipe": "Badan",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: RSUD Batang\nTipe: RSUD\nAlamat: Jl. Dr. Soetomo No. 42\nEmail: rsudbatang@batangkab.go.id\nNo. Telp: (0285) 391033",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "42",
+      "nama_opd": "RSUD Batang",
+      "parent_opd": "",
+      "tipe": "RSUD",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  },
+  {
+    "page_content": "Nama OPD: RSUD Limpung\nTipe: RSUD\nAlamat: Jl. Dr. Sutomo No. 17 Limpung\nEmail: rsudlimpung@batangkab.go.id\nNo. Telp: (0285) 4468362",
+    "metadata": {
+      "source": "Nama dan Alamat OPD Kab Batang.pdf",
+      "doc_type": "opd_directory",
+      "nomor": "43",
+      "nama_opd": "RSUD Limpung",
+      "parent_opd": "",
+      "tipe": "RSUD",
+      "page": 3,
+      "has_email": true,
+      "has_telp": true
+    }
+  }
+]
