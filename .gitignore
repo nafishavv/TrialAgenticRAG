@@ -8,3 +8,18 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Eval — smoke test outputs (overwritten frequently)
+eval/results/per_query_*.json
+eval/results/summary_*.json
+
+# OS
+.DS_Store
+Thumbs.db

@@ -12,8 +12,12 @@ Arsitektur pakai **Capability registry** — tambah sumber data baru atau tool
 ## Setup
 
 ```bash
-# Install package (editable)
+# Install package + dev deps (notebooks, nbstripout)
+uv sync
 uv pip install -e .
+
+# Register nbstripout git filter (sekali per clone — strip cell outputs on commit)
+uv run nbstripout --install --attributes .gitattributes
 
 # .env di root project harus berisi:
 #   GEMINI_API_KEY=...   (atau GOOGLE_API_KEY=...)
