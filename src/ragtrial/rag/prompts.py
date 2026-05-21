@@ -44,6 +44,24 @@ PERTANYAAN: {question}
 JAWABAN:"""
 
 
+REWRITE_PROMPT = """Diberikan riwayat percakapan dan pertanyaan terakhir user,
+tulis ulang pertanyaan terakhir menjadi pertanyaan STANDALONE yang bisa dimengerti
+tanpa konteks percakapan sebelumnya.
+
+ATURAN:
+- Resolve kata ganti & referensi ("itu", "tadi", "dia", "yg sebelumnya") ke entitas eksplisit dari riwayat.
+- Pertahankan bahasa & gaya pertanyaan asli (jangan terjemahkan).
+- Kalau pertanyaan sudah standalone (tidak ada referensi ke riwayat), kembalikan APA ADANYA.
+- Output: HANYA pertanyaan yang sudah ditulis ulang, satu baris, tanpa penjelasan, tanpa quote, tanpa prefix.
+
+Riwayat percakapan:
+{history}
+
+Pertanyaan terakhir: {question}
+
+Pertanyaan standalone:"""
+
+
 PROMPT_NONE = """Pertanyaan user di luar cakupan chatbot layanan publik Kab. Batang.
 Jawab dengan sopan bahwa pertanyaan ini di luar cakupan, dan tawarkan bantuan terkait sumber yang tersedia.
 Bahasa Indonesia singkat.
