@@ -50,10 +50,11 @@ def run_one_query(
     """Run one question through one system, compute all metrics."""
     question = q["question"]
 
-    # 1) Execute pipeline
+    # 1) Execute pipeline (all modes return RagResult -> normalize to dict)
     t0 = time.perf_counter()
-    result = ask_fn(question, verbose=False)
+    res = ask_fn(question, verbose=False)
     wall = time.perf_counter() - t0
+    result = res.to_dict() if hasattr(res, "to_dict") else res
 
     answer = result.get("answer", "")
     docs = result.get("documents", []) or []
@@ -62,9 +63,9 @@ def run_one_query(
 
     gold_set = gold_chunks_to_set(q["gold_chunks"])
 
-    # 2) Routing (agentic only)
+    # 2) Routing (modes that produce a route decision)
     routing = None
-    if system == "agentic":
+    if system in ("agentic", "enhanced"):
         routing = {
             "predicted_route": result.get("route", ""),
             "expected_route": q["expected_route"],
@@ -139,8 +140,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--testset", default=str(ROOT / "eval" / "testset.json"))
     ap.add_argument("--outdir", default=str(ROOT / "eval" / "results"))
-    ap.add_argument("--systems", nargs="+", default=["agentic", "naive"],
-                    choices=["agentic", "naive"])
+    ap.add_argument("--systems", nargs="+", default=["naive", "enhanced", "agentic"],
+                    choices=["naive", "enhanced", "agentic"])
     ap.add_argument("--k", type=int, default=5, help="top-k for retrieval metrics")
     ap.add_argument("--limit", type=int, default=None,
                     help="run only first N questions (smoke test)")
@@ -162,13 +163,18 @@ def main():
 
     print(f"Loaded {len(testset)} questions. systems={args.systems}  k={args.k}  judge={use_judge}")
 
+    # System registry — add/swap a system here; metrics stay system-agnostic
+    # because every system returns a RagResult.
     ask_fns = {}
+    if "naive" in args.systems:
+        from ragtrial.rag.naive import ask_naive
+        ask_fns["naive"] = ask_naive
+    if "enhanced" in args.systems:
+        from ragtrial.rag.enhanced import ask_enhanced
+        ask_fns["enhanced"] = ask_enhanced
     if "agentic" in args.systems:
         from ragtrial.rag.agentic import ask_agentic
         ask_fns["agentic"] = ask_agentic
-    if "naive" in args.systems:
-        from ragtrial.rag.naive_combined import ask_main
-        ask_fns["naive"] = ask_main
 
     for system in args.systems:
         ask = ask_fns[system]

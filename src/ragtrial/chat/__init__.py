@@ -1,7 +1,7 @@
-"""Conversation layer — multi-turn chat on top of naive-combined RAG.
+"""Conversation layer — multi-turn chat over any of the 3 RAG modes.
 
 Public API:
-    ChatSession  — stateful wrapper around ask_main()
+    ChatSession  — stateful wrapper; pick mode=naive|enhanced|agentic
     Turn         — single chat entry (role + content + timestamp)
     rewrite_query — standalone-query rewriter (exposed for testing)
 """
