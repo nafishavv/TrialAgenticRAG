@@ -50,13 +50,15 @@ class SemanticRouter(Stage):
         self,
         capabilities: Optional[Dict[str, Capability]] = None,
         embedder=None,
-        threshold: float = 0.55,
+        threshold: float = 0.65,
         both_margin: float = 0.04,
     ):
         self.caps = capabilities or SEARCHABLE_CAPABILITIES
         self.embedder = embedder or default_embeddings
         self.threshold = threshold
-        """Below this top similarity -> route 'none' (out of scope)."""
+        """Below this top similarity -> route 'none' (out of scope). Gemini
+        embeddings have a high similarity floor (~0.5 even for unrelated text),
+        so this is tuned high; re-tune on your eval set as domains grow."""
         self.both_margin = both_margin
         """If top-2 domains are within this gap (both above threshold) -> 'both'."""
         self._centroids: Optional[Dict[str, np.ndarray]] = None
