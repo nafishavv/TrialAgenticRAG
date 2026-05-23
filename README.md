@@ -1,206 +1,149 @@
 # RAGTrial
 
-Agentic & naive RAG untuk layanan publik Kab. Batang. Sumber data saat ini:
+RAG layanan publik Kab. Batang dengan **3 mode**: naive, enhanced, agentic.
+Sumber data saat ini:
 - **Dukcapil** — Buku Saku administrasi kependudukan (KTP, KK, akta, dll)
 - **OPD** — Direktori Organisasi Perangkat Daerah (alamat, telepon, email)
 
-Arsitektur pakai **Capability registry** — tambah sumber data baru atau tool
-(text-to-sql, web search, dll) tanpa menyentuh pipeline RAG-nya.
+Arsitektur dibangun untuk **skala naik**: domain heterogen (banyak file per domain),
+komponen RAG yang bisa di-swap, dan integrasi tool (text-to-sql / web search) di masa depan.
+Detail desain + alasan: **[docs/REFACTOR_3WAY.md](docs/REFACTOR_3WAY.md)**.
+
+---
+
+## Tiga mode
+
+| Mode | Apa | Kontrol alur |
+|---|---|---|
+| **naive** | 1 collection gabungan → dense top-k → stuff → 1 LLM call | Tetap, minimal (baseline) |
+| **enhanced** | pipeline fixed `rewrite → route → retrieve → rerank → generate`, di-config | Developer yang desain |
+| **agentic** | tool-calling loop: LLM pilih tool, iterasi, retry, skip | Dinamis, LLM yang putuskan |
 
 ---
 
 ## Setup
 
 ```bash
-# Install package + dev deps (notebooks, nbstripout)
-uv sync
-uv pip install -e .
+uv sync && uv pip install -e .
 
-# Register nbstripout git filter (sekali per clone — strip cell outputs on commit)
+# Register nbstripout git filter (sekali per clone)
 uv run nbstripout --install --attributes .gitattributes
 
-# .env di root project harus berisi:
-#   GEMINI_API_KEY=...   (atau GOOGLE_API_KEY=...)
+# .env di root project:  GEMINI_API_KEY=...  (atau GOOGLE_API_KEY=...)
 ```
 
 ## Quick start
 
 ```bash
-# Tanya sesuatu (default: agentic)
+# Tanya (default: enhanced)
 uv run python scripts/ask.py "Apa syarat KTP elektronik?"
 
-# Pakai pipeline naive (semua source di-query sekaligus)
+# Pilih mode
 uv run python scripts/ask.py "Alamat Disdukcapil?" --mode naive
+uv run python scripts/ask.py "Urus pindah domisili, ke dinas mana?" --mode agentic
 
-# (Re-)preprocess raw PDF -> data/processed/<source>.{pkl,json}
-uv run python scripts/preprocess.py --source dukcapil
+# Chat multi-turn (pilih mode juga)
+uv run python scripts/ask.py --chat --mode enhanced
+
+# Pipeline data: preprocess → build store → refresh unified (untuk naive)
 uv run python scripts/preprocess.py --source all
+uv run python scripts/build_vectorstore.py --source all
+uv run python scripts/build_vectorstore.py --source unified
 
-# (Re-)build vector store dari data/processed
-uv run python scripts/build_vectorstore.py --source opd
+# UI
+uv run streamlit run app.py
 ```
+
+## Enhanced — swap komponen lewat config
+
+```python
+from ragtrial.rag.enhanced import build_enhanced, EnhancedRAGConfig
+
+cfg = EnhancedRAGConfig(rewriter="passthrough", router="semantic",
+                        retrieval="dense", reranker="none")
+rag = build_enhanced(cfg)
+result = rag.ask("Apa syarat KTP elektronik?")   # -> RagResult
+```
+Ganti komponen = ganti 1 field. Preset siap pakai: `fanout_hybrid`, `llm_router_hybrid`
+(lihat `PRESETS`). Stub menunggu diisi: `hyde`, `multiquery`, `cross_encoder`.
 
 ## Evaluation
 
 ```bash
-# Run full eval (~5-10 menit, butuh Gemini API quota)
-uv run python -m eval.run_eval --systems agentic naive
+uv run python -m eval.run_eval --systems naive enhanced agentic
+uv run python -m eval.run_eval --systems enhanced --limit 5 --no-judge   # smoke
+uv run python -m eval.analyze --systems naive enhanced agentic --breakdown query_type difficulty
+```
+Semua mode mengembalikan `RagResult`, jadi metrik bersifat system-agnostic.
 
-# Smoke test (5 query, no LLM judge)
-uv run python -m eval.run_eval --systems agentic naive --limit 5 --no-judge
+---
 
-# Aggregate hasil + breakdown per dimensi
-uv run python -m eval.analyze --systems agentic naive \
-    --breakdown query_type difficulty
+## Struktur (ringkas)
+
+```
+src/ragtrial/
+├── result.py                 # RagResult — kontrak output 3 mode
+├── capabilities/             # Capability ABC + VectorSourceCapability + registry
+├── sources/<domain>/         # co-located: preprocess + chunk + capability per domain
+├── pipeline/                 # stage komposabel enhanced (rewrite/route/retrieve/rerank/generate)
+├── vectorstore/              # builder per domain + unified (copy vektor)
+├── rag/                      # naive.py | enhanced.py | agentic.py | prompts.py
+└── chat/session.py           # ChatSession(mode=…)
+scripts/  ask.py · preprocess.py · build_vectorstore.py
+eval/     run_eval.py · eval_core.py · analyze.py
+data/     raw/<domain>/ · processed/<domain>.{pkl,json} · vector_stores/<domain>/ + _unified/
 ```
 
 ---
 
-## Struktur
+## Menambah domain data baru (worked example: `pajak`)
 
-```
-RAGTrial/
-├── src/ragtrial/                  # package importable
-│   ├── config.py                  # absolute paths + load_env()
-│   ├── llm.py                     # singleton llm + embeddings
-│   ├── capabilities/              # registry generic (vector source + future tools)
-│   │   ├── base.py                # Capability ABC + format_context
-│   │   ├── vector_source.py       # VectorSourceCapability (Chroma + hybrid)
-│   │   └── instances/{dukcapil,opd}.py
-│   ├── preprocessing/{dukcapil,opd}.py  # raw PDF -> cleaned Documents
-│   ├── chunking/{dukcapil,opd}.py       # cleaned Documents -> embedding chunks
-│   ├── vectorstore/builder.py     # generic Chroma builder + retry
-│   └── rag/
-│       ├── prompts.py             # PROMPT_COMBINED, PROMPT_SINGLE, ROUTER_PROMPT
-│       ├── naive_combined.py      # ask_main() — iterate registry, fan-out
-│       └── agentic.py             # ask_agentic() — LangGraph router + dispatch
-├── scripts/                       # thin CLI wrappers
-│   ├── preprocess.py
-│   ├── build_vectorstore.py
-│   └── ask.py
-├── notebooks/
-│   ├── exploration/               # per-source experiments (4 variant, dll)
-│   ├── reports/                   # demo + comparison notebooks
-│   └── archive/                   # stale notebook, kept untuk referensi
-├── eval/                          # evaluation harness (run_eval, analyze)
-├── data/
-│   ├── raw/{dukcapil,opd,unprocessed}/    # source PDFs
-│   ├── processed/<source>.{pkl,json}       # cleaned Documents
-│   └── vector_stores/<source>/             # Chroma persistent dir
-├── docs/                          # REFACTOR_TAHAP1.md, archive/
-└── pyproject.toml, README.md, PROGRESS.md
-```
-
----
-
-## Menambah sumber data baru (worked example)
-
-Misal mau tambah **PERDA Kab. Batang**:
-
-### 1. Letakkan raw PDF
-```
-data/raw/perda/<file>.pdf
-```
-
-### 2. Tulis preprocessing
-```python
-# src/ragtrial/preprocessing/perda.py
-from pathlib import Path
-from typing import List
-from langchain_core.documents import Document
-
-def preprocess(pdf_path: Path) -> List[Document]:
-    # ...load + clean...
-    return docs
-```
-
-### 3. Tulis chunking strategy
-```python
-# src/ragtrial/chunking/perda.py
-def chunk_for_vectorstore(docs):
-    # split per pasal, atau RecursiveCharacterTextSplitter, dll
-    return chunks
-```
-
-### 4. Buat capability instance
-```python
-# src/ragtrial/capabilities/instances/perda.py
-from ragtrial.capabilities.vector_source import VectorSourceCapability
-from ragtrial.config import VECTOR_STORE_DIR
-
-perda_capability = VectorSourceCapability(
-    name="perda",
-    description="Peraturan Daerah Kab. Batang — pasal, ayat, sanksi.",
-    collection_name="perda_articles",
-    persist_directory=VECTOR_STORE_DIR / "perda",
-    router_examples=["Apa sanksi parkir liar menurut Perda?"],
-    strategy="hybrid",
-)
-```
-
-### 5. Daftarkan
-```python
-# src/ragtrial/capabilities/__init__.py
-from ragtrial.capabilities.instances.perda import perda_capability
-
-CAPABILITIES = {
-    dukcapil_capability.name: dukcapil_capability,
-    opd_capability.name: opd_capability,
-    perda_capability.name: perda_capability,  # ← satu baris
-}
-```
-
-### 6. Tambah ke CLI dispatch
-```python
-# scripts/preprocess.py + scripts/build_vectorstore.py
-PIPELINES["perda"] = (preprocess_perda, RAW_DIR / "perda" / "...pdf", ...)
-```
-
-### 7. Run
 ```bash
-uv run python scripts/preprocess.py --source perda
-uv run python scripts/build_vectorstore.py --source perda
-uv run python scripts/ask.py "Apa sanksi parkir liar menurut Perda?"
+# 1. taruh file (boleh banyak / nested)
+data/raw/pajak/<...>.pdf
 ```
-
-**Itu doang.** `naive_combined`, `agentic`, dan router prompt auto-pickup —
-tidak ada perubahan di pipeline RAG.
-
----
-
-## Menambah tool (non-vector, mis. text-to-sql)
-
-Implement `Capability` ABC di [src/ragtrial/capabilities/base.py](src/ragtrial/capabilities/base.py):
-
 ```python
-from ragtrial.capabilities.base import Capability
-from langchain_core.documents import Document
+# 2. src/ragtrial/sources/pajak/preprocess.py
+def preprocess(pdf_path) -> list[Document]: ...        # handler per tipe file
 
-class SqlToolCapability(Capability):
-    name = "sql_perda"
-    description = "Query database Perda untuk statistik / aggregation."
-    searchable = True
+# 3. src/ragtrial/sources/pajak/chunk.py
+def chunk_for_vectorstore(docs) -> list[Document]: ... # mis. split per pasal
 
-    def invoke(self, query: str, k: int = 5) -> list[Document]:
-        sql = self._llm_to_sql(query)
-        rows = self._execute(sql)
-        return self._tag([
-            Document(page_content=self._format_row(r), metadata={"sql": sql, **r})
-            for r in rows[:k]
-        ])
+# 4. src/ragtrial/sources/pajak/capability.py
+pajak_capability = VectorSourceCapability(
+    name="pajak", description="Pajak daerah Kab. Batang ...",
+    collection_name="pajak", persist_directory=VECTOR_STORE_DIR / "pajak",
+    router_examples=["Berapa tarif PBB?"], strategy="hybrid",
+    gold_id_fn=..., citation="sebutkan pasal/ayat.",
+)
 
-    def format_header(self, doc, idx):
-        return f"[SQL {idx}] query={doc.metadata['sql'][:60]}"
+# 5. src/ragtrial/sources/pajak/__init__.py
+def build_documents() -> list[Document]: ...           # walk data/raw/pajak/
+source = Source(name="pajak", raw_dir=..., processed_pkl=..., capability=pajak_capability,
+                build_documents=build_documents, chunk=chunk_for_vectorstore)
 ```
+```python
+# 6. daftarkan di src/ragtrial/sources/__init__.py
+from ragtrial.sources.pajak import source as pajak_source
+_ALL = [dukcapil_source, opd_source, pajak_source]     # ← satu baris
+```
+```bash
+# 7. build
+uv run python scripts/preprocess.py --source pajak
+uv run python scripts/build_vectorstore.py --source pajak
+uv run python scripts/build_vectorstore.py --source unified
+```
+**Itu doang.** Nol perubahan di registry/prompts/eval/ketiga mode RAG — semua auto-pickup.
 
-Daftarkan di `CAPABILITIES` — agentic router otomatis dapat category baru.
+## Menambah tool non-vector (mis. text-to-sql)
+
+Implement `Capability` ABC (`invoke()` balikin `List[Document]`), daftarkan di
+`capabilities/registry.py`. Otomatis jadi tool agentic (`search_<name>`) dan ikut enhanced fan-out.
 
 ---
 
 ## Catatan
 
-- **Vector store dipisah per source** — schema metadata beda, chunking strategy
-  beda. Combined retrieval di-query-time via registry, bukan via merged store.
-- **Path absolute via `Path(__file__)`** — semua script jalan dari cwd manapun.
-- **`uv run python -m eval.run_eval`** harus jalan dari project root.
-- **PROGRESS.md** = state report; **docs/REFACTOR_TAHAP1.md** = refactor history.
+- **Vector store dipisah per domain** (schema/chunking beda); naive query `_unified` (copy vektor lintas domain).
+- **Path absolut via `Path(__file__)`** — script jalan dari cwd manapun; eval dari project root.
+- **`docs/REFACTOR_3WAY.md`** = desain + alasan + cara extend; **PROGRESS.md** = state report.

@@ -1,6 +1,6 @@
-# Progress Report — RAG Dukcapil & OPD Kab. Batang
+# Progress Report — RAG Layanan Publik Kab. Batang
 
-**Update terakhir**: 2026-05-20 (refactor Tahap 1+2 selesai, codebase repackaged)
+**Update terakhir**: 2026-05-24 (3-way RAG split selesai: naive / enhanced / agentic)
 
 ---
 
@@ -10,84 +10,53 @@
 |---|---|---|
 | `data/raw/dukcapil/Buku-Saku-Dafduk-Capil-2023.pdf` (282 hal) | ✅ End-to-end | 258 cleaned docs → 150 chunks → Chroma `dukcapil_qa` |
 | `data/raw/opd/Nama dan Alamat OPD Kab Batang.pdf` (3 hal) | ✅ End-to-end | 61 records (1 doc = 1 OPD) → Chroma `opd_directory` |
-| `data/raw/unprocessed/PERDA NOMOR 1 TAHUN 2019.pdf` | ❌ Belum diproses | Belum diputuskan apakah masuk pipeline RAG |
-| `data/raw/unprocessed/Analisis-dan-evaluasi-hukum-no-3-tahun-2025.pdf` | ❌ Belum diproses | Belum diputuskan apakah masuk pipeline RAG |
+| `data/raw/unprocessed/PERDA NOMOR 1 TAHUN 2019.pdf` | ❌ Belum diproses | Arsitektur siap (`sources/<domain>/`) |
+| `data/raw/unprocessed/Analisis-dan-evaluasi-hukum-no-3-tahun-2025.pdf` | ❌ Belum diproses | — |
+
+`_unified` collection (211 vektor = 150 + 61) di-build dari copy vektor per-domain untuk naive RAG.
 
 ---
 
-## 2. Arsitektur (post-refactor)
+## 2. Arsitektur (post 3-way split)
+
+Lihat **[docs/REFACTOR_3WAY.md](docs/REFACTOR_3WAY.md)** untuk desain + alasan lengkap.
 
 ```
 src/ragtrial/
-├── capabilities/      ← REGISTRY: tambah source/tool = 1 file config + register
-├── preprocessing/     ← raw PDF → cleaned Documents (per source)
-├── chunking/          ← cleaned Documents → embedding chunks (per source)
-├── vectorstore/       ← generic Chroma builder + retry
-└── rag/               ← naive_combined, agentic (iterate registry)
-
-scripts/               ← CLI: preprocess.py, build_vectorstore.py, ask.py
-notebooks/             ← exploration/, reports/, archive/
-eval/                  ← run_eval, analyze, testset, results
+├── result.py        ← RagResult (kontrak output 3 mode; eval/chat/UI konsumsi ini)
+├── capabilities/    ← Capability ABC + VectorSourceCapability + registry
+├── sources/<domain>/← co-located preprocess + chunk + capability (1 domain = banyak file)
+├── pipeline/        ← stage komposabel enhanced (rewrite/route/retrieve/rerank/generate)
+├── vectorstore/     ← builder per-domain + unified (copy vektor)
+├── rag/             ← naive.py | enhanced.py | agentic.py | prompts.py
+└── chat/session.py  ← ChatSession(mode=…)
 ```
 
-**Capability registry**: `naive_combined.ask_main()` fan out ke semua capability;
-`agentic.ask_agentic()` router classify ke `<capability.name>` / `both` / `none`.
-Tambah PERDA = bikin `instances/perda.py` + register → otomatis ke-pickup, zero
-perubahan pipeline. Details: [docs/REFACTOR_TAHAP1.md](docs/REFACTOR_TAHAP1.md).
+**Tambah domain** = 1 folder `sources/<domain>/` + 1 baris di `SOURCES`. **Tambah stage**
+= 1 class + 1 entri factory dict. **Tambah tool** = implement `Capability` + register.
 
 ---
 
-## 3. Pipeline status
+## 3. Status mode
 
-### A. Dukcapil — END-TO-END ✅
+### A. naive — END-TO-END ✅
+[rag/naive.py](src/ragtrial/rag/naive.py) — 1 collection `_unified`, dense top-k, `PROMPT_NAIVE`
+(stuff polos, tanpa header per-source). Baseline jujur.
 
-**Preprocessing** ([src/ragtrial/preprocessing/dukcapil.py](src/ragtrial/preprocessing/dukcapil.py))
-- PyMuPDFLoader → filter cover/ToC pages (282 → 258) → regex cleanup → section tag
-- Sections: Kata Pengantar / BAB I / BAB II (Q&A) / BAB III
+### B. enhanced — END-TO-END ✅
+[rag/enhanced.py](src/ragtrial/rag/enhanced.py) — `build_enhanced(EnhancedRAGConfig)` rakit
+`Pipeline`. Default **semantic(embedding) + dense**. Routing live: KTP→dukcapil(0.88),
+Pariwisata→opd(0.82), off-topic→none(0.63). Preset `fanout_hybrid`, `llm_router_hybrid`.
+Stub: HyDE, MultiQuery, CrossEncoderReranker.
 
-**Chunking** ([src/ragtrial/chunking/dukcapil.py](src/ragtrial/chunking/dukcapil.py))
-- BAB II Q&A-aware (regex per nomor pertanyaan): 139 chunks
-- Narrative (RecursiveCharacterTextSplitter, chunk=1200, overlap=200): 11 chunks
-- **Total: 150 chunks**
+### C. agentic — END-TO-END ✅
+[rag/agentic.py](src/ragtrial/rag/agentic.py) — LangGraph `agent ⇄ tools`. Tool `search_<domain>`
+per kapabilitas; LLM pilih/iterasi/retry/skip; tiap langkah → `meta.steps`. `MAX_ITERATIONS=5`.
 
-**Vector store**: Chroma `dukcapil_qa` di `data/vector_stores/dukcapil/`,
-Gemini `gemini-embedding-2` 768d.
-
-**Variants** ([notebooks/exploration/rag_chat_dukcapil.ipynb](notebooks/exploration/rag_chat_dukcapil.ipynb)):
-V1 Dense / V2 Dense+Rerank / V3 Hybrid / V4 Hybrid+Rerank.
-Latency: V3 ~4.4s = paling balanced (V2/V4 reranker bottleneck 70-230s).
-
-### B. OPD — END-TO-END ✅
-
-**Preprocessing** ([src/ragtrial/preprocessing/opd.py](src/ragtrial/preprocessing/opd.py))
-- pdfplumber table extract → merge continuation rows → parse alamat/email/telp → infer tipe
-- Output schema: `{nomor, nama_opd, parent_opd, tipe, alamat, email, no_telp, page}`
-- Quality assertions: main 1-43 lengkap, distribusi tipe OK, ga ada alamat kosong
-
-**Vector store**: Chroma `opd_directory` di `data/vector_stores/opd/`,
-no chunking (61 records atomic).
-
-**Variants** ([notebooks/exploration/rag_chat_opd.ipynb](notebooks/exploration/rag_chat_opd.ipynb)):
-V1 Dense / V2 BM25 / V3 Hybrid (reranker di-skip — 61 docs terlalu kecil).
-
-### C. Naive Combined (registry fan-out) — END-TO-END ✅
-
-[src/ragtrial/rag/naive_combined.py](src/ragtrial/rag/naive_combined.py) —
-`ask_main()` iterate `SEARCHABLE_CAPABILITIES`, hybrid retrieve per store
-(k_per_source=4 → 8 docs), generate dgn `PROMPT_COMBINED`.
-
-### D. Agentic (LangGraph routed) — END-TO-END ✅
-
-[src/ragtrial/rag/agentic.py](src/ragtrial/rag/agentic.py) — router LLM call
-classify ke `<cap.name>` / `both` / `none`, dispatch ke node generic
-(`retrieve_single` / `retrieve_all` / `skip_retrieve`) → generate.
-
-### E. Comparison ✅
-
-[notebooks/reports/compare_agentic_vs_naive.ipynb](notebooks/reports/compare_agentic_vs_naive.ipynb)
-— 15 query × 4 pipeline (agentic, naive_dukcapil, naive_opd, naive_combined).
-**Verdict**: di dataset kecil (150+61 docs), naive_combined ~1.3s lebih cepat
-(router overhead 2.5s > ekstra retrieve cost). Agentic menang besar di `none` query.
+### D. Eval ✅
+[eval/run_eval.py](eval/run_eval.py) — registry sistem `{naive, enhanced, agentic}`, konsumsi
+`RagResult`; routing dihitung untuk enhanced & agentic. Metrik di [eval/eval_core.py](eval/eval_core.py)
+(gold-id & label routing diturunkan dari registry).
 
 ---
 
@@ -95,48 +64,41 @@ classify ke `<cap.name>` / `both` / `none`, dispatch ke node generic
 
 | Topik | Decision | Reasoning |
 |---|---|---|
-| Chunking BAB II Dukcapil | Q&A-aware regex | Tiap Q+A self-contained, jawaban lintas halaman |
-| Chunking OPD | No chunking | Data atomic, ga ada narasi |
+| 3 mode | naive / enhanced / agentic | Pembeda = siapa kontrol alur (lihat docs) |
+| naive | 1 collection gabungan, dense | Baseline benar-benar minimal |
+| `_unified` | copy vektor (no re-embed) | Gratis & instan |
+| Config enhanced | dataclass Python | Type-safe, enak eval sweep |
+| Router default | SemanticRouter (embedding) | Sesuai spec enhanced; LLMRouter jadi opsi |
+| agentic | tool-calling loop (rebuild) | Router statis lama bukan agentic |
+| Source layout | co-locate per domain | 1 domain = banyak file; skala heterogen |
+| Pengetahuan per-source | method Capability | Tambah domain tanpa ngedit prompts/eval |
+| Output | RagResult seragam | Framework eval bisa diganti tanpa sentuh pipeline |
 | Embedding | Gemini `gemini-embedding-2` 768d | Multilingual BI |
-| Vector store per source | Pisah | Schema metadata + chunking strategy beda |
-| Reranker untuk OPD | Skip | 61 docs terlalu kecil, latency ga worth |
-| Format export | Pickle + JSON | PKL preserve Document, JSON readable |
-| Default RAG mode | Agentic | Lebih ekspressif walaupun naive combined sedikit lebih cepat di dataset ini |
 
 ---
 
 ## 5. To-Do
 
-### Immediate
-- [ ] **Tahap 4 (remeh)**: nbstripout setup, `.gitignore` cleanup
-- [ ] **Run full eval** (`uv run python -m eval.run_eval --systems agentic naive`) untuk dapat baseline metrik kuantitatif post-refactor
-
 ### Short-term
-- [ ] **Decision: PERDA + Analisis-hukum** — masuk pipeline? Kalau ya, butuh
-      strategy chunking baru (legal doc — pasal/ayat split). Architecture sudah
-      siap (tinggal `instances/perda.py` + chunking + register).
-- [ ] **Out-of-scope handling**: test lebih banyak edge case selain "resep nasi goreng"
-- [ ] **Reranker latency investigation** Dukcapil V2/V4 (~70-230s)
+- [ ] Run full eval `--systems naive enhanced agentic` untuk baseline kuantitatif 3 mode
+- [ ] Tune threshold SemanticRouter di eval set (sekarang 0.65, heuristik)
+- [ ] Tambah domain PERDA (`sources/perda/`, chunking pasal/ayat)
 
 ### Medium-term
-- [ ] **Text-to-SQL capability** (rencana awal user) — implement `SqlToolCapability`
-      yang inherit `Capability` ABC, otomatis ke-route oleh agentic
-- [ ] **Conversation memory / multi-turn chat** — sekarang masih single-turn
-- [ ] **Evaluasi kuantitatif** — testset sudah ada (`eval/testset.json`),
-      tinggal scale up (sekarang 27 query)
+- [ ] Isi stub: HyDE rewriter, CrossEncoder reranker, MultiQuery
+- [ ] `SqlToolCapability` (text-to-sql) → otomatis jadi tool agentic
+- [ ] BM25 indeks persisten (sekarang materialize semua doc di memori)
+- [ ] Scale up testset (sekarang kecil)
 
-### Open questions
-1. **Scope final RAG**: cuma 2 dokumen atau ditambah PERDA + analisis hukum?
-2. **Output akhir**: notebook eksperimen, atau jadi aplikasi (Streamlit/FastAPI)?
-3. **Variant final Dukcapil**: V3 (Hybrid) tampak paling balanced — setuju pakai sebagai default?
+### Future
+- [ ] Multi-agent (tambah node agent di graph agentic)
+- [ ] FastAPI backend (UI sudah dipisah via ChatSession)
 
 ---
 
 ## 6. Refactor history
 
-- **Tahap 1** (commit `13661b2`): src/ragtrial package + Capability registry.
-  Detail: [docs/REFACTOR_TAHAP1.md](docs/REFACTOR_TAHAP1.md).
-- **Tahap 2** (commit `39eebed`): reorg data/, notebooks/, scripts/, function-ify preprocessing.
-- **Tahap 3** (this commit): polish — README proper, PLAN archived, PROGRESS refreshed.
-- **Tahap 4** (pending): nbstripout, .gitignore cleanup.
-- **Tahap 5** (future): SqlToolCapability + tambah data source baru.
+- **Repackage (Tahap 1–4)**: src/ package + Capability registry + reorg + nbstripout.
+- **3-way split (`#1`–`#8`)**: de-hardcode → co-locate sources → RagResult+pipeline →
+  naive+unified → enhanced → agentic rebuild → wiring → docs.
+  Detail + alasan: **[docs/REFACTOR_3WAY.md](docs/REFACTOR_3WAY.md)**.
