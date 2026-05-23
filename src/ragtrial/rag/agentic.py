@@ -1,193 +1,259 @@
-"""Agentic RAG — router classifies query into a capability.name (or 'both'/'none'),
-then dispatches to a generic retrieve node and finally generate.
+"""Agentic RAG — LLM orchestrator that decides its own steps (tool-calling loop).
 
-Capabilities are read from the registry at module load. Adding a new capability
-extends the router categories and dispatch automatically — no graph rewiring.
+Unlike enhanced (a fixed pipeline), here the LLM controls the flow: it chooses
+which domain tool(s) to call, may call several, may re-search with a reformulated
+query after seeing weak results, or skip retrieval entirely for out-of-scope
+questions — then answers when it judges the context sufficient.
+
+Tools (Cara 1, lean): one `search_<domain>` per searchable capability. The LLM
+*is* the domain selector — picking a tool = selecting a domain. Every decision is
+logged to `meta.steps` (tool + query arg + n_docs), so agent behavior (rewrite /
+multi-domain / skip) is fully inspectable from the trace, without extra tools.
+
+Graph:  agent ──tool_calls?──> tools ──> agent ... ──no tool_calls / max_iter──> END
+
+Future tools (SQL, web search) register as Capabilities -> become agent tools
+automatically. Multi-agent would add more agent nodes to this graph.
 """
 
 from __future__ import annotations
 
-import json
 import time
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List
 
 from langchain_core.documents import Document
+from langchain_core.messages import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage,
+    ToolMessage,
+)
+from langchain_core.tools import StructuredTool
 from langgraph.graph import END, StateGraph
+from pydantic import BaseModel, Field
 from typing_extensions import TypedDict
 
 from ragtrial.capabilities import format_context
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import llm
-from ragtrial.rag.prompts import (
-    PROMPT_COMBINED,
-    PROMPT_NONE,
-    PROMPT_SINGLE,
-    build_citation_rules,
-    build_router_prompt,
-    build_sources_brief,
-)
+from ragtrial.result import RagResult
 
-# ============ Route values: every capability name + "both" + "none" ============
-_ROUTE_VALUES = set(SEARCHABLE_CAPABILITIES.keys()) | {"both", "none"}
+MAX_ITERATIONS = 5
+K_PER_TOOL = 5
+_TOOL_PREFIX = "search_"
 
 
-def route_query(question: str) -> Dict[str, str]:
-    """Classify question into one of: <capability.name> | 'both' | 'none'."""
-    prompt = build_router_prompt(question, SEARCHABLE_CAPABILITIES)
-    raw = llm.invoke(prompt).content.strip()
-    if raw.startswith("```"):
-        raw = raw.strip("`")
-        if raw.startswith("json"):
-            raw = raw[4:]
-        raw = raw.strip()
-    try:
-        parsed = json.loads(raw)
-        route = parsed.get("route", "none")
-        if route not in _ROUTE_VALUES:
-            route = "none"
-        return {"route": route, "reason": parsed.get("reason", "")}
-    except Exception as e:
-        return {"route": "none", "reason": f"parse_error: {e}; raw={raw[:80]}"}
+# ============ Tools (schema only — executed manually to capture Documents) ============
+class _SearchArgs(BaseModel):
+    query: str = Field(description="Kueri pencarian (boleh ditulis ulang dari pertanyaan asli).")
+
+
+def _noop(query: str) -> str:  # never actually invoked; we execute in the tools node
+    return ""
+
+
+def _build_tools(capabilities) -> List[StructuredTool]:
+    return [
+        StructuredTool.from_function(
+            func=_noop,
+            name=f"{_TOOL_PREFIX}{name}",
+            description=f"Cari informasi di domain '{name}'. {cap.description}",
+            args_schema=_SearchArgs,
+        )
+        for name, cap in capabilities.items()
+    ]
+
+
+_TOOLS = _build_tools(SEARCHABLE_CAPABILITIES)
+_llm_with_tools = llm.bind_tools(_TOOLS)
+
+
+def _system_prompt(capabilities) -> str:
+    tool_lines = "\n".join(
+        f"- {_TOOL_PREFIX}{name}: {cap.description}" for name, cap in capabilities.items()
+    )
+    return (
+        "Kamu asisten layanan publik Kab. Batang. Kamu punya tools pencarian per domain:\n"
+        f"{tool_lines}\n\n"
+        "CARA KERJA:\n"
+        "1. Putuskan sendiri domain mana yang relevan, lalu panggil tool-nya. Boleh lebih dari satu.\n"
+        "2. Kalau hasil kurang relevan, kamu boleh memanggil tool lagi dengan query yang ditulis ulang.\n"
+        "3. Kalau pertanyaan di luar cakupan semua domain, JANGAN panggil tool apa pun — langsung tolak dengan sopan.\n"
+        "4. Jawab HANYA berdasarkan hasil tool. Jangan menambah info dari pengetahuan umum.\n"
+        "5. Kalau info tidak ditemukan, katakan: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
+        "6. Bahasa Indonesia jelas & ringkas. Sebutkan sumbernya kalau relevan."
+    )
 
 
 # ============ State ============
 class AgentState(TypedDict):
-    question: str
-    route: str
-    route_reason: str
+    messages: List[Any]
     documents: List[Document]
-    source_used: str
-    answer: str
-    timings: Dict[str, float]
+    steps: List[Dict[str, Any]]
+    iterations: int
+    t_agent: float
+    t_tools: float
 
 
 # ============ Nodes ============
-def node_route(state: AgentState) -> AgentState:
+def _node_agent(state: AgentState) -> AgentState:
     t0 = time.perf_counter()
-    res = route_query(state["question"])
+    ai = _llm_with_tools.invoke(state["messages"])
     dt = time.perf_counter() - t0
-    timings = {**(state.get("timings") or {}), "route": dt}
-    return {**state, "route": res["route"], "route_reason": res["reason"], "timings": timings}
+    return {
+        **state,
+        "messages": state["messages"] + [ai],
+        "iterations": state["iterations"] + 1,
+        "t_agent": state["t_agent"] + dt,
+    }
 
 
-def node_retrieve_single(state: AgentState) -> AgentState:
-    t0 = time.perf_counter()
-    cap = SEARCHABLE_CAPABILITIES[state["route"]]
-    docs = cap.invoke(state["question"], k=5)
-    dt = time.perf_counter() - t0
-    timings = {**(state.get("timings") or {}), "retrieve": dt}
-    return {**state, "documents": docs, "source_used": cap.name, "timings": timings}
+def _node_tools(state: AgentState) -> AgentState:
+    last: AIMessage = state["messages"][-1]
+    new_msgs: List[Any] = []
+    docs: List[Document] = list(state["documents"])
+    steps: List[Dict[str, Any]] = list(state["steps"])
+    t_tools = state["t_tools"]
+
+    for call in last.tool_calls:
+        name = call["name"]
+        query = (call.get("args") or {}).get("query", "")
+        domain = name[len(_TOOL_PREFIX):] if name.startswith(_TOOL_PREFIX) else name
+        cap = SEARCHABLE_CAPABILITIES.get(domain)
+
+        if cap is None:
+            content = f"Tool {name} tidak dikenal."
+            steps.append({"tool": name, "query": query, "n_docs": 0, "error": "unknown_tool"})
+        else:
+            t0 = time.perf_counter()
+            found = cap.invoke(query, k=K_PER_TOOL)
+            t_tools += time.perf_counter() - t0
+            docs.extend(found)
+            content = format_context(found, CAPABILITIES) if found else "Tidak ada hasil."
+            steps.append({"tool": name, "query": query, "n_docs": len(found)})
+
+        new_msgs.append(ToolMessage(content=content, tool_call_id=call["id"]))
+
+    return {**state, "messages": state["messages"] + new_msgs, "documents": docs,
+            "steps": steps, "t_tools": t_tools}
 
 
-def node_retrieve_all(state: AgentState) -> AgentState:
-    """For 'both': fan out across every searchable capability."""
-    t0 = time.perf_counter()
-    docs: List[Document] = []
-    for cap in SEARCHABLE_CAPABILITIES.values():
-        docs.extend(cap.invoke(state["question"], k=4))
-    dt = time.perf_counter() - t0
-    timings = {**(state.get("timings") or {}), "retrieve": dt}
-    return {**state, "documents": docs, "source_used": "both", "timings": timings}
-
-
-def node_skip_retrieve(state: AgentState) -> AgentState:
-    timings = {**(state.get("timings") or {}), "retrieve": 0.0}
-    return {**state, "documents": [], "source_used": "none", "timings": timings}
-
-
-def node_generate(state: AgentState) -> AgentState:
-    t0 = time.perf_counter()
-    q = state["question"]
-    src = state["source_used"]
-    docs = state.get("documents") or []
-    ctx = format_context(docs, CAPABILITIES) if docs else ""
-
-    if src == "both":
-        prompt = PROMPT_COMBINED.format(
-            sources_brief=build_sources_brief(SEARCHABLE_CAPABILITIES),
-            citation_rules=build_citation_rules(SEARCHABLE_CAPABILITIES),
-            context=ctx,
-            question=q,
-        )
-    elif src in SEARCHABLE_CAPABILITIES:
-        prompt = PROMPT_SINGLE.format(
-            source_description=SEARCHABLE_CAPABILITIES[src].description,
-            context=ctx,
-            question=q,
-        )
-    else:  # none
-        prompt = PROMPT_NONE.format(question=q)
-
-    answer = llm.invoke(prompt).content
-    dt = time.perf_counter() - t0
-    timings = {**(state.get("timings") or {}), "generate": dt}
-    return {**state, "answer": answer, "timings": timings}
-
-
-def branch_on_route(state: AgentState) -> str:
-    r = state["route"]
-    if r == "both":
-        return "retrieve_all"
-    if r == "none":
-        return "skip_retrieve"
-    return "retrieve_single"
+def _should_continue(state: AgentState) -> str:
+    last = state["messages"][-1]
+    has_calls = isinstance(last, AIMessage) and bool(last.tool_calls)
+    if has_calls and state["iterations"] < MAX_ITERATIONS:
+        return "tools"
+    return END
 
 
 # ============ Graph ============
 _workflow = StateGraph(AgentState)
-_workflow.add_node("route", node_route)
-_workflow.add_node("retrieve_single", node_retrieve_single)
-_workflow.add_node("retrieve_all", node_retrieve_all)
-_workflow.add_node("skip_retrieve", node_skip_retrieve)
-_workflow.add_node("generate", node_generate)
-
-_workflow.set_entry_point("route")
-_workflow.add_conditional_edges(
-    "route",
-    branch_on_route,
-    {
-        "retrieve_single": "retrieve_single",
-        "retrieve_all": "retrieve_all",
-        "skip_retrieve": "skip_retrieve",
-    },
-)
-for node in ["retrieve_single", "retrieve_all", "skip_retrieve"]:
-    _workflow.add_edge(node, "generate")
-_workflow.add_edge("generate", END)
-
+_workflow.add_node("agent", _node_agent)
+_workflow.add_node("tools", _node_tools)
+_workflow.set_entry_point("agent")
+_workflow.add_conditional_edges("agent", _should_continue, {"tools": "tools", END: END})
+_workflow.add_edge("tools", "agent")
 agentic_app = _workflow.compile()
 
 
-def ask_agentic(question: str, verbose: bool = True) -> Dict[str, Any]:
-    """Run agentic pipeline, return result dict with timings."""
-    initial: AgentState = {
-        "question": question,
-        "route": "none",
-        "route_reason": "",
+def _text(msg: AIMessage) -> str:
+    """Flatten an AIMessage content to plain text.
+
+    With bind_tools, Gemini returns content as a list of blocks (text + a thinking
+    'signature'), not a string. Concatenate the text parts.
+    """
+    c = msg.content
+    if isinstance(c, str):
+        return c
+    if isinstance(c, list):
+        parts = []
+        for b in c:
+            if isinstance(b, str):
+                parts.append(b)
+            elif isinstance(b, dict) and b.get("text"):
+                parts.append(b["text"])
+        return "".join(parts)
+    return str(c)
+
+
+def _dedup(docs: List[Document]) -> List[Document]:
+    seen, out = set(), []
+    for d in docs:
+        key = ((d.metadata or {}).get("_source", ""), d.page_content[:120])
+        if key not in seen:
+            seen.add(key)
+            out.append(d)
+    return out
+
+
+def _source_used(steps: List[Dict[str, Any]]) -> str:
+    domains = []
+    for s in steps:
+        dom = s["tool"][len(_TOOL_PREFIX):] if s["tool"].startswith(_TOOL_PREFIX) else s["tool"]
+        if s.get("n_docs", 0) > 0 and dom not in domains:
+            domains.append(dom)
+    if not domains:
+        return "none"
+    return domains[0] if len(domains) == 1 else "both"
+
+
+def ask_agentic(question: str, verbose: bool = True) -> RagResult:
+    init: AgentState = {
+        "messages": [SystemMessage(_system_prompt(SEARCHABLE_CAPABILITIES)),
+                     HumanMessage(question)],
         "documents": [],
-        "source_used": "",
-        "answer": "",
-        "timings": {},
+        "steps": [],
+        "iterations": 0,
+        "t_agent": 0.0,
+        "t_tools": 0.0,
     }
     t0 = time.perf_counter()
-    result = agentic_app.invoke(initial)
-    result["timings"]["total"] = time.perf_counter() - t0
+    final = agentic_app.invoke(init)
+    total = time.perf_counter() - t0
+
+    answer = ""
+    for msg in reversed(final["messages"]):
+        if isinstance(msg, AIMessage):
+            txt = _text(msg)
+            if txt.strip():
+                answer = txt
+                break
+    if not answer:
+        answer = "Maaf, tidak bisa menyelesaikan jawaban."
+
+    docs = _dedup(final["documents"])
+    source_used = _source_used(final["steps"])
+
+    result = RagResult(
+        question=question,
+        answer=answer,
+        documents=docs,
+        query=question,
+        route=source_used,
+        source_used=source_used,
+        mode="agentic",
+        timings={
+            "route": 0.0,
+            "retrieve": final["t_tools"],
+            "generate": final["t_agent"],
+            "total": total,
+        },
+        meta={"steps": final["steps"], "iterations": final["iterations"]},
+    )
 
     if verbose:
-        t = result["timings"]
         print(f"Q: {question}")
-        print(f"   Route: {result['route']}  ({result['route_reason']})")
+        for i, s in enumerate(final["steps"], 1):
+            print(f"   step {i}: {s['tool']}(query={s['query']!r}) -> {s.get('n_docs', 0)} docs")
+        if not final["steps"]:
+            print("   (no tool calls — skipped retrieval)")
+        t = result.timings
         print(
-            f"   Source used: {result['source_used']}  | docs: {len(result['documents'])}"
+            f"   source_used: {source_used} | iters: {final['iterations']} | docs: {len(docs)}"
         )
         print(
-            f"   Timing — route: {t.get('route', 0):.2f}s | "
-            f"retrieve: {t.get('retrieve', 0):.2f}s | "
-            f"generate: {t.get('generate', 0):.2f}s | "
-            f"TOTAL: {t['total']:.2f}s"
+            f"   Timing — retrieve: {t['retrieve']:.2f}s | "
+            f"generate: {t['generate']:.2f}s | TOTAL: {t['total']:.2f}s"
         )
-        print(
-            f"   Answer: {result['answer'][:400]}"
-            f"{'...' if len(result['answer']) > 400 else ''}\n"
-        )
+        print(f"   Answer: {answer[:400]}{'...' if len(answer) > 400 else ''}\n")
     return result
