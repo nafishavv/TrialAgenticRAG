@@ -13,7 +13,7 @@ the LLM sees as context.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from langchain_core.documents import Document
 
@@ -45,6 +45,23 @@ class Capability(ABC):
         `nama_opd` + `nomor`, Dukcapil shows section + page).
         """
         return f"[{self.name.title()} {idx}]"
+
+    def gold_id(self, doc: Document) -> Optional[str]:
+        """Normalized eval ID for a retrieved doc (e.g. 'dukcapil:page:40'), or None.
+
+        Eval matches these against testset gold_chunks. Override per source so the
+        eval layer never needs source-specific metadata knowledge. Return value MUST
+        be prefixed with `self.name` to match `gold_chunks_to_set()`.
+        """
+        return None
+
+    def citation_hint(self) -> Optional[str]:
+        """One-line instruction telling the LLM how to cite this source in answers.
+
+        Injected into the combined prompt's citation block, derived from the
+        registry. None = no special citation format for this source.
+        """
+        return None
 
     def _tag(self, docs: List[Document]) -> List[Document]:
         """Stamp `metadata._source = self.name` on each doc (idempotent)."""

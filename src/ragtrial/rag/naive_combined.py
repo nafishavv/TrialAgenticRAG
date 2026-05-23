@@ -13,7 +13,11 @@ from langchain_core.documents import Document
 
 from ragtrial.capabilities import CAPABILITIES, SEARCHABLE_CAPABILITIES, format_context
 from ragtrial.llm import llm
-from ragtrial.rag.prompts import PROMPT_COMBINED, build_sources_brief
+from ragtrial.rag.prompts import (
+    PROMPT_COMBINED,
+    build_citation_rules,
+    build_sources_brief,
+)
 
 
 def retrieve_combined(query: str, k_per_source: int = 4) -> List[Document]:
@@ -43,6 +47,7 @@ def ask_main(
     ctx = format_context(docs, CAPABILITIES)
     prompt = PROMPT_COMBINED.format(
         sources_brief=build_sources_brief(SEARCHABLE_CAPABILITIES),
+        citation_rules=build_citation_rules(SEARCHABLE_CAPABILITIES),
         context=ctx,
         question=question,
     )

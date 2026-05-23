@@ -35,6 +35,8 @@ class VectorSourceCapability(Capability):
     fetch_k: int = 10
     weights: tuple[float, float] = (0.5, 0.5)
     header_formatter: Optional[Callable[[Document, int], str]] = None
+    gold_id_fn: Optional[Callable[[Document], Optional[str]]] = None
+    citation: Optional[str] = None
     searchable: bool = True
 
     # Lazy-initialized
@@ -83,3 +85,11 @@ class VectorSourceCapability(Capability):
         if self.header_formatter is not None:
             return self.header_formatter(doc, idx)
         return super().format_header(doc, idx)
+
+    def gold_id(self, doc: Document) -> Optional[str]:
+        if self.gold_id_fn is not None:
+            return self.gold_id_fn(doc)
+        return super().gold_id(doc)
+
+    def citation_hint(self) -> Optional[str]:
+        return self.citation

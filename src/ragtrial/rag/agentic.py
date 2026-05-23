@@ -21,6 +21,7 @@ from ragtrial.rag.prompts import (
     PROMPT_COMBINED,
     PROMPT_NONE,
     PROMPT_SINGLE,
+    build_citation_rules,
     build_router_prompt,
     build_sources_brief,
 )
@@ -103,6 +104,7 @@ def node_generate(state: AgentState) -> AgentState:
     if src == "both":
         prompt = PROMPT_COMBINED.format(
             sources_brief=build_sources_brief(SEARCHABLE_CAPABILITIES),
+            citation_rules=build_citation_rules(SEARCHABLE_CAPABILITIES),
             context=ctx,
             question=q,
         )

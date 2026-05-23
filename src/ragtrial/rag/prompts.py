@@ -13,12 +13,13 @@ PROMPT_COMBINED = """Kamu asisten layanan publik Kab. Batang. Kamu punya akses k
 ATURAN:
 1. Jawab HANYA berdasarkan konteks. Jangan tambah info dari pengetahuan umum.
 2. Pilih sumber yang relevan dengan pertanyaan. Abaikan konteks yang tidak relevan (jangan paksakan dipakai).
-3. Untuk info OPD, sebutkan sumber: [Sumber: <nama_opd>, nomor <nomor>]
-4. Untuk info Dukcapil, sebutkan sumber kalau ada section/halaman di header konteks.
-5. Kalau pertanyaan hanya butuh satu jenis info, jawab langsung TANPA memaksa struktur multi-bagian.
-6. Kalau pertanyaan butuh lebih dari satu sumber, gabungkan secara ringkas.
-7. Kalau informasi tidak ada di konteks manapun, jawab: "Maaf, informasi tidak ditemukan dalam sumber yang tersedia."
-8. Bahasa Indonesia jelas & ringkas.
+3. Kalau pertanyaan hanya butuh satu jenis info, jawab langsung TANPA memaksa struktur multi-bagian.
+4. Kalau pertanyaan butuh lebih dari satu sumber, gabungkan secara ringkas.
+5. Kalau informasi tidak ada di konteks manapun, jawab: "Maaf, informasi tidak ditemukan dalam sumber yang tersedia."
+6. Bahasa Indonesia jelas & ringkas.
+
+CARA SITASI:
+{citation_rules}
 
 KONTEKS:
 {context}
@@ -96,6 +97,20 @@ def build_sources_brief(capabilities: dict) -> str:
     return "\n".join(
         f"- {cap.name.upper()} — {cap.description}" for cap in capabilities.values()
     )
+
+
+def build_citation_rules(capabilities: dict) -> str:
+    """Render per-source citation instructions derived from each capability's hint.
+
+    Replaces the previously hardcoded OPD/Dukcapil rules — adding a source with a
+    `citation` hint extends this block automatically.
+    """
+    lines = [
+        f"- {cap.name.upper()}: {cap.citation_hint()}"
+        for cap in capabilities.values()
+        if cap.citation_hint()
+    ]
+    return "\n".join(lines) if lines else "- (tidak ada format sitasi khusus)"
 
 
 def build_router_prompt(question: str, capabilities: dict) -> str:

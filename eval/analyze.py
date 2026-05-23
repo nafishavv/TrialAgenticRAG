@@ -105,7 +105,7 @@ def print_summary(name: str, s: Dict[str, Any]) -> None:
         for c, m in r["per_class"].items():
             print(f"  {c:9s}  P={m['precision']:.2f}  R={m['recall']:.2f}  F1={m['f1']:.2f}  (n={m['support']})")
         print("  Confusion matrix (rows=gold, cols=pred):")
-        labels = ["dukcapil", "opd", "both", "none"]
+        labels = list(r["confusion_matrix"].keys())
         print("           " + "  ".join(f"{l:>9}" for l in labels))
         for g in labels:
             row = "  ".join(f"{r['confusion_matrix'][g][p]:>9d}" for p in labels)

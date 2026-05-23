@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional
 
 from langchain_core.documents import Document
 
+from ragtrial.capabilities import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import make_judge_llm
 
 # ---------- LLM judge setup ----------
@@ -28,20 +29,17 @@ _judge_llm = make_judge_llm(temperature=0.0, max_tokens=256)
 def doc_to_gold_id(doc: Document) -> Optional[str]:
     """Convert a retrieved Document into a normalized gold-ID string.
 
-    Returns e.g. "dukcapil:page:40" or "opd:nomor:1.a".
-    Returns None if doc cannot be normalized (e.g. narrative dukcapil chunk
-    without page metadata, or unknown source).
+    Delegates to the owning capability's `gold_id()` (resolved via the `_source`
+    tag), so eval carries zero source-specific metadata knowledge. Falls back to
+    probing every capability when `_source` is absent.
     """
-    m = doc.metadata or {}
-    # OPD: ada metadata 'nomor'
-    if "nomor" in m and m.get("doc_type") == "opd_directory":
-        return f"opd:nomor:{m['nomor']}"
-    # Dukcapil Q&A: ada page_start
-    if "page_start" in m:
-        return f"dukcapil:page:{m['page_start']}"
-    # Dukcapil narrative chunk fallback: pakai 'page'
-    if m.get("section") and "page" in m:
-        return f"dukcapil:page:{m['page']}"
+    src = (doc.metadata or {}).get("_source")
+    if src and src in CAPABILITIES:
+        return CAPABILITIES[src].gold_id(doc)
+    for cap in CAPABILITIES.values():
+        gid = cap.gold_id(doc)
+        if gid is not None:
+            return gid
     return None
 
 
@@ -105,12 +103,22 @@ def mrr(retrieved_ids: List[str], gold_ids: set[str], k: int = 10) -> float:
 # ============================================================
 # 3. ROUTING METRICS
 # ============================================================
-def routing_eval(predictions: List[str], gold: List[str]) -> Dict[str, Any]:
+def routing_labels() -> List[str]:
+    """Routing label space, derived from the registry: searchable caps + both/none."""
+    return list(SEARCHABLE_CAPABILITIES.keys()) + ["both", "none"]
+
+
+def routing_eval(
+    predictions: List[str],
+    gold: List[str],
+    labels: Optional[List[str]] = None,
+) -> Dict[str, Any]:
     """Compute confusion matrix + per-class P/R/F1 + overall accuracy.
 
-    predictions[i], gold[i] in {"dukcapil","opd","both","none"}.
+    `labels` defaults to the registry-derived routing label space.
     """
-    labels = ["dukcapil", "opd", "both", "none"]
+    if labels is None:
+        labels = routing_labels()
     cm = {g: {p: 0 for p in labels} for g in labels}
     for p, g in zip(predictions, gold):
         if g in labels and p in labels:

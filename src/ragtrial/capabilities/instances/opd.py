@@ -17,6 +17,13 @@ def _header(doc: Document, idx: int) -> str:
     )
 
 
+def _gold_id(doc: Document) -> str | None:
+    m = doc.metadata or {}
+    if "nomor" in m and m.get("doc_type") == "opd_directory":
+        return f"opd:nomor:{m['nomor']}"
+    return None
+
+
 opd_capability = VectorSourceCapability(
     name="opd",
     description=(
@@ -31,4 +38,6 @@ opd_capability = VectorSourceCapability(
     ],
     strategy="hybrid",
     header_formatter=_header,
+    gold_id_fn=_gold_id,
+    citation="sebutkan [Sumber: <nama_opd>, nomor <nomor>].",
 )

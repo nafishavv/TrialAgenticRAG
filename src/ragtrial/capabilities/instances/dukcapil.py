@@ -15,6 +15,15 @@ def _header(doc: Document, idx: int) -> str:
     return f"[Dukcapil {idx}: section={section}, hal={page}]"
 
 
+def _gold_id(doc: Document) -> str | None:
+    m = doc.metadata or {}
+    if "page_start" in m:
+        return f"dukcapil:page:{m['page_start']}"
+    if m.get("section") and "page" in m:
+        return f"dukcapil:page:{m['page']}"
+    return None
+
+
 dukcapil_capability = VectorSourceCapability(
     name="dukcapil",
     description=(
@@ -30,4 +39,6 @@ dukcapil_capability = VectorSourceCapability(
     ],
     strategy="hybrid",
     header_formatter=_header,
+    gold_id_fn=_gold_id,
+    citation="sebutkan section/halaman kalau ada di header konteks.",
 )
