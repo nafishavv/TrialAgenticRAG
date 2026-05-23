@@ -29,6 +29,17 @@ PERTANYAAN: {question}
 JAWABAN:"""
 
 
+PROMPT_NAIVE = """Kamu asisten layanan publik Kab. Batang. Jawab pertanyaan HANYA berdasarkan KONTEKS di bawah.
+Kalau jawabannya tidak ada di konteks, bilang "Maaf, informasi tidak ditemukan." Bahasa Indonesia ringkas.
+
+KONTEKS:
+{context}
+
+PERTANYAAN: {question}
+
+JAWABAN:"""
+
+
 PROMPT_SINGLE = """Kamu asisten layanan publik Kab. Batang.
 Sumber yang dipakai: {source_description}
 

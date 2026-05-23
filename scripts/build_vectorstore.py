@@ -4,6 +4,7 @@ Usage:
     uv run python scripts/build_vectorstore.py --source dukcapil
     uv run python scripts/build_vectorstore.py --source opd
     uv run python scripts/build_vectorstore.py --source all
+    uv run python scripts/build_vectorstore.py --source unified  # copy per-domain vectors -> _unified (no re-embed)
 """
 
 from __future__ import annotations
@@ -39,15 +40,28 @@ def run_one(name: str, no_wipe: bool) -> None:
     )
 
 
+def run_unified() -> None:
+    """Build the unified naive-RAG collection by copying per-domain vectors."""
+    from ragtrial.capabilities.registry import SEARCHABLE_CAPABILITIES
+    from ragtrial.vectorstore.unified import build_unified
+
+    print("=== Building unified collection (copy vectors, no re-embed) ===")
+    build_unified(SEARCHABLE_CAPABILITIES)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--source", choices=list(SOURCES) + ["all"], required=True)
+    ap.add_argument("--source", choices=list(SOURCES) + ["all", "unified"], required=True)
     ap.add_argument(
         "--no-wipe",
         action="store_true",
         help="Do not wipe existing vector store before building (append mode)",
     )
     args = ap.parse_args()
+
+    if args.source == "unified":
+        run_unified()
+        return
 
     names = list(SOURCES) if args.source == "all" else [args.source]
     for name in names:
