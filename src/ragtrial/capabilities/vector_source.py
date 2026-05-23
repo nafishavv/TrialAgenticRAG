@@ -44,22 +44,19 @@ class VectorSourceCapability(Capability):
     _retriever: Optional[object] = field(default=None, init=False, repr=False)
     _all_docs: Optional[List[Document]] = field(default=None, init=False, repr=False)
 
-    def _ensure_initialized(self) -> None:
-        if self._vectorstore is not None:
-            return
-        self._vectorstore = Chroma(
-            collection_name=self.collection_name,
-            embedding_function=embeddings,
-            persist_directory=str(self.persist_directory),
-        )
-
-        if self.strategy == "dense":
-            self._retriever = self._vectorstore.as_retriever(
-                search_kwargs={"k": self.fetch_k}
+    def _ensure_vs(self) -> None:
+        if self._vectorstore is None:
+            self._vectorstore = Chroma(
+                collection_name=self.collection_name,
+                embedding_function=embeddings,
+                persist_directory=str(self.persist_directory),
             )
-            return
 
-        # hybrid: materialize all docs for BM25
+    def _ensure_hybrid(self) -> None:
+        """Lazily build the BM25+dense ensemble (materializes all docs for BM25)."""
+        self._ensure_vs()
+        if self._retriever is not None:
+            return
         raw = self._vectorstore.get()
         self._all_docs = [
             Document(page_content=doc, metadata=meta)
@@ -73,11 +70,17 @@ class VectorSourceCapability(Capability):
             weights=list(self.weights),
         )
 
-    def invoke(self, query: str, k: int = 5) -> List[Document]:
-        self._ensure_initialized()
-        if self.strategy == "dense":
+    def invoke(
+        self, query: str, k: int = 5, strategy: Optional[Strategy] = None, **kwargs
+    ) -> List[Document]:
+        """Retrieve top-k. `strategy` overrides the configured default per call
+        (enhanced RAG uses `dense`; the capability default may be `hybrid`)."""
+        effective = strategy or self.strategy
+        self._ensure_vs()
+        if effective == "dense":
             docs = self._vectorstore.similarity_search(query, k=k)
         else:
+            self._ensure_hybrid()
             docs = self._retriever.invoke(query)[:k]
         return self._tag(docs)
 

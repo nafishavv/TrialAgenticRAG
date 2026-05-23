@@ -34,8 +34,12 @@ class Capability(ABC):
     """If True, naive-combined RAG includes this in the union-retrieve fan-out."""
 
     @abstractmethod
-    def invoke(self, query: str, k: int = 5) -> List[Document]:
-        """Run the capability, return top-k Documents tagged with `_source`."""
+    def invoke(self, query: str, k: int = 5, **kwargs) -> List[Document]:
+        """Run the capability, return top-k Documents tagged with `_source`.
+
+        `**kwargs` lets specific capabilities accept extra knobs (e.g. a vector
+        source's `strategy="dense"|"hybrid"`) while tools ignore them.
+        """
         ...
 
     def format_header(self, doc: Document, idx: int) -> str:
