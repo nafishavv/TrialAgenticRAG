@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional
 
 from langchain_core.documents import Document
 
-from ragtrial.capabilities import CAPABILITIES, SEARCHABLE_CAPABILITIES
+from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import make_judge_llm
 
 # ---------- LLM judge setup ----------

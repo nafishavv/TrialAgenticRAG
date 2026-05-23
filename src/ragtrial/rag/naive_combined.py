@@ -11,7 +11,8 @@ from typing import Any, Dict, List
 
 from langchain_core.documents import Document
 
-from ragtrial.capabilities import CAPABILITIES, SEARCHABLE_CAPABILITIES, format_context
+from ragtrial.capabilities import format_context
+from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import llm
 from ragtrial.rag.prompts import (
     PROMPT_COMBINED,

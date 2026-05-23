@@ -17,8 +17,13 @@ RAW_DIR: Path = DATA_DIR / "raw"
 PROCESSED_DIR: Path = DATA_DIR / "processed"
 VECTOR_STORE_DIR: Path = DATA_DIR / "vector_stores"
 
-DUKCAPIL_RAW_PDF: Path = RAW_DIR / "dukcapil" / "Buku-Saku-Dafduk-Capil-2023.pdf"
-OPD_RAW_PDF: Path = RAW_DIR / "opd" / "Nama dan Alamat OPD Kab Batang.pdf"
+# Per-domain raw directories — a domain may hold many files / nested folders.
+DUKCAPIL_RAW_DIR: Path = RAW_DIR / "dukcapil"
+OPD_RAW_DIR: Path = RAW_DIR / "opd"
+
+# Legacy single-file pointers (kept for reference; ingestion now walks the dir).
+DUKCAPIL_RAW_PDF: Path = DUKCAPIL_RAW_DIR / "Buku-Saku-Dafduk-Capil-2023.pdf"
+OPD_RAW_PDF: Path = OPD_RAW_DIR / "Nama dan Alamat OPD Kab Batang.pdf"
 
 DUKCAPIL_PROCESSED_PKL: Path = PROCESSED_DIR / "dukcapil.pkl"
 OPD_PROCESSED_PKL: Path = PROCESSED_DIR / "opd.pkl"

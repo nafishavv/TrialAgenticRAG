@@ -1,4 +1,6 @@
-"""Preprocess raw PDFs into cleaned Documents (pickle + json).
+"""Preprocess raw files into cleaned Documents (pickle + json).
+
+Walks each domain's raw dir (multi-file aware) via its Source.build_documents().
 
 Usage:
     uv run python scripts/preprocess.py --source dukcapil
@@ -10,44 +12,31 @@ from __future__ import annotations
 
 import argparse
 
-from ragtrial.config import (
-    DUKCAPIL_PROCESSED_PKL,
-    DUKCAPIL_RAW_PDF,
-    OPD_PROCESSED_PKL,
-    OPD_RAW_PDF,
-)
-from ragtrial.preprocessing import save_docs
-from ragtrial.preprocessing.dukcapil import preprocess as preprocess_dukcapil
-from ragtrial.preprocessing.opd import preprocess as preprocess_opd
-
-PIPELINES = {
-    "dukcapil": (preprocess_dukcapil, DUKCAPIL_RAW_PDF, DUKCAPIL_PROCESSED_PKL),
-    "opd": (preprocess_opd, OPD_RAW_PDF, OPD_PROCESSED_PKL),
-}
+from ragtrial.sources import SOURCES, save_docs
 
 
-def run_one(source: str) -> None:
-    fn, raw_pdf, out_pkl = PIPELINES[source]
-    print(f"=== Preprocessing: {source} ===")
-    print(f"  Input : {raw_pdf}")
-    docs = fn(raw_pdf)
+def run_one(name: str) -> None:
+    src = SOURCES[name]
+    print(f"=== Preprocessing: {name} ===")
+    print(f"  Raw dir : {src.raw_dir}")
+    docs = src.build_documents()
     print(f"  Cleaned {len(docs)} docs")
-    save_docs(docs, out_pkl.with_suffix(""))
+    save_docs(docs, src.processed_pkl.with_suffix(""))
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument(
         "--source",
-        choices=list(PIPELINES) + ["all"],
+        choices=list(SOURCES) + ["all"],
         required=True,
-        help="Source to preprocess",
+        help="Domain to preprocess",
     )
     args = ap.parse_args()
 
-    sources = list(PIPELINES) if args.source == "all" else [args.source]
-    for src in sources:
-        run_one(src)
+    names = list(SOURCES) if args.source == "all" else [args.source]
+    for name in names:
+        run_one(name)
 
 
 if __name__ == "__main__":

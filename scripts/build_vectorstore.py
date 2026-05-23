@@ -1,4 +1,4 @@
-"""Build a Chroma vector store for a source: load processed pkl -> chunk -> embed -> persist.
+"""Build a Chroma vector store for a domain: load processed pkl -> chunk -> embed -> persist.
 
 Usage:
     uv run python scripts/build_vectorstore.py --source dukcapil
@@ -12,31 +12,23 @@ import argparse
 import pickle
 from pathlib import Path
 
-from ragtrial.capabilities.instances.dukcapil import dukcapil_capability
-from ragtrial.capabilities.instances.opd import opd_capability
-from ragtrial.chunking import dukcapil as chunk_dukcapil
-from ragtrial.chunking import opd as chunk_opd
-from ragtrial.config import DUKCAPIL_PROCESSED_PKL, OPD_PROCESSED_PKL
+from ragtrial.sources import SOURCES
 from ragtrial.vectorstore.builder import build_vectorstore
 
-PIPELINES = {
-    "dukcapil": (dukcapil_capability, chunk_dukcapil.chunk_for_vectorstore, DUKCAPIL_PROCESSED_PKL),
-    "opd": (opd_capability, chunk_opd.chunk_for_vectorstore, OPD_PROCESSED_PKL),
-}
 
-
-def run_one(source: str, no_wipe: bool) -> None:
-    cap, chunker, pkl_path = PIPELINES[source]
-    print(f"=== Building vector store: {source} ===")
-    print(f"  Processed pkl  : {pkl_path}")
+def run_one(name: str, no_wipe: bool) -> None:
+    src = SOURCES[name]
+    cap = src.capability
+    print(f"=== Building vector store: {name} ===")
+    print(f"  Processed pkl  : {src.processed_pkl}")
     print(f"  Collection     : {cap.collection_name}")
     print(f"  Persist dir    : {cap.persist_directory}")
 
-    with open(pkl_path, "rb") as f:
+    with open(src.processed_pkl, "rb") as f:
         docs = pickle.load(f)
     print(f"  Loaded {len(docs)} cleaned docs")
 
-    chunks = chunker(docs)
+    chunks = src.chunk(docs)
     print(f"  After chunking : {len(chunks)} chunks")
 
     build_vectorstore(
@@ -49,7 +41,7 @@ def run_one(source: str, no_wipe: bool) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--source", choices=list(PIPELINES) + ["all"], required=True)
+    ap.add_argument("--source", choices=list(SOURCES) + ["all"], required=True)
     ap.add_argument(
         "--no-wipe",
         action="store_true",
@@ -57,9 +49,9 @@ def main() -> None:
     )
     args = ap.parse_args()
 
-    sources = list(PIPELINES) if args.source == "all" else [args.source]
-    for src in sources:
-        run_one(src, args.no_wipe)
+    names = list(SOURCES) if args.source == "all" else [args.source]
+    for name in names:
+        run_one(name, args.no_wipe)
 
 
 if __name__ == "__main__":
