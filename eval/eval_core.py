@@ -146,6 +146,21 @@ def routing_eval(
     }
 
 
+def intent_eval(predictions: List[str], gold: List[str]) -> Dict[str, Any]:
+    """Binary intent-handling metric (paper: VALID vs INVALID retrieval decision).
+
+    Same confusion-matrix + per-class P/R/F1 shape as routing_eval, fixed to the
+    2-class label space. The headline number per the reference paper is recall on
+    INVALID (did the system correctly avoid retrieval?) and macro-F1.
+    """
+    res = routing_eval(predictions, gold, labels=["valid", "invalid"])
+    pc = res["per_class"]
+    res["macro_f1"] = (pc["valid"]["f1"] + pc["invalid"]["f1"]) / 2
+    res["recall_invalid"] = pc["invalid"]["recall"]
+    res["recall_valid"] = pc["valid"]["recall"]
+    return res
+
+
 # ============================================================
 # 4. LLM-AS-JUDGE
 # ============================================================

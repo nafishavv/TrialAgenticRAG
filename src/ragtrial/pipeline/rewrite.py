@@ -38,6 +38,9 @@ class HyDERewriter(Stage):
         self.llm = llm or default_llm
 
     def run(self, state: RagState) -> RagState:
+        if state.intent == "invalid":
+            # No retrieval will happen — skip the HyDE LLM call entirely.
+            return state
         passage = self.llm.invoke(PROMPT_HYDE.format(question=state.question)).content
         state.meta["original_query"] = state.question
         state.meta["hyde_passage"] = passage

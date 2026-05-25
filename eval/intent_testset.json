@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "version": "0.2",
+    "description": "Intent-handling test set (VALID vs INVALID retrieval decision) untuk chatbot layanan publik Kab. Batang. Balanced 50/50. VALID dibatasi pada domain yang DATANYA ADA di KB (kependudukan/dukcapil + direktori OPD) agar perbandingan antar tier adil (perizinan/pajak/hukum belum dimuat → tidak diuji). Query SENGAJA dibedakan dari example utterances router (pipeline/intent.py) agar bukan sekadar menghafal.",
+    "balance": "20 valid (10 kependudukan + 10 OPD direktori) / 20 invalid (10 chitchat + 10 out-of-scope)",
+    "fields": {
+      "expected_intent": "valid | invalid",
+      "invalid_subtype": "chitchat | oos (hanya untuk invalid)",
+      "category": "kependudukan | opd (hanya untuk valid)"
+    }
+  },
+  "questions": [
+    {"id": "V01", "question": "bagaimana penerbitan KTP elektronik pertama kali bagi WNI?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V02", "question": "apa syarat membuat akta kelahiran?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V03", "question": "cara mengganti KTP elektronik yang hilang?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V04", "question": "apa syarat pindah datang penduduk antar kabupaten?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V05", "question": "bagaimana mengurus akta kematian?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V06", "question": "prosedur mencetak ulang kartu keluarga yang rusak?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V07", "question": "bagaimana cara mengurus surat keterangan pindah?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V08", "question": "apa syarat perekaman KTP elektronik?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V09", "question": "bagaimana cara mengurus kartu identitas anak (KIA)?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V10", "question": "dokumen apa saja untuk membuat kartu keluarga baru?", "expected_intent": "valid", "category": "kependudukan", "notes": ""},
+    {"id": "V11", "question": "di mana alamat kantor Disdukcapil Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V12", "question": "berapa nomor telepon dinas kesehatan Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V13", "question": "di mana alamat dinas pendidikan dan kebudayaan Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V14", "question": "di mana lokasi kantor Bappeda Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V15", "question": "berapa kontak dinas sosial Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V16", "question": "di mana alamat dinas perhubungan Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V17", "question": "di mana kantor Satpol PP Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V18", "question": "berapa nomor kontak dinas pertanian Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V19", "question": "di mana alamat dinas lingkungan hidup Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+    {"id": "V20", "question": "di mana alamat kantor kecamatan di Kabupaten Batang?", "expected_intent": "valid", "category": "opd", "notes": ""},
+
+    {"id": "I01", "question": "hai bot", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "sapaan"},
+    {"id": "I02", "question": "selamat siang", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "sapaan"},
+    {"id": "I03", "question": "kamu siapa sih?", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "identitas"},
+    {"id": "I04", "question": "kamu bisa ngapain aja?", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "metadata layanan"},
+    {"id": "I05", "question": "sebenarnya fungsi kamu apa?", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "metadata layanan"},
+    {"id": "I06", "question": "makasih banyak ya", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "penutup"},
+    {"id": "I07", "question": "oke terima kasih infonya", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "penutup"},
+    {"id": "I08", "question": "halo apa kabar?", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "sapaan"},
+    {"id": "I09", "question": "selamat pagi bot", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "sapaan"},
+    {"id": "I10", "question": "kamu chatbot apa ya?", "expected_intent": "invalid", "invalid_subtype": "chitchat", "notes": "identitas"},
+    {"id": "I11", "question": "berapa harga emas hari ini?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I12", "question": "siapa gubernur Jawa Tengah sekarang?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I13", "question": "bagaimana cara membuat kue brownies?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I14", "question": "rekomendasi tempat wisata di Bali dong", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I15", "question": "berapa nilai tukar dolar hari ini?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I16", "question": "bagaimana cara investasi saham untuk pemula?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I17", "question": "siapa pemain sepak bola terbaik di dunia?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I18", "question": "kapan gerhana bulan berikutnya terjadi?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I19", "question": "tips menurunkan berat badan dengan cepat?", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"},
+    {"id": "I20", "question": "tolong tuliskan lirik lagu Indonesia Raya", "expected_intent": "invalid", "invalid_subtype": "oos", "notes": "di luar layanan"}
+  ]
+}

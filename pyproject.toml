@@ -22,6 +22,8 @@ dependencies = [
     "rank-bm25>=0.2.2",
     "sentence-transformers>=5.2.3",
     "pdfplumber>=0.11.9",
+    "streamlit>=1.40",
+    "semantic-router>=0.1.15",
 ]
 
 [dependency-groups]

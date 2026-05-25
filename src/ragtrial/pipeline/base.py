@@ -33,6 +33,8 @@ class RagState:
     """Effective query (rewriter sets this; defaults to question)."""
     route: Optional[str] = None
     """Router decision: capability name, 'both', 'none', or None (= use all)."""
+    intent: Optional[str] = None
+    """Intent gate decision: 'valid' (retrieve) | 'invalid' (answer directly) | None (no gate)."""
     documents: List[Document] = field(default_factory=list)
     answer: str = ""
     timings: Dict[str, float] = field(default_factory=dict)

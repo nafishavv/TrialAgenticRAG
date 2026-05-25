@@ -17,10 +17,12 @@ from ragtrial.llm import llm as default_llm
 from ragtrial.pipeline.base import RagState, Stage
 from ragtrial.rag.prompts import (
     PROMPT_COMBINED,
+    PROMPT_INVALID,
     PROMPT_NONE,
     PROMPT_SINGLE,
     build_citation_rules,
     build_sources_brief,
+    service_categories_block,
 )
 
 
@@ -40,7 +42,13 @@ class GenerateStage(Stage):
         docs = state.documents or []
         route = state.route
 
-        if not docs or route == "none":
+        if state.intent == "invalid":
+            # Intent gate skipped retrieval — one smart prompt handles chit-chat
+            # (friendly identity + categories) vs out-of-scope (polite refusal).
+            prompt = PROMPT_INVALID.format(
+                categories=service_categories_block(), question=q
+            )
+        elif not docs or route == "none":
             prompt = PROMPT_NONE.format(question=q)
         elif route in self.caps:
             prompt = PROMPT_SINGLE.format(

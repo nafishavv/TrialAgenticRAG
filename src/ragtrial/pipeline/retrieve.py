@@ -41,6 +41,10 @@ class RetrieveStage(Stage):
         """top-k per capability when fanning out."""
 
     def run(self, state: RagState) -> RagState:
+        if state.intent == "invalid":
+            # Intent gate decided no retrieval — answer directly downstream.
+            state.documents = []
+            return state
         route = state.route
         if route == "none":
             state.documents = []

@@ -96,6 +96,46 @@ PERTANYAAN: {question}
 JAWABAN:"""
 
 
+# Kategori layanan publik yang ditangani chatbot. Dipakai bersama oleh gate intent
+# (PROMPT_INVALID) dan agentic system prompt agar pesan identitas/penolakan konsisten.
+SERVICE_CATEGORIES: list[str] = [
+    "Perizinan",
+    "Kependudukan",
+    "Pajak Daerah",
+    "Hukum & Peraturan",
+    "Informasi & Komunikasi",
+]
+
+
+def service_categories_block() -> str:
+    """Render kategori layanan sebagai bullet list untuk prompt."""
+    return "\n".join(f"- {c}" for c in SERVICE_CATEGORIES)
+
+
+# Dipakai untuk query INVALID (gate intent skip retrieval). SATU prompt menangani
+# dua kasus sekaligus — LLM yang membedakan chit-chat/identitas vs out-of-scope.
+PROMPT_INVALID = """Kamu adalah asisten chatbot layanan publik Kabupaten Batang.
+
+Kamu siap membantu dengan informasi tentang:
+{categories}
+
+Pertanyaan berikut TIDAK membutuhkan pencarian dokumen. Tanggapi sesuai jenisnya:
+
+- Jika user menyapa, berkenalan, atau bertanya soal identitasmu / layanan apa yang kamu tawarkan:
+  jelaskan secara singkat bahwa kamu chatbot khusus layanan publik Kabupaten Batang,
+  sebutkan kategori layanan di atas, lalu tawarkan bantuan dengan ramah.
+- Jika user bertanya soal hal di luar layanan publik (mis. harga barang, tokoh nasional,
+  resep, topik umum lain): tolak dengan sopan, katakan
+  "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.",
+  lalu arahkan kembali ke kategori layanan di atas.
+
+Gunakan Bahasa Indonesia yang sopan dan formal. Ringkas, jangan mengarang informasi layanan.
+
+PERTANYAAN: {question}
+
+JAWABAN:"""
+
+
 ROUTER_PROMPT = """Kamu adalah router untuk chatbot layanan publik Kab. Batang.
 Tugasmu: klasifikasi pertanyaan user ke SATU dari kategori berikut.
 

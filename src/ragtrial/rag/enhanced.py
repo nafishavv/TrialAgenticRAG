@@ -24,11 +24,13 @@ from typing import List, Optional
 from langchain_core.documents import Document
 
 from ragtrial.pipeline import GenerateStage, Pipeline, RERANKERS, ROUTERS, REWRITERS, RetrieveStage
+from ragtrial.pipeline.intent import INTENT_GATES
 from ragtrial.result import RagResult
 
 
 @dataclass
 class EnhancedRAGConfig:
+    intent: str = "semantic"        # none | semantic (VALID/INVALID gate — user intent handling)
     rewriter: str = "hyde"          # passthrough | hyde | multiquery*
     router: str = "semantic"        # none | semantic | llm
     retrieval: str = "dense"        # dense | hybrid
@@ -38,9 +40,10 @@ class EnhancedRAGConfig:
     rerank_top_n: Optional[int] = None
 
 
-# Presets. Default = canonical enhanced (HyDE + semantic + dense). Reranker deferred.
+# Presets. Default = canonical enhanced (intent gate + HyDE + semantic + dense). Reranker deferred.
 PRESETS: dict[str, EnhancedRAGConfig] = {
     "default": EnhancedRAGConfig(),
+    "no_intent": EnhancedRAGConfig(intent="none"),                               # ablation: intent gate off
     "no_hyde": EnhancedRAGConfig(rewriter="passthrough"),                         # ablation: HyDE off
     "fanout_hybrid": EnhancedRAGConfig(router="none", retrieval="hybrid"),       # ~ old naive_combined
     "llm_router_hybrid": EnhancedRAGConfig(router="llm", retrieval="hybrid"),    # ~ old static agentic
@@ -107,9 +110,14 @@ def build_enhanced(config: Optional[EnhancedRAGConfig] = None) -> EnhancedRAG:
         rerank_cls(top_n=cfg.rerank_top_n) if cfg.rerank_top_n is not None else rerank_cls()
     )
 
+    # intent gate FIRST (decide retrieve-or-not on the original question), then
     # route BEFORE rewrite: the router must classify the original question, not a
     # fabricated HyDE passage. Rewrite then reshapes the query for retrieval only.
-    stages = [
+    stages = []
+    intent_cls = INTENT_GATES[cfg.intent]
+    if intent_cls is not None:
+        stages.append(intent_cls())
+    stages += [
         ROUTERS[cfg.router](),
         REWRITERS[cfg.rewriter](),
         RetrieveStage(strategy=cfg.retrieval, k=cfg.k, k_per_source=cfg.k_per_source),

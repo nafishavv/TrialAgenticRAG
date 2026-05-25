@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from ragtrial.pipeline.base import Pipeline, RagState, Stage
 from ragtrial.pipeline.generate import GenerateStage
+from ragtrial.pipeline.intent import INTENT_GATES, IntentStage
 from ragtrial.pipeline.rerank import RERANKERS
 from ragtrial.pipeline.retrieve import RetrieveStage
 from ragtrial.pipeline.rewrite import REWRITERS
@@ -28,6 +29,8 @@ __all__ = [
     "REWRITERS",
     "ROUTERS",
     "RERANKERS",
+    "INTENT_GATES",
+    "IntentStage",
     "RetrieveStage",
     "GenerateStage",
 ]

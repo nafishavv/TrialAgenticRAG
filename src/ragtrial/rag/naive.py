@@ -66,6 +66,8 @@ def ask_naive(question: str, k: int = 8, verbose: bool = True) -> RagResult:
             "generate": t_generate,
             "total": time.perf_counter() - t0,
         },
+        # No intent handling — naive always retrieves (baseline/control group).
+        meta={"intent": "valid"},
     )
 
     if verbose:

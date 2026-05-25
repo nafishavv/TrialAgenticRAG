@@ -36,6 +36,7 @@ from typing_extensions import TypedDict
 from ragtrial.capabilities import format_context
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import llm
+from ragtrial.rag.prompts import service_categories_block
 from ragtrial.result import RagResult
 
 MAX_ITERATIONS = 5
@@ -73,15 +74,25 @@ def _system_prompt(capabilities) -> str:
         f"- {_TOOL_PREFIX}{name}: {cap.description}" for name, cap in capabilities.items()
     )
     return (
-        "Kamu asisten layanan publik Kab. Batang. Kamu punya tools pencarian per domain:\n"
+        "Kamu asisten layanan publik Kabupaten Batang. Kamu siap membantu soal:\n"
+        f"{service_categories_block()}\n\n"
+        "Kamu punya tools pencarian per domain:\n"
         f"{tool_lines}\n\n"
-        "CARA KERJA:\n"
-        "1. Putuskan sendiri domain mana yang relevan, lalu panggil tool-nya. Boleh lebih dari satu.\n"
-        "2. Kalau hasil kurang relevan, kamu boleh memanggil tool lagi dengan query yang ditulis ulang.\n"
-        "3. Kalau pertanyaan di luar cakupan semua domain, JANGAN panggil tool apa pun — langsung tolak dengan sopan.\n"
-        "4. Jawab HANYA berdasarkan hasil tool. Jangan menambah info dari pengetahuan umum.\n"
-        "5. Kalau info tidak ditemukan, katakan: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
-        "6. Bahasa Indonesia jelas & ringkas. Sebutkan sumbernya kalau relevan."
+        "USER INTENT — putuskan SENDIRI apakah perlu mencari (retrieval) atau tidak:\n"
+        "1. Pertanyaan layanan publik (perizinan, kependudukan, pajak, hukum, kontak/alamat dinas, dll)\n"
+        "   → SELALU panggil tool yang relevan dulu (boleh lebih dari satu), WALAU kamu ragu datanya\n"
+        "   tersedia — jangan menebak cakupan sendiri, biar hasil tool yang menentukan. Untuk jawaban\n"
+        "   FAKTUAL layanan, jawab HANYA berdasarkan hasil tool — jangan mengarang dari pengetahuan umum.\n"
+        "   Kalau hasil kurang relevan, boleh panggil tool lagi dengan query yang ditulis ulang.\n"
+        "   Kalau setelah dicari info tidak ada: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
+        "2. Sapaan / pertanyaan soal identitasmu / layanan apa yang kamu tawarkan (mis. \"halo\",\n"
+        "   \"siapa kamu?\", \"bisa bantu apa?\") → JANGAN panggil tool. Jawab langsung dengan ramah:\n"
+        "   jelaskan kamu chatbot layanan publik Kab. Batang, sebutkan kategori layanan di atas,\n"
+        "   lalu tawarkan bantuan.\n"
+        "3. Pertanyaan di luar layanan publik (mis. harga barang, tokoh nasional, resep, topik umum)\n"
+        "   → JANGAN panggil tool. Tolak dengan sopan: \"Maaf, saya hanya bisa membantu dengan\n"
+        "   informasi layanan publik Kabupaten Batang.\", lalu arahkan ke kategori layanan.\n"
+        "4. Bahasa Indonesia sopan, jelas & ringkas. Sebutkan sumber kalau relevan."
     )
 
 
@@ -238,7 +249,12 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
             "generate": final["t_agent"],
             "total": total,
         },
-        meta={"steps": final["steps"], "iterations": final["iterations"]},
+        meta={
+            "steps": final["steps"],
+            "iterations": final["iterations"],
+            # Agent's implicit intent decision: called a tool = needed retrieval.
+            "intent": "valid" if final["steps"] else "invalid",
+        },
     )
 
     if verbose:
