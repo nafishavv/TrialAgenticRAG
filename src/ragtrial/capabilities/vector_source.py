@@ -84,6 +84,13 @@ class VectorSourceCapability(Capability):
             docs = self._retriever.invoke(query)[:k]
         return self._tag(docs)
 
+    def search_with_scores(self, query: str, k: int = 5) -> List[tuple[Document, float]]:
+        """Dense top-k with distance scores (lower = closer). Used by naive RAG to
+        merge a global top-k across collections without a pre-copied unified store."""
+        self._ensure_vs()
+        pairs = self._vectorstore.similarity_search_with_score(query, k=k)
+        return [(self._tag([d])[0], float(s)) for d, s in pairs]
+
     def format_header(self, doc: Document, idx: int) -> str:
         if self.header_formatter is not None:
             return self.header_formatter(doc, idx)

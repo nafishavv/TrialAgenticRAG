@@ -31,11 +31,6 @@ OPD_PROCESSED_PKL: Path = PROCESSED_DIR / "opd.pkl"
 DUKCAPIL_VECTOR_STORE: Path = VECTOR_STORE_DIR / "dukcapil"
 OPD_VECTOR_STORE: Path = VECTOR_STORE_DIR / "opd"
 
-# Unified collection for naive RAG — all domains in one store (built by copying
-# vectors from the per-domain stores, no re-embed).
-UNIFIED_VECTOR_STORE: Path = VECTOR_STORE_DIR / "_unified"
-UNIFIED_COLLECTION: str = "unified"
-
 
 def load_env() -> str:
     """Load .env from project root, return resolved Gemini API key."""

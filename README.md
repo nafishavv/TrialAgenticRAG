@@ -45,10 +45,9 @@ uv run python scripts/ask.py "Urus pindah domisili, ke dinas mana?" --mode agent
 # Chat multi-turn (pilih mode juga)
 uv run python scripts/ask.py --chat --mode enhanced
 
-# Pipeline data: preprocess → build store → refresh unified (untuk naive)
+# Pipeline data: preprocess → build store per domain
 uv run python scripts/preprocess.py --source all
 uv run python scripts/build_vectorstore.py --source all
-uv run python scripts/build_vectorstore.py --source unified
 
 # UI
 uv run streamlit run app.py
@@ -86,12 +85,12 @@ src/ragtrial/
 ├── capabilities/             # Capability ABC + VectorSourceCapability + registry
 ├── sources/<domain>/         # co-located: preprocess + chunk + capability per domain
 ├── pipeline/                 # stage komposabel enhanced (rewrite/route/retrieve/rerank/generate)
-├── vectorstore/              # builder per domain + unified (copy vektor)
+├── vectorstore/              # builder Chroma per domain
 ├── rag/                      # naive.py | enhanced.py | agentic.py | prompts.py
 └── chat/session.py           # ChatSession(mode=…)
 scripts/  ask.py · preprocess.py · build_vectorstore.py
 eval/     run_eval.py · eval_core.py · analyze.py
-data/     raw/<domain>/ · processed/<domain>.{pkl,json} · vector_stores/<domain>/ + _unified/
+data/     raw/<domain>/ · processed/<domain>.{pkl,json} · vector_stores/<domain>/
 ```
 
 ---
@@ -131,7 +130,6 @@ _ALL = [dukcapil_source, opd_source, pajak_source]     # ← satu baris
 # 7. build
 uv run python scripts/preprocess.py --source pajak
 uv run python scripts/build_vectorstore.py --source pajak
-uv run python scripts/build_vectorstore.py --source unified
 ```
 **Itu doang.** Nol perubahan di registry/prompts/eval/ketiga mode RAG — semua auto-pickup.
 
@@ -144,6 +142,6 @@ Implement `Capability` ABC (`invoke()` balikin `List[Document]`), daftarkan di
 
 ## Catatan
 
-- **Vector store dipisah per domain** (schema/chunking beda); naive query `_unified` (copy vektor lintas domain).
+- **Vector store dipisah per domain** (schema/chunking beda); ketiga mode pakai collection per-domain yang sama — naive fan-out ke semua lalu merge global top-k (database identik = controlled variable).
 - **Path absolut via `Path(__file__)`** — script jalan dari cwd manapun; eval dari project root.
 - **`docs/REFACTOR_3WAY.md`** = desain + alasan + cara extend; **PROGRESS.md** = state report.

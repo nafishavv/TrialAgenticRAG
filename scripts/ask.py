@@ -10,7 +10,7 @@ Interactive chat (multi-turn, with conversation memory):
     uv run python scripts/ask.py --chat --mode agentic
     uv run python scripts/ask.py --chat --no-rewrite --max-turns 10
 
-Modes: naive (unified dense baseline) | enhanced (semantic+dense pipeline) |
+Modes: naive (fan-out dense baseline) | enhanced (semantic+dense pipeline) |
        agentic (LLM tool-calling loop). Chat commands: 'exit'/'quit', 'reset'.
 """
 

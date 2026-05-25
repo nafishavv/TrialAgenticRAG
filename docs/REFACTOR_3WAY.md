@@ -29,8 +29,7 @@ Dokumen ini = **tracking lengkap**: plan, perubahan per tahap, dan **alasan** ti
 
 | Keputusan | Pilihan | Alasan |
 |---|---|---|
-| Definisi **naive** | 1 collection `_unified`, dense-only | Baseline harus benar-benar minimal; data terpisah per domain digabung jadi satu pool agar "naive" = textbook naive |
-| Build `_unified` | **Copy vektor** dari store per-domain (bukan re-embed) | Gratis, instan, nol rate-limit — vektor dokumen sudah ada |
+| Definisi **naive** | Fan-out dense ke SEMUA collection per-domain, merge global top-k, no router/rewrite/rerank | Baseline minimal TANPA store terpisah → database identik dengan enhanced/agentic (controlled variable). Beda antar mode murni di pipeline |
 | Konfigurasi **enhanced** | **Dataclass Python** `EnhancedRAGConfig` | Type-safe, enak buat eval sweep; ganti komponen = ganti 1 field |
 | Router default enhanced | **SemanticRouter** (embedding, bukan LLM) | Sesuai definisi enhanced (classifier embedding, bukan LLM call); murah |
 | Router lama (LLM) | Disimpan jadi opsi `LLMRouter` | Tidak ada kerja yang dibuang; berguna untuk ablation routing |
@@ -46,7 +45,7 @@ Dokumen ini = **tracking lengkap**: plan, perubahan per tahap, dan **alasan** ti
 
 ```
 src/ragtrial/
-├── config.py                 # path absolut, UNIFIED_*; load_env()
+├── config.py                 # path absolut per domain; load_env()
 ├── llm.py                    # singleton llm + embeddings, make_judge_llm()
 ├── result.py                 # RagResult — kontrak output 3 mode
 │
@@ -70,8 +69,7 @@ src/ragtrial/
 │   └── generate.py           # GenerateStage
 │
 ├── vectorstore/
-│   ├── builder.py            # build Chroma per domain (batched + retry)
-│   └── unified.py            # build `_unified` dengan copy vektor
+│   └── builder.py            # build Chroma per domain (batched + retry)
 │
 ├── rag/
 │   ├── prompts.py            # PROMPT_NAIVE/SINGLE/COMBINED/NONE/ROUTER + builder dari registry
@@ -81,14 +79,14 @@ src/ragtrial/
 │
 └── chat/session.py           # ChatSession(mode=…) multi-turn di atas mode mana pun
 
-scripts/  ask.py (--mode), preprocess.py, build_vectorstore.py (--source …|unified)
+scripts/  ask.py (--mode), preprocess.py, build_vectorstore.py (--source …)
 eval/     run_eval.py (registry sistem, konsumsi RagResult), eval_core.py, analyze.py
 ```
 
 `*` = stub bertanda TODO (raise `NotImplementedError`); slot siap diisi.
 
 **Alur per mode:**
-- **naive:** `question → _unified.similarity_search(k) → PROMPT_NAIVE → LLM`
+- **naive:** `question → fan-out dense ke semua collection → merge global top-k → PROMPT_NAIVE → LLM`
 - **enhanced:** `RagState` lewat `Pipeline([rewrite, route, retrieve, rerank, generate])`
 - **agentic:** `agent ⇄ tools` loop sampai LLM berhenti memanggil tool (cap `MAX_ITERATIONS`)
 
@@ -130,9 +128,8 @@ eval/     run_eval.py (registry sistem, konsumsi RagResult), eval_core.py, analy
 3. Daftarkan di `sources/__init__.py` (`_ALL` list).
 4. `uv run python scripts/preprocess.py --source pajak`
 5. `uv run python scripts/build_vectorstore.py --source pajak`
-6. `uv run python scripts/build_vectorstore.py --source unified`  (refresh naive)
 
-**Nol perubahan** di registry, prompts, eval, ketiga mode RAG, atau router — semua auto-pickup.
+**Nol perubahan** di registry, prompts, eval, ketiga mode RAG, atau router — semua auto-pickup (naive otomatis fan-out ke collection baru).
 
 ### Tambah STAGE enhanced (mis. HyDE / cross-encoder rerank)
 Implement subclass `Stage` di module stage terkait, tambah 1 entri ke factory dict

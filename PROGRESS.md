@@ -13,7 +13,7 @@
 | `data/raw/unprocessed/PERDA NOMOR 1 TAHUN 2019.pdf` | ❌ Belum diproses | Arsitektur siap (`sources/<domain>/`) |
 | `data/raw/unprocessed/Analisis-dan-evaluasi-hukum-no-3-tahun-2025.pdf` | ❌ Belum diproses | — |
 
-`_unified` collection (211 vektor = 150 + 61) di-build dari copy vektor per-domain untuk naive RAG.
+Ketiga mode pakai collection per-domain yang sama (211 vektor = 150 dukcapil + 61 opd). Naive fan-out ke semua collection lalu merge global top-k di memori — tak ada store terpisah.
 
 ---
 
@@ -27,7 +27,7 @@ src/ragtrial/
 ├── capabilities/    ← Capability ABC + VectorSourceCapability + registry
 ├── sources/<domain>/← co-located preprocess + chunk + capability (1 domain = banyak file)
 ├── pipeline/        ← stage komposabel enhanced (rewrite/route/retrieve/rerank/generate)
-├── vectorstore/     ← builder per-domain + unified (copy vektor)
+├── vectorstore/     ← builder Chroma per-domain
 ├── rag/             ← naive.py | enhanced.py | agentic.py | prompts.py
 └── chat/session.py  ← ChatSession(mode=…)
 ```
@@ -40,8 +40,8 @@ src/ragtrial/
 ## 3. Status mode
 
 ### A. naive — END-TO-END ✅
-[rag/naive.py](src/ragtrial/rag/naive.py) — 1 collection `_unified`, dense top-k, `PROMPT_NAIVE`
-(stuff polos, tanpa header per-source). Baseline jujur.
+[rag/naive.py](src/ragtrial/rag/naive.py) — fan-out dense ke semua collection per-domain,
+merge global top-k, `PROMPT_NAIVE` (stuff polos, tanpa header per-source). Baseline jujur.
 
 ### B. enhanced — END-TO-END ✅
 [rag/enhanced.py](src/ragtrial/rag/enhanced.py) — `build_enhanced(EnhancedRAGConfig)` rakit
@@ -65,8 +65,7 @@ per kapabilitas; LLM pilih/iterasi/retry/skip; tiap langkah → `meta.steps`. `M
 | Topik | Decision | Reasoning |
 |---|---|---|
 | 3 mode | naive / enhanced / agentic | Pembeda = siapa kontrol alur (lihat docs) |
-| naive | 1 collection gabungan, dense | Baseline benar-benar minimal |
-| `_unified` | copy vektor (no re-embed) | Gratis & instan |
+| naive | fan-out ke collection per-domain, merge global top-k, dense | Baseline minimal + database identik antar mode |
 | Config enhanced | dataclass Python | Type-safe, enak eval sweep |
 | Router default | SemanticRouter (embedding) | Sesuai spec enhanced; LLMRouter jadi opsi |
 | agentic | tool-calling loop (rebuild) | Router statis lama bukan agentic |
