@@ -6,13 +6,13 @@ Swap a component by changing one field on EnhancedRAGConfig — build_enhanced()
 looks each up in the stage factory dicts.
 
     cfg = EnhancedRAGConfig(rewriter="hyde", router="semantic",
-                            retrieval="dense", reranker="cross_encoder")
+                            retrieval="dense", reranker="none")
     rag = build_enhanced(cfg)
     result = rag.ask("...")          # -> RagResult
 
-Default = the canonical spec: semantic(embedding) route -> passthrough rewrite ->
-dense retrieve -> no rerank -> generate. Two presets reproduce the retired
-modules' behavior so nothing is lost (see PRESETS).
+Default = canonical enhanced: semantic(embedding) route -> HyDE rewrite ->
+dense retrieve -> no rerank -> generate. Cross-encoder rerank is deferred (stub).
+Presets reproduce the retired modules' behavior so nothing is lost (see PRESETS).
 """
 
 from __future__ import annotations
@@ -29,18 +29,19 @@ from ragtrial.result import RagResult
 
 @dataclass
 class EnhancedRAGConfig:
-    rewriter: str = "passthrough"   # passthrough | hyde | multiquery*
+    rewriter: str = "hyde"          # passthrough | hyde | multiquery*
     router: str = "semantic"        # none | semantic | llm
     retrieval: str = "dense"        # dense | hybrid
-    reranker: str = "none"          # none | cross_encoder*
+    reranker: str = "none"          # none | cross_encoder* (rerank deferred)
     k: int = 5                      # top-k for single-domain retrieval
     k_per_source: int = 4           # top-k per capability when fanning out
     rerank_top_n: Optional[int] = None
 
 
-# Presets (nothing from the old modules is lost — both become enhanced configs).
+# Presets. Default = canonical enhanced (HyDE + semantic + dense). Reranker deferred.
 PRESETS: dict[str, EnhancedRAGConfig] = {
     "default": EnhancedRAGConfig(),
+    "no_hyde": EnhancedRAGConfig(rewriter="passthrough"),                         # ablation: HyDE off
     "fanout_hybrid": EnhancedRAGConfig(router="none", retrieval="hybrid"),       # ~ old naive_combined
     "llm_router_hybrid": EnhancedRAGConfig(router="llm", retrieval="hybrid"),    # ~ old static agentic
 }

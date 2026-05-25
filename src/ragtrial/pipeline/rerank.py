@@ -1,8 +1,9 @@
 """Rerank stages — reorder/trim retrieved docs before generation.
 
 Implemented:  none (NoopReranker) — passthrough, optional top-N trim.
-Stubbed (TODO): cross_encoder — BGE/cross-encoder model (sentence-transformers
-is already a dependency); slot exists + registered.
+Stubbed (TODO): cross_encoder — slot exists + registered. Implementation drafted but
+DEFERRED: jina-reranker-v2 needs transformers ~4.4x (removed fn in transformers 5.x);
+pick a native multilingual model (e.g. BAAI/bge-reranker-v2-m3) when wiring it in.
 """
 
 from __future__ import annotations
@@ -30,7 +31,9 @@ class CrossEncoderReranker(Stage):
     """Cross-encoder rerank (e.g. BAAI/bge-reranker). Encoder model, not an LLM.
 
     TODO(enhanced): load a sentence-transformers CrossEncoder, score
-    (query, doc) pairs, sort desc, keep top_n. Set state.meta['rerank_scores'].
+    (query, doc) pairs against meta['original_query'], sort desc, keep top_n,
+    set state.meta['rerank_scores']. Use a native-transformers model (bge-reranker-*)
+    — jina-reranker-v2 relies on remote code incompatible with transformers 5.x.
     """
 
     name = "rerank"
