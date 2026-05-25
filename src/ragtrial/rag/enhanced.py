@@ -29,7 +29,7 @@ from ragtrial.result import RagResult
 
 @dataclass
 class EnhancedRAGConfig:
-    rewriter: str = "passthrough"   # passthrough | hyde* | multiquery*
+    rewriter: str = "passthrough"   # passthrough | hyde | multiquery*
     router: str = "semantic"        # none | semantic | llm
     retrieval: str = "dense"        # dense | hybrid
     reranker: str = "none"          # none | cross_encoder*
@@ -106,9 +106,11 @@ def build_enhanced(config: Optional[EnhancedRAGConfig] = None) -> EnhancedRAG:
         rerank_cls(top_n=cfg.rerank_top_n) if cfg.rerank_top_n is not None else rerank_cls()
     )
 
+    # route BEFORE rewrite: the router must classify the original question, not a
+    # fabricated HyDE passage. Rewrite then reshapes the query for retrieval only.
     stages = [
-        REWRITERS[cfg.rewriter](),
         ROUTERS[cfg.router](),
+        REWRITERS[cfg.rewriter](),
         RetrieveStage(strategy=cfg.retrieval, k=cfg.k, k_per_source=cfg.k_per_source),
         reranker,
         GenerateStage(),

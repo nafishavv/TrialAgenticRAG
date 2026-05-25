@@ -45,9 +45,9 @@ merge global top-k, `PROMPT_NAIVE` (stuff polos, tanpa header per-source). Basel
 
 ### B. enhanced — END-TO-END ✅
 [rag/enhanced.py](src/ragtrial/rag/enhanced.py) — `build_enhanced(EnhancedRAGConfig)` rakit
-`Pipeline`. Default **semantic(embedding) + dense**. Routing live: KTP→dukcapil(0.88),
-Pariwisata→opd(0.82), off-topic→none(0.63). Preset `fanout_hybrid`, `llm_router_hybrid`.
-Stub: HyDE, MultiQuery, CrossEncoderReranker.
+`Pipeline([route, rewrite, retrieve, rerank, generate])` (route dulu → klasifikasi
+pertanyaan asli). Routing live: KTP→dukcapil(0.88), Pariwisata→opd(0.82), off-topic→none(0.63).
+Preset `fanout_hybrid`, `llm_router_hybrid`. HyDE rewriter live. Stub: MultiQuery, CrossEncoderReranker.
 
 ### C. agentic — END-TO-END ✅
 [rag/agentic.py](src/ragtrial/rag/agentic.py) — LangGraph `agent ⇄ tools`. Tool `search_<domain>`
@@ -84,7 +84,7 @@ per kapabilitas; LLM pilih/iterasi/retry/skip; tiap langkah → `meta.steps`. `M
 - [ ] Tambah domain PERDA (`sources/perda/`, chunking pasal/ayat)
 
 ### Medium-term
-- [ ] Isi stub: HyDE rewriter, CrossEncoder reranker, MultiQuery
+- [ ] Isi stub: CrossEncoder reranker, MultiQuery (HyDE ✅)
 - [ ] `SqlToolCapability` (text-to-sql) → otomatis jadi tool agentic
 - [ ] BM25 indeks persisten (sekarang materialize semua doc di memori)
 - [ ] Scale up testset (sekarang kecil)

@@ -56,6 +56,19 @@ PERTANYAAN: {question}
 JAWABAN:"""
 
 
+PROMPT_HYDE = """Tulis SATU paragraf jawaban hipotetis untuk pertanyaan berikut, seolah dikutip dari dokumen resmi layanan publik Kab. Batang (peraturan, SOP, atau panduan).
+
+ATURAN:
+- Tulis seperti isi dokumen formal: lugas, padat fakta, gaya bahasa peraturan/panduan pemerintah.
+- JANGAN bilang tidak tahu atau minta klarifikasi — karang jawaban yang plausibel dan terdengar faktual.
+- Sebut istilah/entitas konkret yang relevan (nama dokumen, syarat, prosedur, instansi) bila masuk akal.
+- Maksimal 4-5 kalimat, satu paragraf, Bahasa Indonesia formal. Tanpa pembuka/penutup.
+
+PERTANYAAN: {question}
+
+PARAGRAF HIPOTETIS:"""
+
+
 REWRITE_PROMPT = """Diberikan riwayat percakapan dan pertanyaan terakhir user,
 tulis ulang pertanyaan terakhir menjadi pertanyaan STANDALONE yang bisa dimengerti
 tanpa konteks percakapan sebelumnya.

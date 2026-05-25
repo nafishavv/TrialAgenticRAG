@@ -5,7 +5,8 @@ reads + mutates a RagState threaded through the pipeline. The Pipeline runs them
 in order and times each.
 
 Stage order for the canonical enhanced pipeline:
-    rewrite -> route -> retrieve -> rerank -> generate
+    route -> rewrite -> retrieve -> rerank -> generate
+(route runs first so it classifies the original question, not a HyDE passage)
 
 Adding a capability to a stage (e.g. a new reranker) = implement a Stage
 subclass + register it in that stage module's factory dict. `build_enhanced`

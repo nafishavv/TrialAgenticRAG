@@ -4,7 +4,7 @@ Primitives: Stage (ABC), RagState (working state), Pipeline (ordered runner).
 Stage libraries each expose a factory dict so `rag/enhanced.py` can assemble a
 pipeline from an EnhancedRAGConfig:
 
-    REWRITERS  rewrite.py   passthrough | hyde* | multiquery*
+    REWRITERS  rewrite.py   passthrough | hyde | multiquery*
     ROUTERS    route.py     none | semantic | llm
     RERANKERS  rerank.py    none | cross_encoder*
     (retrieve + generate are single stages, parameterized not selected)

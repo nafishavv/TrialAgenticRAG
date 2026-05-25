@@ -64,7 +64,7 @@ rag = build_enhanced(cfg)
 result = rag.ask("Apa syarat KTP elektronik?")   # -> RagResult
 ```
 Ganti komponen = ganti 1 field. Preset siap pakai: `fanout_hybrid`, `llm_router_hybrid`
-(lihat `PRESETS`). Stub menunggu diisi: `hyde`, `multiquery`, `cross_encoder`.
+(lihat `PRESETS`). Implemented: `hyde`. Stub menunggu diisi: `multiquery`, `cross_encoder`.
 
 ## Evaluation
 

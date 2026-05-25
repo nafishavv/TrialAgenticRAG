@@ -62,7 +62,7 @@ src/ragtrial/
 │
 ├── pipeline/                 # stage komposabel untuk ENHANCED
 │   ├── base.py               # Stage ABC + RagState + Pipeline(runner)
-│   ├── rewrite.py            # REWRITERS: passthrough | hyde* | multiquery*
+│   ├── rewrite.py            # REWRITERS: passthrough | hyde | multiquery*
 │   ├── route.py              # ROUTERS:   none | semantic | llm
 │   ├── retrieve.py           # RetrieveStage (route-aware, dense/hybrid)
 │   ├── rerank.py             # RERANKERS: none | cross_encoder*
@@ -87,7 +87,7 @@ eval/     run_eval.py (registry sistem, konsumsi RagResult), eval_core.py, analy
 
 **Alur per mode:**
 - **naive:** `question → fan-out dense ke semua collection → merge global top-k → PROMPT_NAIVE → LLM`
-- **enhanced:** `RagState` lewat `Pipeline([rewrite, route, retrieve, rerank, generate])`
+- **enhanced:** `RagState` lewat `Pipeline([route, rewrite, retrieve, rerank, generate])` (route dulu → klasifikasi pertanyaan asli; HyDE baru reshape query buat retrieval)
 - **agentic:** `agent ⇄ tools` loop sampai LLM berhenti memanggil tool (cap `MAX_ITERATIONS`)
 
 ---

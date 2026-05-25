@@ -1,14 +1,16 @@
 """Query-rewrite stages. Enhanced rewrites EVERY query (no LLM 'should I?' choice).
 
-Implemented:  passthrough (no-op).
-Stubbed (TODO): hyde, multiquery — slot exists + registered; fill in `run()`.
+Implemented:  passthrough (no-op), hyde.
+Stubbed (TODO): multiquery — slot exists + registered; fill in `run()`.
 
 Add one: implement Stage subclass, add to REWRITERS.
 """
 
 from __future__ import annotations
 
+from ragtrial.llm import llm as default_llm
 from ragtrial.pipeline.base import RagState, Stage
+from ragtrial.rag.prompts import PROMPT_HYDE
 
 
 class PassthroughRewriter(Stage):
@@ -24,15 +26,23 @@ class PassthroughRewriter(Stage):
 class HyDERewriter(Stage):
     """HyDE: rewrite query into a hypothetical answer passage before retrieval.
 
-    TODO(enhanced): prompt the LLM for a hypothetical passage, set state.query to
-    it (and stash the original in state.meta['original_query']). Embedding that
-    passage matches document-shaped chunks better than a short question.
+    Prompts the LLM for a document-shaped hypothetical passage and uses THAT as
+    the retrieval query — its embedding matches formal-document chunks better than
+    a short question. The original question is stashed in meta['original_query']
+    so downstream stages (rerank) can still score against the real intent.
     """
 
     name = "rewrite"
 
+    def __init__(self, llm=None):
+        self.llm = llm or default_llm
+
     def run(self, state: RagState) -> RagState:
-        raise NotImplementedError("HyDERewriter belum diimplementasi (Tahap lanjutan).")
+        passage = self.llm.invoke(PROMPT_HYDE.format(question=state.question)).content
+        state.meta["original_query"] = state.question
+        state.meta["hyde_passage"] = passage
+        state.query = passage
+        return state
 
 
 class MultiQueryRewriter(Stage):
