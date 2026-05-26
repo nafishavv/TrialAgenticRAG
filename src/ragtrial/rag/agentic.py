@@ -65,8 +65,8 @@ def _build_tools(capabilities) -> List[StructuredTool]:
     ]
 
 
-_TOOLS = _build_tools(SEARCHABLE_CAPABILITIES)
-_llm_with_tools = llm.bind_tools(_TOOLS)
+_TOOLS: list | None = None
+_llm_with_tools = None
 
 
 def _system_prompt(capabilities) -> str:
@@ -157,14 +157,23 @@ def _should_continue(state: AgentState) -> str:
     return END
 
 
-# ============ Graph ============
-_workflow = StateGraph(AgentState)
-_workflow.add_node("agent", _node_agent)
-_workflow.add_node("tools", _node_tools)
-_workflow.set_entry_point("agent")
-_workflow.add_conditional_edges("agent", _should_continue, {"tools": "tools", END: END})
-_workflow.add_edge("tools", "agent")
-agentic_app = _workflow.compile()
+# ============ Graph (lazy) ============
+agentic_app = None
+
+
+def _ensure_app() -> None:
+    global _TOOLS, _llm_with_tools, agentic_app
+    if agentic_app is not None:
+        return
+    _TOOLS = _build_tools(SEARCHABLE_CAPABILITIES)
+    _llm_with_tools = llm.bind_tools(_TOOLS)
+    _workflow = StateGraph(AgentState)
+    _workflow.add_node("agent", _node_agent)
+    _workflow.add_node("tools", _node_tools)
+    _workflow.set_entry_point("agent")
+    _workflow.add_conditional_edges("agent", _should_continue, {"tools": "tools", END: END})
+    _workflow.add_edge("tools", "agent")
+    agentic_app = _workflow.compile()
 
 
 def _text(msg: AIMessage) -> str:
@@ -209,6 +218,7 @@ def _source_used(steps: List[Dict[str, Any]]) -> str:
 
 
 def ask_agentic(question: str, verbose: bool = True) -> RagResult:
+    _ensure_app()
     init: AgentState = {
         "messages": [SystemMessage(_system_prompt(SEARCHABLE_CAPABILITIES)),
                      HumanMessage(question)],

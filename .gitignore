@@ -20,6 +20,9 @@ wheels/
 eval/results/per_query_*.json
 eval/results/summary_*.json
 
+# Secrets — never commit API keys
+.env
+
 # OS
 .DS_Store
 Thumbs.db

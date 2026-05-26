@@ -16,20 +16,24 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Literal
 
 from ragtrial.chat.rewriter import rewrite_query
-from ragtrial.llm import llm as default_llm
-from ragtrial.rag.agentic import ask_agentic
-from ragtrial.rag.enhanced import ask_enhanced
-from ragtrial.rag.naive import ask_naive
 from ragtrial.result import RagResult
 
 Role = Literal["user", "assistant"]
 Mode = Literal["naive", "enhanced", "agentic"]
 
-_MODE_FN: Dict[str, Callable[..., RagResult]] = {
-    "naive": ask_naive,
-    "enhanced": ask_enhanced,
-    "agentic": ask_agentic,
-}
+_VALID_MODES = {"naive", "enhanced", "agentic"}
+
+
+def _load_mode_fn(mode: str) -> Callable[..., RagResult]:
+    if mode == "naive":
+        from ragtrial.rag.naive import ask_naive
+        return ask_naive
+    elif mode == "enhanced":
+        from ragtrial.rag.enhanced import ask_enhanced
+        return ask_enhanced
+    else:
+        from ragtrial.rag.agentic import ask_agentic
+        return ask_agentic
 
 
 @dataclass
@@ -59,13 +63,18 @@ class ChatSession:
         max_history_turns: int = 5,
         rewrite_followups: bool = True,
     ):
-        if mode not in _MODE_FN:
-            raise ValueError(f"mode harus salah satu dari {list(_MODE_FN)}, dapat {mode!r}")
+        if mode not in _VALID_MODES:
+            raise ValueError(f"mode harus salah satu dari {sorted(_VALID_MODES)}, dapat {mode!r}")
         self.mode = mode
-        self._ask = _MODE_FN[mode]
+        self._ask: Callable[..., RagResult] | None = None
         self.max_history_turns = max_history_turns
         self.rewrite_followups = rewrite_followups
         self.history: List[Turn] = []
+
+    def _get_ask(self) -> Callable[..., RagResult]:
+        if self._ask is None:
+            self._ask = _load_mode_fn(self.mode)
+        return self._ask
 
     def ask(self, user_message: str, verbose: bool = False) -> Dict[str, Any]:
         """Process one user turn. Returns a UI-friendly dict (not RagResult)."""
@@ -73,12 +82,13 @@ class ChatSession:
 
         t_r0 = time.perf_counter()
         if self.rewrite_followups and self.history:
-            rewritten = rewrite_query(self.history, user_message, default_llm)
+            from ragtrial.llm import llm as _llm
+            rewritten = rewrite_query(self.history, user_message, _llm)
         else:
             rewritten = user_message
         t_rewrite = time.perf_counter() - t_r0
 
-        result: RagResult = self._ask(rewritten, verbose=verbose)
+        result: RagResult = self._get_ask()(rewritten, verbose=verbose)
 
         self.history.append(Turn(role="user", content=user_message))
         self.history.append(Turn(role="assistant", content=result.answer))

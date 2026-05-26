@@ -19,7 +19,7 @@ EMBEDDING_DIM: int = 768
 llm = ChatGoogleGenerativeAI(
     model=LLM_MODEL,
     temperature=0.1,
-    max_tokens=1024,
+    max_tokens=4096,
 )
 
 embeddings = GoogleGenerativeAIEmbeddings(
