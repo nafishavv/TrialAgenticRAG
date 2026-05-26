@@ -238,7 +238,7 @@ def _render_sidebar() -> None:
         st.selectbox(
             "RAG mode",
             options=["naive", "enhanced", "agentic"],
-            index=2,
+            index=1,
             key="mode",
             help="naive=baseline fan-out | enhanced=semantic+dense pipeline | agentic=tool-calling loop",
         )
@@ -291,10 +291,7 @@ def _render_sidebar() -> None:
 
 # ============ Service chips ============
 _SERVICE_CHIPS: list[tuple[str, str]] = [
-    ("Perizinan", "Bagaimana cara mengurus izin usaha mikro?"),
     ("Kependudukan", "Apa syarat membuat KTP baru?"),
-    ("Pajak Daerah", "Informasi pajak daerah Kabupaten Batang?"),
-    ("Hukum & Peraturan", "Peraturan daerah terkait perizinan usaha?"),
     ("Informasi OPD", "Alamat dan kontak Dinas Dukcapil?"),
 ]
 
