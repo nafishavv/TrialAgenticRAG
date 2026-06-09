@@ -1,0 +1,1821 @@
+[
+  {
+    "id": "izin-reklame",
+    "nama_perizinan": "Izin Reklame",
+    "kategori": "",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/TXZnUTQ0cHIzaGF5SnpEdWpSMkowdz09",
+    "crawl_timestamp": "2026-06-09T19:18:48.369816+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "Sertifikat Tanah (jika Reklame dipasang dibangun/tanah milik sendiri), Surat Perjanjian (jika Reklame dipasang dibangun/tanah yang sewa)",
+      "Denah Lokasi Pemasangan Konstruksi Bangunan Reklame dan Foto Lingkungan Sekitar Pemasangan Reklame",
+      "Gambar Konstruksi Reklame (ketinggian Tiang Minimal 5m diatas Permukaan Tanah)",
+      "NIB",
+      "Surat Pernyataan keabsahan Dokumen (bermaterai 10.000)",
+      "Surat Permohonan dan Surat Pernyataan Tanggung Jawab (bermaterai 10.000)",
+      "Rekomendasi/ Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan (Jika titik lokasi pemasangan reklame berada di jalan provinsi)",
+      "SK Reklame Asli (Perpanjangan)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang - undang  Nomor 28 Tahun 2009 tentang Pajak Daerah dan Retribusi Daerah"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan Daerah Kabupaten Batang Nomor 11 Tahun 2011 tentang Pajak Reklame"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-fisioterapis",
+    "nama_perizinan": "Izin Kerja Fisioterapis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/ZzFXdkUxcTBmM3p4MlRGMU8vS2NFdz09",
+    "crawl_timestamp": "2026-06-09T19:18:51.703079+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek  (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman https://sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 80 Tahun 2015 tentang Penyelenggaraan Pekerjaan dan Praktik Fisioterapis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-okupasi-terapis",
+    "nama_perizinan": "Izin Kerja Okupasi Terapis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/SnY2TkdLVW1JaXArS1BHaE9NaU81dz09",
+    "crawl_timestamp": "2026-06-09T19:18:55.092801+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek  (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "BBerkas dilanjutkan ke bagian kasi/kabid untuk divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website https://sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 23 Tahun 2013 tentang Penyelenggaraan Pekerjaan dan Praktik Okupasi Terapis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-penata-anestesi",
+    "nama_perizinan": "Izin Kerja Penata Anestesi",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/N1FzaTBFTUZwSk9lN1lxOU0xbUxxUT09",
+    "crawl_timestamp": "2026-06-09T19:18:58.467667+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek  (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang - Undang Republik Indonesia Nomor 36 Tahun 2014 tentang Tenaga Kesehatan dan Peraturan Menteri Kesehatan Republik Indonesia"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 31 Tahun 2013 tentang Penyelenggaraan Pekerjaan Perawat Anestesi"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-perekam-medis",
+    "nama_perizinan": "Izin Kerja Perekam Medis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/TzVDZ3ZGRmZyNUgzcENESEdMNmkwdz09",
+    "crawl_timestamp": "2026-06-09T19:19:02.030400+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek  (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website https://sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 55 Tahun 2013 tentang Penyelenggaraan Pekerjaan Perekam Medis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-radiografer",
+    "nama_perizinan": "Izin Kerja Radiografer",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/QXRkUnBqYUtXWnJ6Wi85U01GY0NOUT09",
+    "crawl_timestamp": "2026-06-09T19:19:05.554518+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek  (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 357 / MENKES / PER / V /2016 tentang Registrasi dan Izin Kerja Radiografer;"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-tenaga-gizi",
+    "nama_perizinan": "Izin Kerja Tenaga Gizi",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/aGpZVC9Pbm1aMUVMRXRGM2owYS9kUT09",
+    "crawl_timestamp": "2026-06-09T19:19:09.009676+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik ke dinas terkait"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website https://sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 26 Tahun 2013 Tentang Penyelenggaraan Pekerjaan Dan Praktik Tenaga Gizi"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-tenaga-sanitarian",
+    "nama_perizinan": "Izin Kerja Tenaga Sanitarian",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/V3ZJaGh1SmVzbWtOMjFBOWVNeWRkUT09",
+    "crawl_timestamp": "2026-06-09T19:19:12.507041+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman  website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh \r\nstaf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik ke dinas terkait"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk  divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk  divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website https://sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 32 Tahun 2013 tentang Penyelenggaraan Pekerjaan Tenaga Sanitarian;"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-kerja-terapis-wicara",
+    "nama_perizinan": "Izin Kerja Terapis Wicara",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/Ly8xZk5Ha2MvUEkvNHhqVEJmcnA1QT09",
+    "crawl_timestamp": "2026-06-09T19:19:16.011796+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 24 Tahun 2013 tentang Penyelenggaraan Pekerjaan dan Praktik Terapis Wicara;"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-ahli-teknologi-laboratorium-medik",
+    "nama_perizinan": "Izin Praktik Ahli Teknologi Laboratorium Medik",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/RWlxQWFkYkhjeHg3NHh1QmRBYm8vUT09",
+    "crawl_timestamp": "2026-06-09T19:19:19.451126+00:00",
+    "persyaratan": [
+      "STR (Surat Tanda Register) legalisir & SIP Lama yang sudah dimiliki",
+      "Surat Keterangan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)",
+      "Foto KTP Pemohon"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman  website sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang Nomor 36 Tahun 2014 Tentang Tenaga Kesehatan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "1 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-akupuntur-terapis",
+    "nama_perizinan": "Izin Praktik Akupuntur Terapis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/UHpTVmFPcnY1bjZTQm9WbFlqQ0hyQT09",
+    "crawl_timestamp": "2026-06-09T19:19:22.920476+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STRAT (Surat Tanda Register Akupuntur Terapis) & SIP Lama yang sudah dimiliki",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website https://sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian dinas terkait untuk mendapatkan rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website https://sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia No 34 Tahun 2018 tentang Izin dan Penyelenggaraan Praktik Akunpuntur Terapis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-apoteker",
+    "nama_perizinan": "Izin Praktik Apoteker",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/QW1hRnRtNEt6S1NuUVJCOHFseTF3Zz09",
+    "crawl_timestamp": "2026-06-09T19:19:26.326314+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor: 31 Tahun 2016 tentang Perubahan Menteri Kesehatan Nomor 889/Menkes/Per/V/2011 tentang Registrasi, Izin Praktik dan Izin Kerja Tenaga Kefarmasian"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-bidan",
+    "nama_perizinan": "Izin Praktik Bidan",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/emtaV3BjQlpLTnlYZFBxc0tZaUhZQT09",
+    "crawl_timestamp": "2026-06-09T19:19:29.716212+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)",
+      "Ceklist Ijin Praktek Mandiri Bidan(Khusus Permohonan Mandiri)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor : 28 tahun 2017 tentang Izin dan Penyelenggaraan Praktik Bidan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-dokter",
+    "nama_perizinan": "Izin Praktik Dokter",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/S2l5djZxWDBoUTl2a2FqUk4rWDgzZz09",
+    "crawl_timestamp": "2026-06-09T19:19:33.087551+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) asli & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)",
+      "Ceklist Ijin Praktek Mandiri Dokter(Khusus Permohonan Mandiri)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke Dinas Penanaman Modal Pelayanan Terpadu Satu Pintu dan Tenaga Kerja Kabupaten Batang dengan membawa surat permohonan atau mengisi blanko permohonan yang telah disediakan."
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Surat permohonan/ formulir permohonan yang sudah diisi dengan benar beserta  persyaratannya diserahkan di loket pelayanan"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas permohonan diteliti, bila dinyatakan lengkap dan benar, maka ijin diproses,  namun bila berkas belum lengkap dikembalikan kepada pemohon untuk dilengkapi"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Penyerahan Ijin kepada pemohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia  Nomor 2052/Menkes/Per/X/2011  Tentang Izin Praktik Dan Pelaksanaan Praktik Kedokteran"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja (Setelah Rekom Dari Dinas Kesehatan)",
+      "masa_berlaku": "5 Tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-dokter-gigi",
+    "nama_perizinan": "Izin Praktik Dokter Gigi",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/MytUN0dqblBSVFRlbGFEYkNHNU1Hdz09",
+    "crawl_timestamp": "2026-06-09T19:19:36.450929+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) asli & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)",
+      "Ceklist Ijin Praktek Mandiri Dokter(Khusus Permohonan Mandiri)"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia  Nomor 2052/Menkes/Per/X/2011  Tentang Izin Praktik Dan Pelaksanaan Praktik Kedokteran"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja (Setelah Rekom Dari Dinas Kesehatan)",
+      "masa_berlaku": "5 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-dokter-internsip",
+    "nama_perizinan": "Izin Praktik Dokter Internsip",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/MlN0RjBLM0NibG9xMU4xS2swd3Fzdz09",
+    "crawl_timestamp": "2026-06-09T19:19:39.833313+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) asli",
+      "Surat Pernyataan Tempat Praktek"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia  Nomor 2052/Menkes/Per/X/2011  Tentang Izin Praktik Dan Pelaksanaan Praktik Kedokteran"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja (Setelah Rekom Dari Dinas Kesehatan)",
+      "masa_berlaku": "5 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-elektromedis",
+    "nama_perizinan": "Izin Praktik Elektromedis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/R0VvTGdHTTZib3ljenFkV09PUVN3dz09",
+    "crawl_timestamp": "2026-06-09T19:19:43.183804+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk  divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 45 Tahun 2015 tentang Izin Penyelenggaraan Praktik Elektromedis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-fisioterapis",
+    "nama_perizinan": "Izin Praktik Fisioterapis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/bUdzV2c4SlR4azNGdTAxVkYyaGxaUT09",
+    "crawl_timestamp": "2026-06-09T19:19:46.614187+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "5 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-okupasi-terapis",
+    "nama_perizinan": "Izin Praktik Okupasi Terapis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/bk1JTzJmZnlISmJ2cE9rSFlkb3ZHQT09",
+    "crawl_timestamp": "2026-06-09T19:19:49.986582+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon mengajukan permohonan di laman website sipuas.batangkab.go.id"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi oleh staf"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Berkas dilanjutkan ke bagian rekomendasi teknik"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berkas dilanjutkan ke bagian staf untuk di cross check ulang di bagian staf"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berkas dilanjutkan ke bagian kasi/kabid untuk  divalidasi"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kemudian berkas dilanjutkan ke sekretaris untuk divalidasi"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Berkas diserahkan kepada kepala dinas untuk divalidasi"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Setelah berkas divalidasi pemohon dapat mengunduh di laman website sipuas.batangkab.go.id"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 23 Tahun 2013 tentang Penyelenggaraan Pekerjaan dan Praktik Okupasi Terapis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-penata-anestesi",
+    "nama_perizinan": "Izin Praktik Penata Anestesi",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/QnEzMUpTS0lyeElwOU8vVi9CWk85UT09",
+    "crawl_timestamp": "2026-06-09T19:19:53.318234+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 18 Tahun 2016 tentang Izin dan penyelengaraan Praktik Penata Anestesi;"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-perawat",
+    "nama_perizinan": "Izin Praktik Perawat",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/ZjFsdGZqZDVMYldNdzJRSHFwTEMydz09",
+    "crawl_timestamp": "2026-06-09T19:19:56.667461+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)",
+      "Ceklist Ijin Praktek Mandiri Perawat(Khusus Permohonan Mandiri)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang Republik Indonesia Nomor 38 Tahun 2014  Tentang  Keperawatan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-psikolog-klinis",
+    "nama_perizinan": "Izin Praktik Psikolog Klinis",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/SEY5RHlwVHZQbnNZalBBMlNLbHJjdz09",
+    "crawl_timestamp": "2026-06-09T19:20:00.020454+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 45 Tahun 2017 tentang Izin dan Penyelenggaraan Praktik Psikolog Klinis"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-refraksionis-optisien-optometris",
+    "nama_perizinan": "Izin Praktik Refraksionis Optisien / Optometris",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/NFpnbGdpWHBNUGZJSHZoR0lISU82QT09",
+    "crawl_timestamp": "2026-06-09T19:20:03.368160+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP Lama yang sudah dimiliki",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 19 Tahun 2013 tentang Penyelenggaraan Pekerjaan Refraksionis Optisien dan Optometris"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-tenaga-gizi",
+    "nama_perizinan": "Izin Praktik Tenaga Gizi",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/bFhXd3RTWXIrRUdodmkwWk0xeVgyUT09",
+    "crawl_timestamp": "2026-06-09T19:20:06.686340+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "5 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-tenaga-teknis-kefarmasian",
+    "nama_perizinan": "Izin Praktik Tenaga Teknis Kefarmasian",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/MVpiSkp6aERQVE5lN2l0K1IzNE1vZz09",
+    "crawl_timestamp": "2026-06-09T19:20:10.024039+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "5 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-terapis-gigi-dan-mulut",
+    "nama_perizinan": "Izin Praktik Terapis Gigi dan Mulut",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/bE5EZU8rTFBPeHdmU01YaHBzRHRTUT09",
+    "crawl_timestamp": "2026-06-09T19:20:13.355495+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)",
+      "Ceklist Ijin Praktek Mandiri Terapis Gigi dan Mulut(Khusus Permohonan Mandiri)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis/ meninjau ke lokasi usaha bersama dengan Tim Teknis Perizinan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 8,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Menteri Kesehatan Republik Indonesia Nomor 20 Tahun 2016 tentang Izin dan Penyelenggaraan Praktik Terapis Gigi dan Mulut;"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-praktik-terapis-wicara",
+    "nama_perizinan": "Izin Praktik Terapis Wicara",
+    "kategori": "Izin Kesehatan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/WEY5djdjeDJ6MDdaNVNwbTVyMG5mZz09",
+    "crawl_timestamp": "2026-06-09T19:20:16.715152+00:00",
+    "persyaratan": [
+      "Foto KTP Pemohon",
+      "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+      "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "5 tahun",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-operasionalpendirian-kb-kelompok-bermain",
+    "nama_perizinan": "Izin Operasional/Pendirian KB (Kelompok Bermain)",
+    "kategori": "Izin Pendidikan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/QkFtcjRtRzVodEFzcER5UjMvL0VHZz09",
+    "crawl_timestamp": "2026-06-09T19:20:20.494882+00:00",
+    "persyaratan": [
+      "Surat permohonan",
+      "Surat keabsahan dokumen",
+      "Foto KTP Penanggung Jawab",
+      "Foto NPWP Lembaga",
+      "Fc akta pendirian + pengesahan Kemenkumham",
+      "Buku rekening lembaga",
+      "Bukti kepemilikan lahan/ sertifikat",
+      "SPPT PBB dan bukti pembayaran 2 tahun terakhir",
+      "Data siswa",
+      "Data guru",
+      "Struktur oraganisasi",
+      "Jadwal pembelajaran/ kurikulum",
+      "Foto gedung dan sarana prasarana",
+      "Foto kegiatan",
+      "Proposal (Hanya bab 1,2 dan 3)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon melakukan pendaftaran dan pemrosesan izin melalui sistem OSShttps://www.oss.go.id/oss/"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Pemohon mendapatkan Nomor Induk Berusaha (NIB) an Izin Usaha yang belum efektif"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Pemohon datang ke DPMPTSP untuk melakukan pemenuhan komitmen"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "DPMPTSP mengajukan rekoemdasi pemenuhan komitmen ke Perangkat Daerah Teknis"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Perangkat Daerah teknis mengeluarkan surat rekomendasi pemenuhan komitmen"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "DPMPTSP melakukan notifikasi webform terhadap pemenuhan komitmen"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP memberikan informasi kepada pemohon izin sudah berlaku efektif."
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang  Nomor   20   Tahun   2003   tentang   Sistem   Pendidikan      Nasional"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan Pemerintah Nomor 66 Tahun 2010 tentang Perubahan Atas Peraturan Pemerintah Nomor 17 Tahun 2010 tentang Pengelolaan dan Penyelenggaraan Pendidikan"
+      },
+      {
+        "nomor": 3,
+        "referensi": "Peraturan Pemerintah Nomor 24 Tahun 2018 tentang Pelayanan Perizinan Berusaha Terintegrasi Secara Elektronik"
+      },
+      {
+        "nomor": 4,
+        "referensi": "Permendikbud Nomor 25 Tahun 2018 tentang Perizinan Berusaha Terintegrasi Secara Elektronik Sektor Pendidikan dan Kebudayaan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-operasionalpendirian-paud",
+    "nama_perizinan": "Izin Operasional/Pendirian PAUD",
+    "kategori": "Izin Pendidikan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/NjhHaXZHMkFvenNwUGxPTnZkbzZCdz09",
+    "crawl_timestamp": "2026-06-09T19:20:23.840284+00:00",
+    "persyaratan": [
+      "Surat permohonan",
+      "Surat keabsahan dokumen",
+      "Foto KTP Penanggung Jawab",
+      "Foto NPWP Lembaga",
+      "Fc akta pendirian + pengesahan Kemenkumham",
+      "Buku rekening lembaga",
+      "Bukti kepemilikan lahan/ sertifikat",
+      "SPPT PBB dan bukti pembayaran 2 tahun terakhir",
+      "Data siswa",
+      "Data guru",
+      "Struktur oraganisasi",
+      "Jadwal pembelajaran/ kurikulum",
+      "Foto gedung dan sarana prasarana",
+      "Foto kegiatan",
+      "Proposal (Hanya bab 1,2 dan 3)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon melakukan pendaftaran dan pemrosesan izin melalui sistem OSShttps://www.oss.go.id/oss/"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Pemohon mendapatkan Nomor Induk Berusaha (NIB) an Izin Usaha yang belum efektif"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Pemohon datang ke DPMPTSP untuk melakukan pemenuhan komitmen"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "DPMPTSP mengajukan rekoemdasi pemenuhan komitmen ke Perangkat Daerah Teknis"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Perangkat Daerah teknis mengeluarkan surat rekomendasi pemenuhan komitmen"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "DPMPTSP melakukan notifikasi webform terhadap pemenuhan komitmen"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP memberikan informasi kepada pemohon izin sudah berlaku efektif."
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang  Nomor   20   Tahun   2003   tentang   Sistem   Pendidikan      Nasional"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan Pemerintah Nomor 66 Tahun 2010 tentang Perubahan Atas Peraturan Pemerintah Nomor 17 Tahun 2010 tentang Pengelolaan dan Penyelenggaraan Pendidikan"
+      },
+      {
+        "nomor": 3,
+        "referensi": "Permendikbud Nomor 25 Tahun 2018 tentang Perizinan Berusaha Terintegrasi Secara Elektronik Sektor Pendidikan dan Kebudayaan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-operasionalpendirian-sd",
+    "nama_perizinan": "Izin Operasional/Pendirian SD",
+    "kategori": "Izin Pendidikan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/SEFsNnJxZWRnSnJPbVBhdGRBQmtIdz09",
+    "crawl_timestamp": "2026-06-09T19:20:27.184881+00:00",
+    "persyaratan": [
+      "Surat Permohonan",
+      "Surat Keabsahan Dokumen",
+      "Foto KTP Penanggung Jawab",
+      "Foto NPWP Lembaga",
+      "FC Akta Pendirian + Pengesahan Kemenkumham",
+      "Buku Rekening Lembaga",
+      "Bukti Kepemilikan Lahan / Bukti Pemakaian Lahan",
+      "SPPT PBB dan Bukti Pembayaran 2 tahun terakhir",
+      "Data Siswa",
+      "Data Guru",
+      "Struktur Oraganisasi",
+      "Jadwal Pembelajaran / Kurikulum",
+      "Foto Gedung dan Sarana Prasarana",
+      "Foto Kegiatan",
+      "Proposal (Hanya bab 1,2 dan 3)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/ mengisi blangko permohonan yang telah disediakan"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Berkas permohonan di verifikasi dan divalidasi"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis dan dikirim ke DPMPTSP/ Tim Membuat BA hasil tinjauan lapangan"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "Berdasarkan rekomendasi teknis/ BA Hasil tinjauan lapangan, permohonan izin di proses dengan membuat Konsep Keputusan tentang Izin yang dimohon"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Kepala DPMPTSP menandatangani keputusan tentang izin yang dimohon"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "DPMPTSP menginformasikan kepada pemohon izin telah selesai diproses dan dapat diambil"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "Pemohon mengambil Keputusan tentang Izin yang dimohon"
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan    Pemerintah     Nomor   17   tahun   2010    tentang Pengelolaan   dan   Penyelenggaraan   Pendidikan"
+      },
+      {
+        "nomor": 3,
+        "referensi": "Peraturan Menteri Pendidikan dan Kebudayaan Nomor 36 Tahun 2014 tentang Pedoman Pendirian, Perubahan, dan Penutupan Satuan Pendidikan Dasar dan Menengah"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-operasionalpendirian-smp",
+    "nama_perizinan": "Izin Operasional/Pendirian SMP",
+    "kategori": "Izin Pendidikan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/dmt6dTJ4eDNVRzl1cWFhdTh6TUVtQT09",
+    "crawl_timestamp": "2026-06-09T19:20:30.646722+00:00",
+    "persyaratan": [
+      "Surat Permohonan",
+      "Surat Keabsahan Dokumen",
+      "Foto KTP Penanggung Jawab",
+      "Foto NPWP Lembaga",
+      "FC Akta Pendirian + Pengesahan Kemenkumham",
+      "Buku Rekening Lembaga",
+      "Bukti Kepemilikan Lahan / Sertifikat (sesuai keperuntukannya)",
+      "SPPT PBB dan Bukti Pembayaran 2 tahun terakhir",
+      "Data Siswa",
+      "Data Guru",
+      "Struktur Oraganisasi",
+      "Jadwal Pembelajaran / Kurikulum",
+      "Foto Gedung dan Sarana Prasarana",
+      "Foto Kegiatan",
+      "Sudah memiliki NIB",
+      "Proposal (Hanya bab 1,2 dan 3)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon melakukan pendaftaran dan pemrosesan izin melalui sistem OSShttps://www.oss.go.id/oss/"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Pemohon mendapatkan Nomor Induk Berusaha (NIB) an Izin Usaha yang belum efektif"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Pemohon datang ke DPMPTSP untuk melakukan pemenuhan komitmen"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "DPMPTSP mengajukan rekoemdasi pemenuhan komitmen ke Perangkat Daerah Teknis"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Perangkat Daerah teknis mengeluarkan surat rekomendasi pemenuhan komitmen"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "DPMPTSP melakukan notifikasi webform terhadap pemenuhan komitmen"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP memberikan informasi kepada pemohon izin sudah berlaku efektif."
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan    Pemerintah     Nomor   17   tahun   2010    tentang Pengelolaan   dan   Penyelenggaraan   Pendidikan"
+      },
+      {
+        "nomor": 3,
+        "referensi": "Peraturan Pemerintah Nomor 24 Tahun 2018 tentang Pelayanan Perizinan Berusaha Terintegrasi Secara Elektronik"
+      },
+      {
+        "nomor": 4,
+        "referensi": "Permendikbud Nomor 25 Tahun 2018 tentang Perizinan Berusaha Terintegrasi Secara Elektronik Sektor Pendidikan dan Kebudayaan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-operasionalpendirian-tk-taman-kanak-kanak",
+    "nama_perizinan": "Izin Operasional/Pendirian TK (Taman Kanak Kanak)",
+    "kategori": "Izin Pendidikan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/VmFYeE1yTlVTZ1JGR0w3bUhpUzlsQT09",
+    "crawl_timestamp": "2026-06-09T19:20:34.011556+00:00",
+    "persyaratan": [
+      "Surat permohonan",
+      "Surat keabsahan dokumen",
+      "Foto KTP Penanggung Jawab",
+      "Foto NPWP Lembaga",
+      "Fc akta pendirian + pengesahan Kemenkumham",
+      "Buku rekening lembaga",
+      "Bukti kepemilikan lahan/ sertifikat",
+      "SPPT PBB dan bukti pembayaran 2 tahun terakhir",
+      "Data siswa",
+      "Data guru",
+      "Struktur oraganisasi",
+      "Jadwal pembelajaran/ kurikulum",
+      "Foto gedung dan sarana prasarana",
+      "Foto kegiatan",
+      "Proposal (Hanya bab 1,2 dan 3)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon melakukan pendaftaran dan pemrosesan izin melalui sistem OSShttps://www.oss.go.id/oss/"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Pemohon mendapatkan Nomor Induk Berusaha (NIB) an Izin Usaha yang belum efektif"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Pemohon datang ke DPMPTSP untuk melakukan pemenuhan komitmen"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "DPMPTSP mengajukan rekoemdasi pemenuhan komitmen ke Perangkat Daerah Teknis"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Perangkat Daerah teknis mengeluarkan surat rekomendasi pemenuhan komitmen"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "DPMPTSP melakukan notifikasi webform terhadap pemenuhan komitmen"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP memberikan informasi kepada pemohon izin sudah berlaku efektif."
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang-Undang  Nomor   20   Tahun   2003   tentang   Sistem   Pendidikan      Nasional"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan Pemerintah Nomor 66 Tahun 2010 tentang Perubahan Atas Peraturan Pemerintah Nomor 17 Tahun 2010 tentang Pengelolaan dan Penyelenggaraan Pendidikan"
+      },
+      {
+        "nomor": 3,
+        "referensi": "Peraturan Pemerintah Nomor 24 Tahun 2018 tentang Pelayanan Perizinan Berusaha Terintegrasi Secara Elektronik"
+      },
+      {
+        "nomor": 4,
+        "referensi": "Permendikbud Nomor 25 Tahun 2018 tentang Perizinan Berusaha Terintegrasi Secara Elektronik Sektor Pendidikan dan Kebudayaan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-pusat-kegiatan-belajar-masyarakat-pkbm",
+    "nama_perizinan": "Izin Pusat Kegiatan Belajar Masyarakat (PKBM)",
+    "kategori": "Izin Pendidikan",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/OVA3bUFtNkVVZHNYcjdDdzIzUW8vdz09",
+    "crawl_timestamp": "2026-06-09T19:20:37.352806+00:00",
+    "persyaratan": [
+      "Dokumen Persyaratan sesuai Peraturan Pemerintah Nomor 24 Tahun 2018  meliputi :Nomor Induk BerusahaDokumen Pernyataan Pemenuhan Komitmen :Izin LokasiIzin LingkunganIzin Mendirikan Bangunan",
+      "Nomor Induk Berusaha",
+      "Dokumen Pernyataan Pemenuhan Komitmen :",
+      "Izin Lokasi",
+      "Izin Lingkungan",
+      "Izin Mendirikan Bangunan",
+      "Surat Permohonan",
+      "Surat Keabsahan Dokumen",
+      "Bukti Pembayaran SPPT PBB-P2 tahun terakhir",
+      "Bukti Pembayaran BPHTB dalam hal terjadi pengalihan kepemilikan",
+      "Foto KTP Penanggung Jawab",
+      "Foto NPWP Lembaga",
+      "Fotocopy Akta Pendirian dan Pengesahan Kemenkumham",
+      "Buku Rekening Lembaga",
+      "Bukti Kepemilikan Lahan/ Bukti Kepemilikan Lahan",
+      "Data Guru",
+      "Data Siswa",
+      "Struktur Organisasi",
+      "Jadwal Pembelajaran dan Kurikulum",
+      "Foto Gedung dan Sarana Prasarana (dijadikan satu dalalm file pdf)",
+      "Foto Kegiatan (dijadikan satu dalam file pdf)"
+    ],
+    "mekanisme_pelayanan": [
+      {
+        "nomor": 1,
+        "deskripsi": "Pemohon melakukan pendaftaran dan pemrosesan izin melalui sistem OSShttps://www.oss.go.id/oss/"
+      },
+      {
+        "nomor": 2,
+        "deskripsi": "Pemohon mendapatkan Nomor Induk Berusaha (NIB) an Izin Usaha yang belum efektif"
+      },
+      {
+        "nomor": 3,
+        "deskripsi": "Pemohon datang ke DPMPTSP untuk melakukan pemenuhan komitmen"
+      },
+      {
+        "nomor": 4,
+        "deskripsi": "DPMPTSP mengajukan rekoemdasi pemenuhan komitmen ke Perangkat Daerah Teknis"
+      },
+      {
+        "nomor": 5,
+        "deskripsi": "Perangkat Daerah teknis mengeluarkan surat rekomendasi pemenuhan komitmen"
+      },
+      {
+        "nomor": 6,
+        "deskripsi": "DPMPTSP melakukan notifikasi webform terhadap pemenuhan komitmen"
+      },
+      {
+        "nomor": 7,
+        "deskripsi": "DPMPTSP memberikan informasi kepada pemohon izin sudah berlaku efektif."
+      }
+    ],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Undang – Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional"
+      },
+      {
+        "nomor": 2,
+        "referensi": "Peraturan Pemerintah Nomor 66 Tahun 2010 tentang Perubahan Atas Peraturan Pemerintah Nomor 17 Tahun 2010 tentang Pengelolaan dan Penyelenggaraan Pendidikan"
+      },
+      {
+        "nomor": 3,
+        "referensi": "Peraturan Pemerintah Nomor 24 Tahun 2018 tentang Pelayanan Perizinan Berusaha Terintegrasi Secara Elektronik"
+      },
+      {
+        "nomor": 4,
+        "referensi": "Permendikbud Nomor 25 Tahun 2018 tentang Perizinan Berusaha Terintegrasi Secara Elektronik Sektor Pendidikan dan Kebudayaan"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  },
+  {
+    "id": "izin-penelitian-non-akademis",
+    "nama_perizinan": "Izin Penelitian Non Akademis",
+    "kategori": "Izin Penelitian",
+    "url_sumber": "https://sipuas.batangkab.go.id/perizinan/detail/bE5UQVhmdk9jNHQyVnRlVm5kUzNOQT09",
+    "crawl_timestamp": "2026-06-09T19:20:40.716913+00:00",
+    "persyaratan": [
+      "Surat Permohonan",
+      "Proposal Penelitian",
+      "Surat Pernyataan Tidak Melanggar Hukum",
+      "Surat Keabsahan Dokumen",
+      "Foto KTP Pemohon",
+      "Pas Foto Berwarna 4X6",
+      "Pengesahan Badan Hukum",
+      "Penunjukan Penanggungjawab Lokal & Pimpinan",
+      "Foto KTP Penunjukan Penanggungjawab Lokal & Pimpinan",
+      "Surat Kesanggupan (Baru)",
+      "Surat Penelitian Sebelumnya (Perpanjangan)",
+      "Foto KTP Koordinator Area",
+      "Surat Kuasa Penunjukan Koordinator Area"
+    ],
+    "mekanisme_pelayanan": [],
+    "dasar_hukum": [
+      {
+        "nomor": 1,
+        "referensi": "Peraturan Mentri Dalam Negeri Nomor 3 Tahun 2018 tentang Penerbitan Surat Keterangan Penelitian"
+      }
+    ],
+    "keterangan": {
+      "estimasi_selesai": "7 Hari Kerja",
+      "masa_berlaku": "-",
+      "biaya": "Tidak dikenakan biaya"
+    }
+  }
+]
