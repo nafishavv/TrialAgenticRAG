@@ -10,8 +10,9 @@ from __future__ import annotations
 from ragtrial.sources.base import Source, save_docs
 from ragtrial.sources.dukcapil import source as dukcapil_source
 from ragtrial.sources.opd import source as opd_source
+from ragtrial.sources.perizinan import source as perizinan_source
 
-_ALL: list[Source] = [dukcapil_source, opd_source]
+_ALL: list[Source] = [dukcapil_source, opd_source, perizinan_source]
 
 SOURCES: dict[str, Source] = {s.name: s for s in _ALL}
 
