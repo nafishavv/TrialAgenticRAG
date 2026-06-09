@@ -31,11 +31,26 @@ OPD_PROCESSED_PKL: Path = PROCESSED_DIR / "opd.pkl"
 DUKCAPIL_VECTOR_STORE: Path = VECTOR_STORE_DIR / "dukcapil"
 OPD_VECTOR_STORE: Path = VECTOR_STORE_DIR / "opd"
 
+PERIZINAN_RAW_DIR: Path = RAW_DIR / "perizinan"
+PERIZINAN_PROCESSED_PKL: Path = PROCESSED_DIR / "perizinan.pkl"
+PERIZINAN_VECTOR_STORE: Path = VECTOR_STORE_DIR / "perizinan"
+
 
 def load_env() -> str:
-    """Load .env from project root, return resolved Gemini API key."""
+    """Load API key dari .env (local) atau st.secrets (Streamlit Cloud)."""
+    # Try Streamlit secrets first (for Streamlit Cloud deployment)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
+            api_key = st.secrets["GEMINI_API_KEY"]
+            os.environ["GOOGLE_API_KEY"] = api_key
+            return api_key
+    except Exception:
+        pass
+
+    # Fallback: load from .env (local development)
     load_dotenv(PROJECT_ROOT / ".env")
     api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-    assert api_key, f"GEMINI_API_KEY tidak ditemukan di {PROJECT_ROOT / '.env'}"
+    assert api_key, "GEMINI_API_KEY tidak ditemukan. Set di .env (lokal) atau Streamlit Secrets (cloud)"
     os.environ["GOOGLE_API_KEY"] = api_key
     return api_key
