@@ -35,6 +35,7 @@ def build_vectorstore(
     wipe: bool = True,
     initial_wait: int = 70,
     max_retries: int = 5,
+    inter_batch_delay: float = 0.0,
 ) -> int:
     """Embed `chunks` and persist into Chroma. Returns total embedded count.
 
@@ -46,6 +47,9 @@ def build_vectorstore(
       wipe: If True, wipe `persist_directory` before building (fresh rebuild).
       initial_wait: Seconds to wait on first 429 (grows ×1.5 per retry).
       max_retries: Max retries per batch on rate-limit errors.
+      inter_batch_delay: Proactive pause (s) between batches to respect low RPM/TPM
+        free-tier limits. Default 0 = no pause (preserves behavior for small domains);
+        large corpora on rate-limited models should set this (e.g. 6).
     """
     persist_directory = Path(persist_directory)
     if wipe and persist_directory.exists():
@@ -88,6 +92,10 @@ def build_vectorstore(
                     wait = int(wait * 1.5)
                 else:
                     raise
+
+        # Proactive pacing: pause between batches (skip after the last one).
+        if inter_batch_delay and batch_num < total_batches:
+            time.sleep(inter_batch_delay)
 
     assert vectorstore is not None, "No chunks were embedded"
     count = vectorstore._collection.count()

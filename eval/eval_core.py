@@ -6,6 +6,7 @@ route + documents + answer) and `ask_main(...)` (without route).
 Gold ID format:
     dukcapil  → "page:<page_start>"
     opd       → "nomor:<nomor>"
+    sosial    → "id:<id>"
 
 Judges (LLM-as-judge) menggunakan Gemini dengan temperature=0 untuk konsistensi.
 """

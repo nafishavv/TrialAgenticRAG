@@ -16,7 +16,7 @@ from ragtrial.sources import SOURCES
 from ragtrial.vectorstore.builder import build_vectorstore
 
 
-def run_one(name: str, no_wipe: bool) -> None:
+def run_one(name: str, no_wipe: bool, batch_size: int, delay: float) -> None:
     src = SOURCES[name]
     cap = src.capability
     print(f"=== Building vector store: {name} ===")
@@ -36,6 +36,8 @@ def run_one(name: str, no_wipe: bool) -> None:
         collection_name=cap.collection_name,
         persist_directory=Path(cap.persist_directory),
         wipe=not no_wipe,
+        batch_size=batch_size,
+        inter_batch_delay=delay,
     )
 
 
@@ -47,11 +49,19 @@ def main() -> None:
         action="store_true",
         help="Do not wipe existing vector store before building (append mode)",
     )
+    ap.add_argument(
+        "--batch-size", type=int, default=40,
+        help="Chunks per embedding API call (lower = gentler on rate limits)",
+    )
+    ap.add_argument(
+        "--delay", type=float, default=0.0,
+        help="Proactive pause (s) between batches for low RPM/TPM free-tier limits",
+    )
     args = ap.parse_args()
 
     names = list(SOURCES) if args.source == "all" else [args.source]
     for name in names:
-        run_one(name, args.no_wipe)
+        run_one(name, args.no_wipe, args.batch_size, args.delay)
 
 
 if __name__ == "__main__":

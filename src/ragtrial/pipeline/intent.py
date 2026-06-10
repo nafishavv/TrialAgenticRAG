@@ -47,6 +47,10 @@ VALID_EXAMPLES: List[str] = [
     # Hukum & Peraturan
     "apa isi perda tentang retribusi daerah?",
     "peraturan bupati soal pelayanan administrasi?",
+    # Sosial & Kesejahteraan
+    "bagaimana penyelenggaraan perlindungan anak?",
+    "apa aturan kawasan tanpa rokok?",
+    "bagaimana prosedur pengumpulan sumbangan sosial?",
     # Informasi & Komunikasi / OPD
     "alamat kantor Disdukcapil Batang di mana?",
     "nomor telepon dinas kesehatan Kabupaten Batang?",

@@ -125,15 +125,72 @@ def print_summary(name: str, s: Dict[str, Any]) -> None:
             print(f"Latency {k:9s}  mean={v['mean']:.2f}s  p50={v['p50']:.2f}s  p95={v['p95']:.2f}s")
 
 
+def print_comparison(summaries: Dict[str, Dict[str, Any]], k: int = 5) -> None:
+    """Print a side-by-side comparison table across all systems."""
+    systems = list(summaries.keys())
+    w = 12
+
+    def _fmt(v) -> str:
+        if isinstance(v, float) and v != v:
+            return "-".center(w)
+        if isinstance(v, float):
+            return f"{v:.3f}".center(w)
+        return str(v).center(w)
+
+    print(f"\n{'='*60}")
+    print("  COMPARISON TABLE")
+    print(f"{'='*60}")
+    header = "Metric".ljust(28) + "".join(s.center(w) for s in systems)
+    print(header)
+    print("-" * len(header))
+
+    rows = []
+
+    # Retrieval
+    for key in [f"hit@{k}", f"recall@{k}", f"precision@{k}", "mrr"]:
+        vals = [summaries[s].get("retrieval", {}).get(key, float("nan")) for s in systems]
+        rows.append((f"retrieval.{key}", vals))
+
+    # Answer quality
+    for key in ["fact_recall", "faithfulness", "answer_relevance",
+                "refusal_correct_rate", "false_refusal_rate"]:
+        vals = [summaries[s].get("answer", {}).get(key, float("nan")) for s in systems]
+        rows.append((f"answer.{key}", vals))
+
+    # Routing (agentic/enhanced only)
+    for key in ["accuracy", "store_correct_rate"]:
+        vals = [summaries[s].get("routing", {}).get(key, float("nan")) for s in systems]
+        rows.append((f"routing.{key}", vals))
+
+    # Latency
+    for stage in ["retrieve", "generate", "total", "wall"]:
+        vals = [summaries[s].get("latency", {}).get(stage, {}).get("mean", float("nan"))
+                for s in systems]
+        rows.append((f"latency.{stage}(mean)", vals))
+    for stage in ["retrieve", "generate", "total"]:
+        vals = [summaries[s].get("latency", {}).get(stage, {}).get("p95", float("nan"))
+                for s in systems]
+        rows.append((f"latency.{stage}(p95)", vals))
+
+    for label, vals in rows:
+        print(label.ljust(28) + "".join(_fmt(v) for v in vals))
+
+    print()
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--systems", nargs="+", default=["agentic", "naive"])
+    ap.add_argument("--systems", nargs="+", default=["naive", "enhanced", "agentic"])
     ap.add_argument("--breakdown", nargs="+", default=[],
                     help="dimensi breakdown: query_type difficulty expected_route chunk_scope")
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--save", action="store_true",
                     help="simpan summary ke eval/results/summary_<system>.json")
+    ap.add_argument("--no-compare", action="store_true",
+                    help="skip comparison table")
     args = ap.parse_args()
+
+    summaries: Dict[str, Dict[str, Any]] = {}
 
     for system in args.systems:
         recs = load(system)
@@ -141,6 +198,7 @@ def main():
             print(f"[skip] no records for {system}")
             continue
         s = aggregate(recs, k=args.k)
+        summaries[system] = s
         print_summary(system, s)
 
         for dim in args.breakdown:
@@ -163,6 +221,9 @@ def main():
                                                        for d in args.breakdown}},
                           f, ensure_ascii=False, indent=2, default=str)
             print(f"\n  -> saved {outpath}")
+
+    if len(summaries) > 1 and not args.no_compare:
+        print_comparison(summaries, k=args.k)
 
 
 if __name__ == "__main__":

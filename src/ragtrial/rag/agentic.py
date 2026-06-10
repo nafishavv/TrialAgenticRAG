@@ -92,7 +92,13 @@ def _system_prompt(capabilities) -> str:
         "3. Pertanyaan di luar layanan publik (mis. harga barang, tokoh nasional, resep, topik umum)\n"
         "   → JANGAN panggil tool. Tolak dengan sopan: \"Maaf, saya hanya bisa membantu dengan\n"
         "   informasi layanan publik Kabupaten Batang.\", lalu arahkan ke kategori layanan.\n"
-        "4. Bahasa Indonesia sopan, jelas & ringkas. Sebutkan sumber kalau relevan."
+        "4. Saat memanggil search_opd untuk dinas tertentu, SELALU gunakan nama lengkap resmi,\n"
+        "   bukan singkatan. Contoh: 'Dukcapil' → 'Dinas Kependudukan dan Pencatatan Sipil',\n"
+        "   'Dinkes' → 'Dinas Kesehatan', 'Dispenduk' → 'Dinas Kependudukan dan Pencatatan Sipil',\n"
+        "   'BPKAD' → 'Badan Pengelolaan Keuangan dan Aset Daerah', dst.\n"
+        "   Jika hasil pertama tidak mengandung dinas yang dimaksud, WAJIB coba ulang dengan nama\n"
+        "   lengkap yang berbeda sebelum menyimpulkan tidak ada informasi.\n"
+        "5. Bahasa Indonesia sopan, jelas & ringkas. Sebutkan sumber kalau relevan."
     )
 
 

@@ -292,6 +292,7 @@ def _render_sidebar() -> None:
 # ============ Service chips ============
 _SERVICE_CHIPS: list[tuple[str, str]] = [
     ("Kependudukan", "Apa syarat membuat KTP baru?"),
+    ("Sosial", "Bagaimana penyelenggaraan perlindungan anak?"),
     ("Informasi OPD", "Alamat dan kontak Dinas Dukcapil?"),
 ]
 
