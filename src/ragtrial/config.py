@@ -35,6 +35,10 @@ PERIZINAN_RAW_DIR: Path = RAW_DIR / "perizinan"
 PERIZINAN_PROCESSED_PKL: Path = PROCESSED_DIR / "perizinan.pkl"
 PERIZINAN_VECTOR_STORE: Path = VECTOR_STORE_DIR / "perizinan"
 
+SOSIAL_RAW_DIR: Path = RAW_DIR / "sosial"
+SOSIAL_PROCESSED_PKL: Path = PROCESSED_DIR / "sosial.pkl"
+SOSIAL_VECTOR_STORE: Path = VECTOR_STORE_DIR / "sosial"
+
 
 def load_env() -> str:
     """Load API key dari .env (local) atau st.secrets (Streamlit Cloud)."""
