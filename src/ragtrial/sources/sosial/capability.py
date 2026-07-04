@@ -6,6 +6,7 @@ from langchain_core.documents import Document
 
 from ragtrial.capabilities.vector_source import VectorSourceCapability
 from ragtrial.config import SOSIAL_VECTOR_STORE
+from ragtrial.sources.sosial.chunk import gold_id_suffix
 
 
 def _header(doc: Document, idx: int) -> str:
@@ -24,7 +25,7 @@ def _header(doc: Document, idx: int) -> str:
 def _gold_id(doc: Document) -> str | None:
     m = doc.metadata or {}
     if m.get("id") and m.get("doc_type") == "sosial":
-        return f"sosial:id:{m['id']}"
+        return f"sosial:id:{m['id']}{gold_id_suffix(m)}"
     return None
 
 

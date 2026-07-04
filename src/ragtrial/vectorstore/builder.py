@@ -86,8 +86,8 @@ def build_vectorstore(
                 break
             except Exception as e:
                 msg = str(e)
-                if ("429" in msg or "RESOURCE_EXHAUSTED" in msg) and attempt < max_retries:
-                    print(f"\n  Rate limited. Retry {attempt + 1}/{max_retries} in {wait}s...", flush=True)
+                if ("429" in msg or "RESOURCE_EXHAUSTED" in msg or "503" in msg or "UNAVAILABLE" in msg) and attempt < max_retries:
+                    print(f"\n  Rate limited / unavailable. Retry {attempt + 1}/{max_retries} in {wait}s...", flush=True)
                     time.sleep(wait)
                     wait = int(wait * 1.5)
                 else:

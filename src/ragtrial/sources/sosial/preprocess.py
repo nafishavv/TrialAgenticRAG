@@ -36,13 +36,38 @@ _DOC_FIELDS = (
 
 
 # ── De-spacing (perbaikan text layer rusak) ───────────────────────────────────
-def fix_charspacing(text: str) -> str:
-    """Gabungkan teks yang ter-spasi per-huruf ("P a s a l" → "Pasal").
+# Sisipkan spasi pada transisi alfabet↔digit agar angka tak menempel ke kata
+# ("Pasal12"→"Pasal 12", "1TAHUN"→"1 TAHUN"). Penting agar regex "Pasal N" di
+# chunk.py menangkap nomor pasal multi-digit dengan benar.
+_ALPHA_DIGIT_BOUNDARY = re.compile(r"(?<=[A-Za-z])(?=\d)|(?<=\d)(?=[A-Za-z])")
 
-    Bekerja per baris. Baris dianggap char-spaced jika ≥4 token non-kosong dan
-    >60% token sepanjang 1 karakter. Pada baris itu: token kosong (spasi-ganda)
-    = batas kata, spasi-tunggal = antar-huruf → huruf digabung per kata.
-    Baris normal dibiarkan apa adanya.
+
+def _line_is_spaced(chars: List[str]) -> bool:
+    """Satu baris dianggap char-spaced jika mayoritas tokennya 1 karakter."""
+    if len(chars) < 2:
+        return False
+    return sum(1 for c in chars if len(c) == 1) / len(chars) > 0.6
+
+
+def _page_is_charspaced(text: str) -> bool:
+    """Gate level-halaman: rekonstruksi hanya bila teks halaman benar-benar
+    ter-spasi per-huruf (>50% token non-kosong sepanjang 1 karakter). Halaman
+    normal lolos gate → dikembalikan apa adanya (tak ada perubahan untuk dok bersih).
+    """
+    toks = [t for t in text.split() if t]
+    if len(toks) < 20:
+        return False
+    return sum(1 for t in toks if len(t) == 1) / len(toks) > 0.5
+
+
+def _despace_per_line(text: str) -> str:
+    """Perbaikan per-baris untuk halaman yang SEBAGIAN besar normal tapi punya
+    baris terisolasi ter-spasi (mis. label "C a t a t a n"). Baris dianggap
+    ter-spasi bila ≥4 token non-kosong & >60% token 1 karakter; spasi-ganda =
+    batas kata, spasi-tunggal = antar-huruf. Baris lain dibiarkan apa adanya.
+
+    Konservatif (ambang ≥4) agar tak salah-gabung konten pendek di dok bersih —
+    perilaku ini identik dengan implementasi lama (dok bersih tak berubah).
     """
     out: List[str] = []
     for line in text.split("\n"):
@@ -64,6 +89,43 @@ def fix_charspacing(text: str) -> str:
         else:
             out.append(line)
     return "\n".join(out)
+
+
+def _reconstruct_charspaced_page(text: str) -> str:
+    """Rekonstruksi halaman yang SELURUHNYA ter-spasi per-huruf ("P a s a l \\n1 2"
+    → "Pasal 12"). Tiap baris = satu token-grup (karakter digabung + spasi
+    disisipkan di batas alfabet↔digit), lalu semua baris digabung dengan SPASI
+    jadi satu aliran teks.
+
+    Penggabungan-spasi (bukan newline) penting karena `clean_text` membuang baris
+    yang isinya hanya angka — kalau nomor pasal berdiri sendiri ("Pasal\\n11"),
+    angkanya ikut terhapus. Dengan jadi "Pasal 11", nomor pasal aman & dideteksi
+    inline oleh chunk.py (anchor MEMUTUSKAN + anti cross-ref + langkah ter-batas).
+    """
+    words: List[str] = []
+    for line in text.split("\n"):
+        chars = [t for t in line.split(" ") if t != ""]
+        if not chars:
+            continue
+        if _line_is_spaced(chars):
+            words.append(_ALPHA_DIGIT_BOUNDARY.sub(" ", "".join(chars)))
+        else:
+            stripped = line.strip()
+            if stripped:
+                words.append(stripped)
+    return " ".join(words)
+
+
+def fix_charspacing(text: str) -> str:
+    """Perbaiki text-layer ter-spasi per-huruf.
+
+    Halaman yang SELURUHNYA char-spaced (text layer rusak total) → rekonstruksi
+    penuh; halaman normal → hanya perbaikan per-baris konservatif untuk label
+    terisolasi (perilaku lama, dok bersih tak berubah).
+    """
+    if _page_is_charspaced(text):
+        return _reconstruct_charspaced_page(text)
+    return _despace_per_line(text)
 
 
 # ── Cleaning (pola dari dukcapil/preprocess.py) ────────────────────────────────
@@ -107,6 +169,11 @@ def _process_one(meta: dict, raw_dir: Path) -> Tuple[List[Document], dict | None
     doc_meta = {f: meta.get(f, "") for f in _DOC_FIELDS}
     doc_meta["source"] = filename
     doc_meta["doc_type"] = "sosial"
+    # Tandai dokumen ber-text-layer rusak (ter-spasi per-huruf). chunk.py memakai
+    # flag ini untuk memilih strategi deteksi heading Pasal: dok bersih → anchor
+    # awal-baris (newline utuh); dok charspaced → deteksi inline (newline sudah
+    # hancur akibat rekonstruksi).
+    doc_meta["charspaced"] = any(_page_is_charspaced(p.page_content) for p in pages)
 
     out: List[Document] = []
     for p in pages:
