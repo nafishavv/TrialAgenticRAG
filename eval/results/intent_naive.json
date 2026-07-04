@@ -1,16 +1,16 @@
 {
   "system": "naive",
   "summary": {
-    "accuracy": 0.5,
-    "macro_f1": 0.3333333333333333,
+    "accuracy": 0.48717948717948717,
+    "macro_f1": 0.3275862068965517,
     "recall_invalid": 0.0,
     "recall_valid": 1.0,
     "per_class": {
       "valid": {
-        "precision": 0.5,
+        "precision": 0.48717948717948717,
         "recall": 1.0,
-        "f1": 0.6666666666666666,
-        "support": 20
+        "f1": 0.6551724137931034,
+        "support": 19
       },
       "invalid": {
         "precision": 0.0,
@@ -21,7 +21,7 @@
     },
     "confusion_matrix": {
       "valid": {
-        "valid": 20,
+        "valid": 19,
         "invalid": 0
       },
       "invalid": {
@@ -33,9 +33,9 @@
       "chitchat": 0.0,
       "oos": 0.0
     },
-    "latency_mean": 3.412572962504055,
-    "latency_p95": 5.80041200001142,
-    "n": 40
+    "latency_mean": 4.9674214025622065,
+    "latency_p95": 7.876598499948159,
+    "n": 39
   },
   "records": [
     {
@@ -48,21 +48,13 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Berdasarkan Pasal 15 Perpres Nomor 96 Tahun 2018, penerbitan KTP-el bagi penduduk WNI harus memenuhi persyaratan:\na. Telah berusia 17 tahun, sudah kawin atau pernah kawin; dan\nb. Fotokopi KK.\n\nTata cara:\na. Penduduk mengisi Formulir Pendaftaran Peristiwa Kependudukan (F-1.02) dan melampirkan persyaratan;\nb. Dinas menerbitkan KTP-el.",
-      "latency_total": 4.212848099996336,
-      "latency_wall": 4.212891200004378
+      "latency_total": 6.500934999960009,
+      "latency_wall": 6.500975399976596
     },
     {
       "id": "V02",
       "question": "apa syarat membuat akta kelahiran?",
-      "expected_intent": "valid",
-      "invalid_subtype": null,
-      "category": "kependudukan",
-      "predicted_intent": "valid",
-      "correct": true,
-      "retrieved_docs": 8,
-      "answer": "Berdasarkan konteks, persyaratan pencatatan kelahiran adalah fotokopi surat keterangan kelahiran, fotokopi buku nikah/kutipan akta perkawinan, dan fotokopi KK.\n\nJika tidak dapat memenuhi surat keterangan kelahiran, penduduk dapat membuat SPTJM Kebenaran Data Kelahiran (F-2.03) dengan 2 (dua) orang saksi.\n\nJika tidak dapat memenuhi buku nikah/kutipan akta perkawinan tetapi status hubungan dalam KK menunjukkan sebagai suami istri, penduduk dapat membuat SPTJM Kebenaran Data Pasangan Suami Istri (F-2.04) dengan 2 (dua) orang saksi.",
-      "latency_total": 5.244595600001048,
-      "latency_wall": 5.244648899999447
+      "error": "Error embedding content: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'The service is currently unavailable.', 'status': 'UNAVAILABLE'}}"
     },
     {
       "id": "V03",
@@ -74,8 +66,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 5.666134600003716,
-      "latency_wall": 5.666168600000674
+      "latency_total": 5.627850900054909,
+      "latency_wall": 5.627929100010078
     },
     {
       "id": "V04",
@@ -87,8 +79,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Syarat pengurusan pindah penduduk antar kabupaten/kota adalah Fotokopi Kartu Keluarga.",
-      "latency_total": 4.745399400009774,
-      "latency_wall": 4.745476299984148
+      "latency_total": 6.7518753000185825,
+      "latency_wall": 6.751925800053868
     },
     {
       "id": "V05",
@@ -99,9 +91,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 8,
-      "answer": "Untuk mengurus akta kematian, tata caranya adalah sebagai berikut:\n\n**Persyaratan:**\n*   Fotokopi surat kematian.\n*   Fotokopi Dokumen Perjalanan Republik Indonesia bagi WNI bukan penduduk.\n*   Fotokopi KK/KTP yang meninggal dunia.\n\n**Tata Cara:**\n1.  WNI mengisi Formulir Pelaporan Pencatatan Sipil di dalam Wilayah NKRI (F-2.01) dan melampirkan persyaratan.\n2.  Untuk pelayanan secara offline/tatap muka, persyaratan surat kematian yang diserahkan berupa fotokopi (asli hanya diperlihatkan). Dinas tidak menarik surat kematian asli.\n3.  WNI melampirkan fotokopi KK untuk verifikasi data.",
-      "latency_total": 4.361047199985478,
-      "latency_wall": 4.361105999996653
+      "answer": "Berdasarkan konteks, tata cara mengurus akta kematian adalah sebagai berikut:\n\n**Persyaratan:**\n*   Fotokopi surat kematian.\n*   Fotokopi Dokumen Perjalanan Republik Indonesia bagi WNI bukan penduduk atau fotokopi Dokumen Perjalanan Republik Indonesia bagi orang asing.\n*   Fotokopi KK/KTP yang meninggal dunia.\n\n**Tata Cara:**\n1.  WNI mengisi Formulir Pelaporan Pencatatan Sipil di dalam Wilayah NKRI (F-2.01) dan melampirkan persyaratan.\n2.  Orang Asing (OA) mengisi Formulir Pelaporan Pencatatan Sipil di dalam Wilayah NKRI (F-2.01).\n3.  Untuk pelayanan secara offline/tatap muka, persyaratan surat kematian yang diserahkan berupa fotokopi (asli hanya diperlihatkan). Dinas tidak menarik surat kematian asli.\n4.  WNI melampirkan fotokopi KK untuk verifikasi data.",
+      "latency_total": 6.364898899977561,
+      "latency_wall": 6.364992199989501
     },
     {
       "id": "V06",
@@ -113,8 +105,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.991134600015357,
-      "latency_wall": 3.9912120000226423
+      "latency_total": 4.979433500033338,
+      "latency_wall": 4.979485999967437
     },
     {
       "id": "V07",
@@ -125,9 +117,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 8,
-      "answer": "Pengurusan Surat Keterangan Pindah Warga Negara Indonesia (SKPWNI) hanya mensyaratkan fotokopi Kartu Keluarga. Tidak diperlukan pengantar RT/RW maupun kelurahan, dan tidak tercantum syarat surat keterangan izin pasangan.",
-      "latency_total": 5.80041200001142,
-      "latency_wall": 5.800458700017771
+      "answer": "Pengurusan Surat Keterangan Pindah (SKPWNI) hanya mensyaratkan fotokopi Kartu Keluarga. Tidak diperlukan pengantar RT/RW maupun kelurahan.\n\nJika secara faktual penduduk telah tinggal di daerah tujuan dan belum mengurus SKPWNI dari daerah asal karena terkendala jarak dan biaya, Disdukcapil daerah tujuan dapat membantu komunikasi dengan Disdukcapil daerah asal guna mendapatkan SKP.",
+      "latency_total": 9.08083120000083,
+      "latency_wall": 9.080894499958958
     },
     {
       "id": "V08",
@@ -139,8 +131,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 5.1274109999940265,
-      "latency_wall": 5.127458100003423
+      "latency_total": 4.536523499991745,
+      "latency_wall": 4.536597999976948
     },
     {
       "id": "V09",
@@ -152,8 +144,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.127236800006358,
-      "latency_wall": 3.127284199988935
+      "latency_total": 4.902364499983378,
+      "latency_wall": 4.90242150000995
     },
     {
       "id": "V10",
@@ -164,9 +156,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 8,
-      "answer": "Untuk membuat Kartu Keluarga baru, dokumen yang diperlukan untuk pencatatan biodata penduduk adalah:\n*   Surat pengantar (asli) dari rukun tetangga dan rukun warga atau yang disebut dengan nama lain.\n*   Fotokopi dokumen atau bukti peristiwa kependudukan dan peristiwa penting.\n*   Fotokopi bukti pendidikan terakhir.\n*   Apabila tidak memiliki fotokopi dokumen atau bukti peristiwa kependudukan dan peristiwa penting serta fotokopi bukti pendidikan terakhir, maka mengisi surat keterangan tidak memiliki dokumen kependudukan.\n*   Surat pernyataan (asli) tidak keberatan dari pemilik rumah apabila menumpang KK, menyewa rumah, kontrak dan kost.\n*   Pemohon juga mengisi Formulir Biodata Keluarga (F-1.01).",
-      "latency_total": 7.6137987000111025,
-      "latency_wall": 7.613835800002562
+      "answer": "Untuk membuat Kartu Keluarga baru, berdasarkan konteks yang diberikan, dokumen yang diperlukan untuk pencatatan biodata penduduk adalah:\n1.  Surat pengantar (asli) dari rukun tetangga dan rukun warga atau yang disebut dengan nama lain.\n2.  Fotokopi dokumen atau bukti peristiwa kependudukan dan peristiwa penting (seperti paspor, surat keterangan lahir dari RS/Puskesmas/Klinik).\n3.  Fotokopi bukti pendidikan terakhir (ijazah).\n4.  Apabila tidak memiliki syarat nomor 2 dan 3, maka mengisi surat keterangan tidak memiliki dokumen kependudukan (F1.04).\n5.  Mengisi Formulir Biodata Keluarga (F-1.01).\n6.  Surat pernyataan (asli) tidak keberatan dari pemilik rumah apabila menumpang KK, menyewa rumah, kontrak dan kost.",
+      "latency_total": 8.18569099996239,
+      "latency_wall": 8.185780800005887
     },
     {
       "id": "V11",
@@ -178,8 +170,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Jl. Urip Sumoharjo No. 11A Batang.",
-      "latency_total": 2.6163215000124183,
-      "latency_wall": 2.616353999997955
+      "latency_total": 5.418604300008155,
+      "latency_wall": 5.418666999961715
     },
     {
       "id": "V12",
@@ -191,8 +183,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Nomor telepon Dinas Kesehatan adalah (0285) 391479.",
-      "latency_total": 1.7817253000102937,
-      "latency_wall": 1.7817702000029385
+      "latency_total": 3.5683591999695636,
+      "latency_wall": 3.5684058999759145
     },
     {
       "id": "V13",
@@ -203,9 +195,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 8,
-      "answer": "Jl. Slamet Riyadi No. 29 Batang",
-      "latency_total": 2.298912400001427,
-      "latency_wall": 2.298961699998472
+      "answer": "Jl. Slamet Riyadi No. 29 Batang.",
+      "latency_total": 3.688679700018838,
+      "latency_wall": 3.688765099970624
     },
     {
       "id": "V14",
@@ -216,9 +208,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 8,
-      "answer": "Jl. RA Kartini No. 1 Batang.",
-      "latency_total": 2.855322300019907,
-      "latency_wall": 2.855366800009506
+      "answer": "Lokasi kantor Badan Perencanaan, Penelitian dan Pengembangan (Bappeda) adalah Jl. RA Kartini No. 1 Batang.",
+      "latency_total": 4.497889199992642,
+      "latency_wall": 4.497958399995696
     },
     {
       "id": "V15",
@@ -230,8 +222,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "(0285) 392320",
-      "latency_total": 1.9093520999886096,
-      "latency_wall": 1.9094089000136591
+      "latency_total": 3.372004000004381,
+      "latency_wall": 3.37207959999796
     },
     {
       "id": "V16",
@@ -243,8 +235,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Jl. Raya Kandeman Km 5 Batang.",
-      "latency_total": 2.2351290000078734,
-      "latency_wall": 2.2353164000087418
+      "latency_total": 3.60503360000439,
+      "latency_wall": 3.6051228000433184
     },
     {
       "id": "V17",
@@ -256,8 +248,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Jl. Veteran No. 10 Batang.",
-      "latency_total": 3.1221904999983963,
-      "latency_wall": 3.1222370000032242
+      "latency_total": 3.754718000011053,
+      "latency_wall": 3.754792899999302
     },
     {
       "id": "V18",
@@ -269,8 +261,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Nomor kontak Dinas Pangan dan Pertanian adalah (0285) 391092.",
-      "latency_total": 2.5017800999921747,
-      "latency_wall": 2.501824700011639
+      "latency_total": 4.498308199981693,
+      "latency_wall": 4.4984073000377975
     },
     {
       "id": "V19",
@@ -282,8 +274,8 @@
       "correct": true,
       "retrieved_docs": 8,
       "answer": "Alamat Dinas Lingkungan Hidup Batang adalah Jl. RA Kartini No. 1 Batang.",
-      "latency_total": 2.6071192000235897,
-      "latency_wall": 2.607160699990345
+      "latency_total": 3.577083499985747,
+      "latency_wall": 3.577156300016213
     },
     {
       "id": "V20",
@@ -294,9 +286,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 8,
-      "answer": "Berikut adalah alamat kantor kecamatan di Kabupaten Batang:\n\n*   **Kecamatan Batang**: Jl. Perintis Kemerdekaan No. 01 Batang\n*   **Kecamatan Reban**: Jl. Raya Reban-Limpung\n*   **Kecamatan Kandeman**: Jl. Raya Kandeman\n*   **Kecamatan Blado**: Jl. Raya Blado No. 02\n*   **Kecamatan Banyuputih**: Jl. Raya Banyuputih-Limpung Km. 1 No. 242\n*   **Kecamatan Wonotunggal**: Jl. Raya Tugu Wonotunggal No.01\n*   **Kecamatan Bawang**: Jl. Raya Bawang No. 17\n*   **Kecamatan Warungasem**: Jl. Raya Warungasem No. 09",
-      "latency_total": 3.4930076000164263,
-      "latency_wall": 3.4930503999930806
+      "answer": "Berikut adalah alamat kantor kecamatan di Kabupaten Batang:\n*   Kecamatan Batang: Jl. Perintis Kemerdekaan No. 01 Batang\n*   Kecamatan Reban: Jl. Raya Reban-Limpung\n*   Kecamatan Kandeman: Jl. Raya Kandeman\n*   Kecamatan Blado: Jl. Raya Blado No. 02\n*   Kecamatan Banyuputih: Jl. Raya Banyuputih-Limpung Km. 1 No. 242\n*   Kecamatan Wonotunggal: Jl. Raya Tugu Wonotunggal No.01\n*   Kecamatan Bawang: Jl. Raya Bawang No. 17",
+      "latency_total": 5.551869400020223,
+      "latency_wall": 5.5519319999730214
     },
     {
       "id": "I01",
@@ -307,9 +299,9 @@
       "predicted_intent": "valid",
       "correct": false,
       "retrieved_docs": 8,
-      "answer": "Halo! Ada yang bisa saya bantu?",
-      "latency_total": 1.8657368999847677,
-      "latency_wall": 1.865775299986126
+      "answer": "Maaf, informasi tidak ditemukan.",
+      "latency_total": 3.504067000001669,
+      "latency_wall": 3.5041214000084437
     },
     {
       "id": "I02",
@@ -320,9 +312,9 @@
       "predicted_intent": "valid",
       "correct": false,
       "retrieved_docs": 8,
-      "answer": "Selamat siang. Ada yang bisa saya bantu?",
-      "latency_total": 2.4622404999972787,
-      "latency_wall": 2.462264800007688
+      "answer": "Maaf, informasi tidak ditemukan.",
+      "latency_total": 4.0315096999984235,
+      "latency_wall": 4.031553699984215
     },
     {
       "id": "I03",
@@ -334,8 +326,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.916303499980131,
-      "latency_wall": 2.916341799980728
+      "latency_total": 4.909315500000957,
+      "latency_wall": 4.9093709999579005
     },
     {
       "id": "I04",
@@ -346,9 +338,9 @@
       "predicted_intent": "valid",
       "correct": false,
       "retrieved_docs": 8,
-      "answer": "Saya dapat memberikan jawaban terhadap permasalahan pelayanan pendaftaran penduduk dan pencatatan sipil. Saya juga merangkum pertanyaan yang sering ditanyakan berulang sebagai panduan untuk pelayanan administrasi kependudukan.",
-      "latency_total": 7.4916986000025645,
-      "latency_wall": 7.491740800003754
+      "answer": "Saya bisa memberikan informasi tentang:\n*   Jenis usaha tertentu.\n*   Penanganan anak melalui panti atau di luar panti.\n*   Larangan mencoret-coret, membuang sampah, dan buang air di tempat umum.\n*   Bentuk kerjasama pemasaran produk UMKM dan koperasi.\n*   Larangan menelantarkan, melakukan kekerasan, eksploitasi, dan mempekerjakan anak di bawah usia kerja.\n*   Pemberian bantuan hukum secara nonlitigasi, termasuk siapa yang dapat memberikan dan jenis kegiatannya.\n*   Usaha rehabilitatif, termasuk langkah-langkah dan pelaksanaannya.\n*   Jenis hiburan yang memerlukan izin.",
+      "latency_total": 7.876598499948159,
+      "latency_wall": 7.876714100013487
     },
     {
       "id": "I05",
@@ -360,8 +352,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.358149500010768,
-      "latency_wall": 3.358188499987591
+      "latency_total": 4.089378600008786,
+      "latency_wall": 4.089433400018606
     },
     {
       "id": "I06",
@@ -372,9 +364,9 @@
       "predicted_intent": "valid",
       "correct": false,
       "retrieved_docs": 8,
-      "answer": "Sama-sama.",
-      "latency_total": 1.9905588999972679,
-      "latency_wall": 1.990601900004549
+      "answer": "Maaf, informasi tidak ditemukan.",
+      "latency_total": 4.914042100019287,
+      "latency_wall": 4.914123399998061
     },
     {
       "id": "I07",
@@ -385,9 +377,9 @@
       "predicted_intent": "valid",
       "correct": false,
       "retrieved_docs": 8,
-      "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.4643790000118315,
-      "latency_wall": 2.4644204000069294
+      "answer": "Sama-sama.",
+      "latency_total": 3.6726620999979787,
+      "latency_wall": 3.672740200010594
     },
     {
       "id": "I08",
@@ -399,8 +391,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.017794800020056,
-      "latency_wall": 2.017825399991125
+      "latency_total": 3.7808663000469096,
+      "latency_wall": 3.780935999995563
     },
     {
       "id": "I09",
@@ -411,9 +403,9 @@
       "predicted_intent": "valid",
       "correct": false,
       "retrieved_docs": 8,
-      "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.2148753000074066,
-      "latency_wall": 2.2149124999996275
+      "answer": "Selamat pagi. Ada yang bisa saya bantu sebagai asisten layanan publik Kab. Batang?",
+      "latency_total": 3.4472756999894045,
+      "latency_wall": 3.4473271000315435
     },
     {
       "id": "I10",
@@ -425,8 +417,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.323514499992598,
-      "latency_wall": 3.323549399996409
+      "latency_total": 4.325831099995412,
+      "latency_wall": 4.325945499993395
     },
     {
       "id": "I11",
@@ -438,8 +430,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.787672400008887,
-      "latency_wall": 2.787710300006438
+      "latency_total": 5.220939799968619,
+      "latency_wall": 5.221024000027683
     },
     {
       "id": "I12",
@@ -451,8 +443,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.217771800002083,
-      "latency_wall": 2.2178057999990415
+      "latency_total": 3.8894004999892786,
+      "latency_wall": 3.88950059999479
     },
     {
       "id": "I13",
@@ -464,8 +456,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.9267706999962684,
-      "latency_wall": 2.926811799989082
+      "latency_total": 4.181802099978086,
+      "latency_wall": 4.181887199985795
     },
     {
       "id": "I14",
@@ -477,8 +469,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.0046368000039365,
-      "latency_wall": 3.0046812999935355
+      "latency_total": 4.697750700055622,
+      "latency_wall": 4.697842399997171
     },
     {
       "id": "I15",
@@ -490,8 +482,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.9191907000204083,
-      "latency_wall": 2.919226800004253
+      "latency_total": 5.626977299980354,
+      "latency_wall": 5.627079400001094
     },
     {
       "id": "I16",
@@ -503,8 +495,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 4.036693400004879,
-      "latency_wall": 4.036730699997861
+      "latency_total": 7.159409399959259,
+      "latency_wall": 7.159765900054481
     },
     {
       "id": "I17",
@@ -516,8 +508,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 2.9075851000088733,
-      "latency_wall": 2.907621799997287
+      "latency_total": 4.395369100035168,
+      "latency_wall": 4.395459999970626
     },
     {
       "id": "I18",
@@ -529,8 +521,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.4877209000114817,
-      "latency_wall": 3.487757299997611
+      "latency_total": 5.5255663999705575,
+      "latency_wall": 5.525672300020233
     },
     {
       "id": "I19",
@@ -542,8 +534,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.1650882000103593,
-      "latency_wall": 3.165135899995221
+      "latency_total": 5.417815399996471,
+      "latency_wall": 5.417920999985654
     },
     {
       "id": "I20",
@@ -555,8 +547,8 @@
       "correct": false,
       "retrieved_docs": 8,
       "answer": "Maaf, informasi tidak ditemukan.",
-      "latency_total": 3.6336589999846183,
-      "latency_wall": 3.6337096000206657
+      "latency_total": 4.599904500006232,
+      "latency_wall": 4.599995600001421
     }
   ]
 }

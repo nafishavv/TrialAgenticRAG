@@ -149,6 +149,8 @@ def main():
                     help="skip LLM-as-judge (retrieval & routing only)")
     ap.add_argument("--ids", nargs="+", default=None,
                     help="run only specific question IDs (e.g. DK001 OP005)")
+    ap.add_argument("--sleep", type=float, default=0.0,
+                    help="detik jeda antar query — throttle utk hindari 429 quota embedding")
     args = ap.parse_args()
 
     out = Path(args.outdir)
@@ -191,6 +193,8 @@ def main():
                     "id": q["id"], "system": system, "error": str(e),
                     "question": q["question"],
                 })
+            if args.sleep:
+                time.sleep(args.sleep)
 
         # save
         outpath = out / f"per_query_{system}.json"

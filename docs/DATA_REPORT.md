@@ -1,8 +1,8 @@
 # Laporan Data, Chunking & Rekomendasi Evaluasi
 
 **Proyek:** RAG Layanan Publik Kabupaten Batang
-**Tanggal:** 2026-06-30
-**Status dokumen:** sumber data ter-update (menggantikan angka `PROGRESS.md` yang stale)
+**Tanggal:** 2026-07-05
+**Status dokumen:** sumber data ter-update (menggantikan angka `PROGRESS.md` yang stale). Evaluasi 3 mode **sudah dijalankan** — ringkasan di §7, analisis penuh di [`docs/EVAL_REPORT.md`](EVAL_REPORT.md).
 
 > Dokumen ini punya dua tujuan: **(1)** laporan progres data — apa yang dipakai, berapa banyak, karakteristik, jumlah chunk, dan strategi chunking; **(2)** bahan **meninjau ulang rencana evaluasi** — framework & metrik yang sebaiknya dipakai dan cara menjalankannya. Semua angka chunk diverifikasi langsung dari `data/vector_stores/<domain>/chroma.sqlite3` (`count(*) from embeddings`), bukan estimasi.
 
@@ -110,8 +110,8 @@ Pewarisan metadata per chunk (page/section/pasal/nomor/judul) penting untuk **si
 - **Distribusi ukuran chunk sangat timpang antar domain:**
   - **Atomic & pendek** (opd, perizinan): 1 record = 1 chunk, kaya metadata → cocok untuk *lookup* eksak.
   - **Sedang** (dukcapil): chunk per Q&A.
-  - **Panjang & banyak** (sosial, 2.283 chunk = ~90% total): chunk per pasal/naratif → dominan di index, berpotensi mendominasi hasil retrieval lintas domain bila tidak ada routing.
-- **Implikasi retrieval:** karena volume sosial jauh lebih besar, **routing/intent gating** (enhanced & agentic) lebih krusial daripada di mode naive yang fan-out ke semua collection.
+  - **Panjang & banyak** (sosial, 2.433 chunk = ~91% total): chunk per pasal/penjelasan/naratif → dominan di index, berpotensi mendominasi hasil retrieval lintas domain bila tidak ada routing.
+- **Implikasi retrieval:** karena volume sosial jauh lebih besar, **routing/intent gating** (enhanced & agentic) lebih krusial daripada di mode naive yang fan-out ke semua collection. Terbukti di eval: sosial jadi domain **paling sulit** (recall@5 0.30–0.64) sementara domain atomik (opd/perizinan) mendekati sempurna — lihat §7.
 
 ---
 
@@ -149,73 +149,96 @@ State machine LangGraph **`agent ⇄ tools`**. LLM dibekali satu tool `search_<d
 
 ---
 
-## 7. Status Evaluasi Saat Ini
+## 7. Status & Hasil Evaluasi
 
-Framework eval sudah ada dan cukup matang secara kode, tapi **datasetnya tertinggal di belakang data**.
+> **Evaluasi 3 mode sudah selesai dijalankan.** Bagian ini merangkum status & angka kunci; analisis lengkap (per-domain, per-query_type, catatan arsitektur, anggaran waktu) ada di **[`docs/EVAL_REPORT.md`](EVAL_REPORT.md)**.
 
-**Komponen yang sudah ada:**
-- `eval/run_eval.py` — eval RAG penuh (retrieval + routing + answer quality) untuk ketiga sistem.
-- `eval/run_intent_eval.py` — eval klasifikasi intent VALID/INVALID.
-- `eval/eval_core.py` — metrik + LLM-as-judge.
-- `eval/analyze.py` — agregasi & breakdown (by query_type / difficulty / route).
+### 7.1 Test set — synthetic, grounded, terverifikasi
+Test set lama (60 soal, dukcapil+opd, banyak `TODO_FILL`) sudah **digantikan** oleh test set synthetic 4-domain yang di-generate & diverifikasi otomatis:
+- **`eval/testset.json` — 198 soal**, **0 `TODO_FILL`** (full ground-truth). Distribusi route: `sosial 70`, `dukcapil 55`, `perizinan 29`, `opd 25`, `both 10`, `none 9`. Query type: lexical_exact 58, paraphrase 43, semantic 33, analytical 20, multi_chunk 16, cross_store 10, negation_edge 9, out_of_scope 9. Difficulty: easy 105 / medium 92 / hard 1.
+- **`eval/intent_testset.json` — 40 soal** (≈20 valid / 20 invalid; subtype chitchat & out-of-scope).
+- **Pipeline generate** (`eval/gen_testset.py` + paket `eval/generation/`): LLM hanya menulis field bahasa-natural (question/answer/facts); **route, gold_chunks, query_type, chunk_scope ditetapkan deterministik dari chunk yang dipilih** (bukan ditebak LLM) — sampling stratified per domain, dedup Jaccard antar-pertanyaan.
+- **Verifikasi** (`eval/verify_testset.py`): gate keras **gold-id existence** (tiap `gold_chunks` wajib resolve ke chunk nyata di domainnya), plus cek schema, konsistensi route↔gold, dan distribusi. `gen_testset` menolak menulis file yang tak lolos verifikasi.
+- **Gold-id chunk-precise, 4 domain:** dukcapil `page:<page_start>`, opd `nomor:<nomor>`, perizinan `id:<perizinan_id>`, sosial `id:<id>#pasal:<n>` / `#penjelasan:<n>` / `#preamble[.part]` / `#narr:<k>`.
 
-**Metrik yang sudah terpasang:**
-- **Retrieval:** `hit@k`, `recall@k`, `precision@k`, `MRR` (gold-id dinormalisasi via `Capability.gold_id()`).
-- **Routing/Intent:** accuracy, confusion matrix, macro-F1, recall_valid/recall_invalid.
-- **Answer quality (LLM judge, `gemini` temp 0):** fact recall, faithfulness (0/1/2), answer relevance (0/1/2), refusal.
-- **Sistem:** timing per-stage (route/retrieve/generate/total), p50/p95.
+### 7.2 Metrik & harness (sudah terpasang)
+- `eval/run_eval.py` — retrieval + routing + answer-quality; `eval/run_intent_eval.py` — intent VALID/INVALID; `eval/eval_core.py` — metrik + LLM-judge; `eval/analyze.py` — agregasi & breakdown.
+- **Retrieval:** hit@k, recall@k, precision@k, MRR. **Routing/Intent:** accuracy, confusion matrix, macro-F1, recall_valid/invalid, refusal. **Answer-quality (LLM-judge gemini temp 0):** fact_recall, faithfulness, answer_relevance, false_refusal. **Sistem:** latency per-stage, p50/p95.
+- Hasil tersimpan di `eval/results/` (`summary_<mode>.json`, `per_query_<mode>.json`, `intent_<mode>.json`, `verify_report.json`).
 
-**Testset saat ini:**
-- `eval/testset.json` — **60 pertanyaan**. Distribusi route: `dukcapil 22`, `opd 18`, `both 14`, `none 6`. Query type: lexical_exact 18, cross_store 14, paraphrase 10, semantic 7, out_of_scope 6, negation_edge 2, multi_chunk 2, analytical 1. Difficulty: easy 21 / medium 25 / hard 14.
-- `eval/intent_testset.json` — **40 pertanyaan** (≈20 valid / 20 invalid; subtype chitchat & out-of-scope).
+### 7.3 Angka kunci (ringkas — detail di EVAL_REPORT.md)
 
-**Gap yang harus disorot (penting untuk peninjauan):**
-1. **Testset hanya mencakup dukcapil & opd.** Tidak ada satu pun pertanyaan ber-route `perizinan` atau `sosial`, padahal keduanya sudah live dan sosial = ~90% index. Evaluasi sekarang **tidak mengukur 2 dari 4 domain**.
-2. **37 dari 60** pertanyaan masih `TODO_FILL` pada `expected_answer`/`expected_facts` → metrik answer-quality (fact recall) belum bisa dihitung untuk mayoritas soal.
-3. **Format gold_id** — dukcapil (`page:<page_start>`), opd (`nomor:<nomor>`), perizinan (`perizinan:id:<perizinan_id>`), dan sosial (`sosial:id:<id>#pasal:<n>` / `#penjelasan:<n>` / `#preamble` / `#narr:<k>`) sudah chunk-precise. Retrieval metric bisa dihitung untuk semua 4 domain.
-4. **Testset kecil & timpang** (60 soal, condong dukcapil/opd, hanya 1 soal analytical).
+| Metrik | naive | enhanced | agentic |
+|---|---|---|---|
+| retrieval recall@5 | **0.81** | 0.62 | 0.65 |
+| routing accuracy | — | 0.72 | **0.92** |
+| faithfulness | 0.86 | 0.87 | **0.95** |
+| fact_recall | 0.65 | 0.64 | **0.77** |
+| recall_invalid (tolak OOS) | 0.00 | **1.00** | **1.00** |
+| latency total mean (s) ↓ | 6.35 | 14.57 | **5.32** |
+
+Baca cepat: **naive** menang retrieval murni karena fan-out tapi tak bisa menolak out-of-scope; **agentic** paling seimbang (routing, answer-quality, latency terbaik); **enhanced** titik terlemah di tengah karena reranker masih stub & hybrid dormant (biaya HyDE tak terbayar). Domain **sosial** paling sulit (recall@5 0.30–0.64), domain atomik (opd/perizinan) hampir sempurna.
+
+### 7.4 Gap/limitasi yang tersisa
+1. **Answer-quality baru atas subset ~60/198** soal (rate-limit embedding free-tier); retrieval/routing/intent sudah penuh 198.
+2. **Difficulty sangat timpang** — hanya **1 soal `hard`** (105 easy / 92 medium). Test set belum menantang di ujung atas.
+3. **Test set synthetic** (LLM-generated, grounded + terverifikasi gold-id), belum ada subset kurasi manusia penuh sebagai anchor.
+4. **28 dokumen sosial di-skip** (scan) → sebagian corpus hukum belum terwakili di index maupun eval.
 
 ---
 
-## 8. Rekomendasi Evaluasi (Inti Peninjauan)
+## 8. Rekomendasi — Semua yang Bisa Ditambahkan/Dilakukan Terkait Data
 
-### 8.1 Framework: custom harness **+** RAGAS (komplementer, bukan saling ganti)
+Karena baseline eval sudah ada (§7), rekomendasi difokuskan pada **data**: kelengkapan, kualitas, cakupan, granularitas, freshness, dan bagaimana perbaikan data itu diukur. Diurutkan per tema, dengan **prioritas** (P1 = high-ROI/segera, P2 = menengah, P3 = lanjutan) dan **sinyal eval** yang memotivasinya.
 
-| Lapisan | Pakai | Alasan |
-|---|---|---|
-| Retrieval, routing, intent | **Custom harness (sudah ada)** | Sudah ground-truth–aware (gold_id, expected_route, expected_intent). RAGAS lemah di sini karena butuh label eksplisit yang sudah kita punya. |
-| Answer quality berskala | **RAGAS** | Metrik `faithfulness`, `answer_relevancy`, `context_precision`, `context_recall` sudah baku & reference-free sebagian → mengurangi beban mengisi `expected_facts` manual. RAGAS bisa pakai LLM + embeddings **Gemini yang sudah terpasang** (tinggal set sebagai evaluator LLM/embeddings). |
+### 8.1 Kelengkapan & cakupan corpus
+- **[P1] Selamatkan 28 dokumen sosial yang di-skip** (`sosial_skipped.json`, scan/`<300` char/hal) via **OCR** (Tesseract-ind / PyMuPDF+OCR / cloud OCR). Ini bagian corpus hukum yang sekarang **tak ada di index maupun eval** — berpotensi menambah ratusan chunk pasal. Ukur dampak: recall@5 domain sosial sebelum/sesudah.
+- **[P1] Integrasikan 2 PDF `unprocessed/`** (`PERDA NOMOR 1 TAHUN 2019`, `Analisis-dan-evaluasi-hukum-2025`) — masukkan ke domain sosial (tambahkan ke `metadata.json` + rebuild). Arsitektur sudah siap.
+- **[P2] Perluas cakupan perizinan** — baru **34 izin** dari SIPUAS; crawl ulang untuk jenis izin yang belum tercakup (kategori usaha/lingkungan/pendidikan). Sumber tunggal & sempit = mudah out-of-coverage untuk pertanyaan warga nyata.
+- **[P2] Perkaya dukcapil** — hanya 1 sumber (Buku Saku 2023). Tambah SOP/persyaratan terbaru bila ada revisi; cek apakah edisi 2024/2025 tersedia (data bisa usang).
+- **[P3] Domain baru** yang sudah disinggung di roadmap: **pajak** & **hukum** umum (`sources/pajak/`, `sources/hukum/`) — 1 folder + 1 baris registry, lalu generate soal eval-nya lewat `gen_testset`.
 
-Rekomendasi: pertahankan judge custom yang sudah ada sebagai pembanding, tapi tambahkan RAGAS untuk skala & kredibilitas akademis (metrik yang dikenal luas).
+### 8.2 Kualitas & granularitas (dipicu sinyal eval)
+> Sosial adalah domain **tersulit** (recall@5 0.30–0.64) padahal ~91% index. Ini murni soal karakteristik data → berikut yang bisa dilakukan **di sisi data/chunk**:
+- **[P1] Near-duplicate pasal antar-perda** menurunkan recall (pasal berbunyi mirip di banyak peraturan → embedding tumpang-tindih, chunk yang benar kalah ranking). Mitigasi data: (a) **MMR / diversity re-ranking** saat retrieve; (b) sertakan **judul+nomor+tahun peraturan di dalam `page_content`** tiap chunk pasal (bukan cuma metadata) agar embedding membawa konteks pembeda; (c) dedup chunk identik lintas dokumen.
+- **[P2] Granularitas chunk-precise (pasal vs penjelasan)** kadang terlalu halus → gold pasal & penjelasan-nya bersaing. Uji **parent-document / small-to-big retrieval**: retrieve di level pasal, tapi kirim konteks selingkung (pasal + penjelasannya) ke LLM.
+- **[P2] Chunk `ayat`-level** untuk pasal panjang (banyak ayat) sebagai opsi granularitas; ukur trade-off recall vs precision.
+- **[P3] Tinjau dokumen `charspaced`** (text-layer rusak, 4 dok 2014–2016) secara manual sampel — pastikan rekonstruksi `fix_charspacing()` tak menelan nomor pasal; ini sumber error segmentasi paling halus.
+- **[P3] Tangani tabel/lampiran** di PDF hukum & perizinan (saat ini masuk narrative/di-`_enforce_max`) — ekstraksi tabel terstruktur bisa memperbaiki jawaban syarat/biaya.
 
-### 8.2 Metrik yang direkomendasikan, per lapisan
+### 8.3 Metadata enrichment (buka fitur retrieval baru)
+- **[P1] Filter berbasis metadata** — manfaatkan `status` (Berlaku/Tidak Berlaku), `tahun`, `bidang`, `tipe_dokumen` untuk **pre-filter** di Chroma (mis. default hanya "Berlaku", kecuali user tanya sejarah). Data & field sudah ada, tinggal dipakai di query. Kritis untuk layanan publik: **jangan jawab pakai peraturan yang sudah dicabut** tanpa peringatan.
+- **[P2] Normalisasi & lengkapi metadata** — pastikan `tahun`/`nomor` konsisten (untuk sorting "peraturan terbaru"), tambah `tanggal_ditetapkan`/`tanggal_dicabut` bila tersedia di JDIH.
+- **[P2] Timestamp freshness** — perizinan punya `crawl_date`; tambahkan juga untuk domain lain + tampilkan "data per <tanggal>" agar jawaban jujur soal kebaruan.
 
-- **Retrieval:** `recall@k` (utama, k=5), `MRR`, `context_precision` (RAGAS). Target rujukan awal: recall@5 ≥ 0.80.
-- **Routing & Intent:** accuracy + **macro-F1** (kelas tak seimbang), **refusal rate** untuk soal out-of-scope (route `none`). Target: macro-F1 ≥ 0.85; refusal benar pada ≥ 0.9 soal OOS.
-- **Generation:** **faithfulness/groundedness** (anti-halusinasi — paling kritis untuk layanan publik), **answer relevance**, **fact recall**, dan **citation correctness** (apakah pasal/halaman yang disebut benar). Target faithfulness ≥ 1.5/2.
-- **Sistem:** latency p50/p95 per mode, dan (bila memungkinkan) token/biaya per query — relevan membandingkan agentic (multi-call) vs naive.
+### 8.4 Freshness & maintenance data
+- **[P2] Jadwalkan re-scrape** SIPUAS (perizinan) & JDIH (sosial) berkala; deteksi peraturan baru/dicabut → rebuild incremental vector store.
+- **[P3] Versioning corpus** — simpan snapshot `metadata.json` + hash agar perubahan data bisa dilacak dan eval bisa dibandingkan antar-versi corpus.
 
-> Target di atas adalah **rujukan awal**, bukan patokan keras — kalibrasi ulang setelah baseline pertama.
+### 8.5 Data untuk evaluasi (test set & judge)
+- **[P1] Tambah soal `hard`** — sekarang hanya **1** dari 198. Naikkan porsi analytical/multi_chunk/negation_edge & lintas-tahun (mis. "peraturan mana yang mencabut Perda X?") lewat generator; ini yang membedakan kualitas antar-mode di ujung atas.
+- **[P1] Perbesar subset answer-quality** dari ~60 → seluruh 198 saat kuota memungkinkan (atau pakai tier berbayar) agar fact_recall/faithfulness statistik solid.
+- **[P2] Anchor kurasi manusia** — review manual 20–30 soal (terutama sosial) sebagai gold "emas" untuk mengkalibrasi test set synthetic & LLM-judge.
+- **[P2] Perbanyak `cross_store` & `both`** (sekarang 10) — pertanyaan realistis warga sering lintas domain (mis. "izin + OPD mana yang mengurus"); ini kelemahan recall semua mode.
+- **[P3] Tambah RAGAS** sebagai pembanding answer-quality (context_precision/recall, faithfulness) di atas judge custom — Gemini yang sudah terpasang bisa jadi evaluator; berguna untuk kredibilitas akademis metrik.
+- **[P3] Regenerasi test set** wajib tiap kali chunking berubah (gold-id bisa bergeser): `gen_testset` → `verify_testset` (gate gold-id existence) sudah mengotomasi ini.
 
-### 8.3 Prioritas perbaikan testset (urut kepentingan)
-
-1. **Tambah soal perizinan & sosial** ke `testset.json` (mis. +15 per domain, beragam query_type) — ini blocker utama; tanpa ini 2 domain tak terukur.
-2. ~~**Finalisasi gold_id** perizinan & sosial~~ — **SELESAI** (2026-06-30): gold-id chunk-precise sudah aktif untuk semua 4 domain. Sosial: `sosial:id:<id>#pasal:<n>` / `#penjelasan:<n>` / `#preamble` / `#narr:<k>`.
-3. **Isi 37 `TODO_FILL`** `expected_answer`/`expected_facts` — atau alihkan sebagian beban ke RAGAS reference-free.
-4. **Seimbangkan distribusi** per domain & query_type; tambah kasus negatif/out-of-scope lintas domain (mis. tanya sosial saat hanya ada di perizinan).
-
-### 8.4 Cara menjalankan (alur yang disarankan)
+### 8.6 Cara menjalankan / mengukur ulang (setelah perbaikan data)
 
 ```bash
-# 1. Baseline kuantitatif 3 mode
-python -m eval.run_eval --systems naive enhanced agentic --k 5
-# 2. Eval intent terpisah
-python -m eval.run_intent_eval --systems naive enhanced agentic
-# 3. Analisis + breakdown
-python -m eval.analyze --systems naive enhanced agentic --breakdown query_type difficulty --save
+# rebuild index setelah data/chunk berubah
+python scripts/preprocess.py --source <domain>
+python scripts/build_vectorstore.py --source <domain>
+# regenerate + verifikasi test set (gold-id bisa bergeser)
+python -m eval.gen_testset --domain <domain> --fresh
+python -m eval.verify_testset
+# re-run eval 3 mode + breakdown, bandingkan delta vs EVAL_REPORT.md
+python -m eval.run_eval --systems naive enhanced agentic --k 5 --no-judge --sleep 2
+python -m eval.analyze --systems naive enhanced agentic \
+    --breakdown expected_route difficulty query_type --save
 ```
 
-Baca hasil sebagai perbandingan **naive (baseline jujur) vs enhanced (pipeline terkontrol) vs agentic (otonom)**, dipecah per `query_type`, `difficulty`, dan `expected_route`. Setelah testset perizinan/sosial masuk, jalankan ulang untuk dapat gambaran 4 domain penuh.
+Fokus baca **delta recall@5 per domain** (khususnya sosial) sebelum/sesudah tiap perubahan data — itu ukuran ROI paling langsung. Anggaran waktu 1 siklus ~2.5–3 jam free-tier (rincian di [EVAL_REPORT.md §9](EVAL_REPORT.md)).
 
 ---
 
@@ -234,7 +257,10 @@ Baca hasil sebagai perbandingan **naive (baseline jujur) vs enhanced (pipeline t
 - `src/ragtrial/vectorstore/builder.py`, `src/ragtrial/llm.py` — Chroma builder & konfigurasi Gemini.
 
 **Eval**
-- `eval/{run_eval,run_intent_eval,eval_core,analyze}.py`, `eval/testset.json`, `eval/intent_testset.json`, `eval/results/`.
+- Harness: `eval/{run_eval,run_intent_eval,eval_core,analyze}.py`.
+- Generasi test set: `eval/gen_testset.py` + paket `eval/generation/{chunks,generators,dedup,llm_client,prompts,schema}.py`; validasi: `eval/verify_testset.py`.
+- Data & hasil: `eval/testset.json` (198 soal), `eval/intent_testset.json` (40), `eval/results/` (`summary_*`, `per_query_*`, `intent_*`, `verify_report.json`).
+- Laporan hasil: [`docs/EVAL_REPORT.md`](EVAL_REPORT.md).
 
 **Reproduksi vector store (contoh sosial)**
 ```bash

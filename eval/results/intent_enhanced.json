@@ -10,7 +10,7 @@
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "support": 20
+        "support": 16
       },
       "invalid": {
         "precision": 1.0,
@@ -21,7 +21,7 @@
     },
     "confusion_matrix": {
       "valid": {
-        "valid": 20,
+        "valid": 16,
         "invalid": 0
       },
       "invalid": {
@@ -33,62 +33,30 @@
       "chitchat": 1.0,
       "oos": 1.0
     },
-    "latency_mean": 7.575768072498613,
-    "latency_p95": 16.93935080000665,
-    "n": 40
+    "latency_mean": 7.015678441666144,
+    "latency_p95": 12.583906500018202,
+    "n": 36
   },
   "records": [
     {
       "id": "V01",
       "question": "bagaimana penerbitan KTP elektronik pertama kali bagi WNI?",
-      "expected_intent": "valid",
-      "invalid_subtype": null,
-      "category": "kependudukan",
-      "predicted_intent": "valid",
-      "correct": true,
-      "retrieved_docs": 5,
-      "answer": "Berdasarkan Pasal 15 Perpres Nomor 96 Tahun 2018, penerbitan KTP-el pertama kali bagi WNI harus memenuhi persyaratan:\na. Telah berusia 17 tahun, sudah kawin atau pernah kawin; dan\nb. Fotokopi KK.\n\nTata cara:\na. Penduduk mengisi Formulir Pendaftaran Peristiwa Kependudukan (F-1.02) dan melampirkan persyaratan;\nb. Dinas menerbitkan KTP-el.",
-      "latency_total": 14.174168099998496,
-      "latency_wall": 14.174320099991746
+      "error": "Error embedding content (RESOURCE_EXHAUSTED): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Quota exceeded for aiplatform.googleapis.com/global_embed_content_requests_per_minute_per_base_model with base model: gemini-embedding-2. Please submit a quota increase request. https://cloud.google.com/vertex-ai/docs/generative-ai/quotas-genai.', 'status': 'RESOURCE_EXHAUSTED'}}"
     },
     {
       "id": "V02",
       "question": "apa syarat membuat akta kelahiran?",
-      "expected_intent": "valid",
-      "invalid_subtype": null,
-      "category": "kependudukan",
-      "predicted_intent": "valid",
-      "correct": true,
-      "retrieved_docs": 5,
-      "answer": "Syarat membuat akta kelahiran adalah:\na. Fotokopi surat keterangan kelahiran.\nb. Fotokopi buku nikah/kutipan akta perkawinan.\nc. Fotokopi KK.\n\nJika tidak dapat memenuhi persyaratan surat keterangan kelahiran, penduduk dapat membuat SPTJM Kebenaran Data Kelahiran (F-2.03) dengan 2 (dua) orang saksi.\n\nJika tidak dapat memenuhi persyaratan buku nikah/kutipan akta perkawinan tetapi status hubungan dalam KK menunjukkan sebagai suami istri, penduduk dapat membuat SPTJM Kebenaran Data Pasangan Suami Istri (F-2.04) dengan 2 (dua) orang saksi.",
-      "latency_total": 12.335686000005808,
-      "latency_wall": 12.335753099992871
+      "error": "Error embedding content (RESOURCE_EXHAUSTED): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Quota exceeded for aiplatform.googleapis.com/global_embed_content_requests_per_minute_per_base_model with base model: gemini-embedding-2. Please submit a quota increase request. https://cloud.google.com/vertex-ai/docs/generative-ai/quotas-genai.', 'status': 'RESOURCE_EXHAUSTED'}}"
     },
     {
       "id": "V03",
       "question": "cara mengganti KTP elektronik yang hilang?",
-      "expected_intent": "valid",
-      "invalid_subtype": null,
-      "category": "kependudukan",
-      "predicted_intent": "valid",
-      "correct": true,
-      "retrieved_docs": 5,
-      "answer": "Maaf, informasi mengenai cara mengganti KTP elektronik yang hilang secara umum tidak ditemukan di sumber yang tersedia. Sumber hanya menjelaskan bahwa penerbitan KTP-el bagi penduduk yang kehilangan KTP-el di luar domisili dapat dilakukan apabila telah melakukan perekaman data dan tidak terdapat perubahan elemen data kependudukan.",
-      "latency_total": 16.93935080000665,
-      "latency_wall": 16.93938719999278
+      "error": "Error embedding content (RESOURCE_EXHAUSTED): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Quota exceeded for aiplatform.googleapis.com/global_embed_content_requests_per_minute_per_base_model with base model: gemini-embedding-2. Please submit a quota increase request. https://cloud.google.com/vertex-ai/docs/generative-ai/quotas-genai.', 'status': 'RESOURCE_EXHAUSTED'}}"
     },
     {
       "id": "V04",
       "question": "apa syarat pindah datang penduduk antar kabupaten?",
-      "expected_intent": "valid",
-      "invalid_subtype": null,
-      "category": "kependudukan",
-      "predicted_intent": "valid",
-      "correct": true,
-      "retrieved_docs": 5,
-      "answer": "Syarat pindah datang penduduk antar kabupaten adalah sebagai berikut:\n\n1.  Menyerahkan Surat Keterangan Pindah WNI (SKPWNI) di Dinas Dukcapil Tujuan.\n2.  Dalam hal menumpang KK, menyewa rumah, kontrak, atau kost, perlu menyerahkan surat pernyataan tidak keberatan dari pemilik rumah di tempat layanan tujuan.\n3.  Menyerahkan KTP-el dan/atau KIA alamat lama.\n4.  Jika secara faktual sudah berada di daerah tujuan dan belum mempunyai SKP, Dinas tujuan akan membantu pengurusan SKP dengan Disdukcapil daerah asal, yang memerlukan:\n    *   Mengisi Formulir Pendaftaran Perpindahan Penduduk (F-1.03).\n    *   Melampirkan fotokopi KK.\n    *   Dalam hal tidak dapat melampirkan KK, dapat mengisi Formulir Pendaftaran Perpindahan Penduduk (F-1.03) secara lengkap dengan meminta informasi NIK dan No KK ke Dinas daerah tujuan.",
-      "latency_total": 14.77889889999642,
-      "latency_wall": 14.77892049998627
+      "error": "Error embedding content (RESOURCE_EXHAUSTED): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Quota exceeded for aiplatform.googleapis.com/global_embed_content_requests_per_minute_per_base_model with base model: gemini-embedding-2. Please submit a quota increase request. https://cloud.google.com/vertex-ai/docs/generative-ai/quotas-genai.', 'status': 'RESOURCE_EXHAUSTED'}}"
     },
     {
       "id": "V05",
@@ -99,9 +67,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 5,
-      "answer": "Untuk mengurus akta kematian:\n\n1.  **Pelaporan Kematian:** Setiap kematian wajib dilaporkan oleh ketua rukun tetangga atau nama lainnya di domisili penduduk kepada Instansi Pelaksana paling lambat 30 (tiga puluh) hari sejak tanggal kematian untuk diterbitkan akta kematiannya.\n2.  **Pemohon:** Permohonan pencatatan kematian tidak harus oleh pihak keluarga/ahli waris, tetapi juga dapat dilakukan oleh ketua rukun tetangga/nama lainnya atau orang lain.\n3.  **Persyaratan:**\n    *   Fotokopi surat kematian dari dokter atau kepala desa/lurah atau yang disebut nama lain. Kepala desa/lurah dapat menerbitkan surat keterangan kematian berdasarkan permohonan dari ketua rukun tetangga/nama lainnya atau orang lain.\n    *   Pemohon mengisi Formulir Pelaporan Pencatatan Sipil di dalam Wilayah NKRI (F-2.01) dan melampirkan persyaratan.\n\n**Untuk pencatatan kematian penduduk yang tidak terdaftar dalam Kartu Keluarga (KK) dan database kependudukan:**\n*   Dapat dilakukan melalui penetapan pengadilan.\n*   Dapat juga dilakukan tanpa penetapan pengadilan, dengan adanya dokumen pendukung (misalnya buku nikah/akta perkawinan, KK/KTP lama, ijazah, dokumen perjalanan RI (paspor)) dan dikuatkan dengan surat kematian dari kepala desa/lurah serta pemohon membuat Surat Pernyataan Tanggung Jawab Mutlak (SPTJM) dengan 2 (dua) orang saksi.",
-      "latency_total": 17.676582399988547,
-      "latency_wall": 17.67663950001588
+      "answer": "Untuk mengurus akta kematian, berikut adalah langkah-langkah dan persyaratannya:\n\n1.  **Pelaporan Kematian:** Setiap kematian wajib dilaporkan oleh ketua rukun tetangga atau nama lainnya di domisili penduduk kepada Instansi Pelaksana paling lambat 30 (tiga puluh) hari sejak tanggal kematian untuk diterbitkan akta kematiannya.\n2.  **Pihak yang Dapat Melakukan Permohonan:** Permohonan pencatatan kematian tidak harus oleh pihak keluarga/ahli waris, tetapi juga dapat dilakukan oleh ketua rukun tetangga/nama lainnya atau orang lain.\n3.  **Surat Keterangan Kematian:** Kepala desa/lurah dapat menerbitkan surat keterangan kematian berdasarkan permohonan dari ketua rukun tetangga/nama lainnya atau orang lain.\n4.  **Persyaratan Pencatatan Kematian:**\n    *   Fotokopi surat kematian dari dokter atau kepala desa/lurah atau yang disebut nama lain.\n    *   Pemohon mengisi Formulir Pelaporan Pencatatan Sipil di dalam Wilayah NKRI (F-2.01) dan melampirkan persyaratan.",
+      "latency_total": 14.945189399993978,
+      "latency_wall": 14.945237200008705
     },
     {
       "id": "V06",
@@ -113,8 +81,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Maaf, informasi tidak ditemukan di sumber yang tersedia.",
-      "latency_total": 11.104561399988597,
-      "latency_wall": 11.10461499998928
+      "latency_total": 9.003139900043607,
+      "latency_wall": 9.00318940001307
     },
     {
       "id": "V07",
@@ -125,9 +93,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 5,
-      "answer": "Untuk mengurus Surat Keterangan Pindah Warga Negara Indonesia (SKPWNI):\n1.  Hanya mensyaratkan fotokopi Kartu Keluarga.\n2.  Tidak diperlukan surat pengantar RT/RW maupun kelurahan.\n3.  Tidak diperlukan surat keterangan izin pasangan jika pindah tidak bersama pasangan.",
-      "latency_total": 11.517636799981119,
-      "latency_wall": 11.517692499997793
+      "answer": "Untuk mengurus Surat Keterangan Pindah Warga Negara Indonesia (SKPWNI):\n1.  Hanya mensyaratkan fotokopi Kartu Keluarga.\n2.  Tidak diperlukan surat pengantar RT/RW maupun kelurahan.\n3.  Tidak diperlukan surat keterangan izin pasangan.\n4.  Jika penduduk secara faktual telah tinggal di daerah tujuan dan belum mengurus SKPWNI dari daerah asal karena kendala jarak atau biaya, pengurusan SKPWNI dapat dibantu oleh Disdukcapil daerah tujuan. Disdukcapil daerah tujuan akan membantu komunikasi dengan Disdukcapil daerah asal untuk mendapatkan SKP.",
+      "latency_total": 20.60625660000369,
+      "latency_wall": 20.606313300027978
     },
     {
       "id": "V08",
@@ -139,8 +107,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Maaf, informasi tidak ditemukan di sumber yang tersedia.",
-      "latency_total": 11.8221937000053,
-      "latency_wall": 11.822257599997101
+      "latency_total": 10.924247000017203,
+      "latency_wall": 10.924300400016364
     },
     {
       "id": "V09",
@@ -152,8 +120,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Maaf, informasi tidak ditemukan di sumber yang tersedia.",
-      "latency_total": 10.207353200006764,
-      "latency_wall": 10.207397799997125
+      "latency_total": 8.28107219998492,
+      "latency_wall": 8.281126099987887
     },
     {
       "id": "V10",
@@ -164,9 +132,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 5,
-      "answer": "Untuk membuat Kartu Keluarga baru dalam konteks pindah penduduk berbeda kelurahan/kecamatan namun masih dalam 1 (satu) kabupaten/kota, dokumen yang diperlukan adalah:\n\n1.  Fotokopi Kartu Keluarga.\n2.  Surat pernyataan tidak keberatan dari pemilik rumah (apabila menumpang KK, menyewa rumah, kontrak, dan kost).\n3.  Mengisi Formulir Pendaftaran Perpindahan Penduduk (F-1.03).",
-      "latency_total": 24.907001100014895,
-      "latency_wall": 24.90705720000551
+      "answer": "Maaf, informasi tidak ditemukan di sumber yang tersedia.",
+      "latency_total": 11.058279999997467,
+      "latency_wall": 11.058324299985543
     },
     {
       "id": "V11",
@@ -178,8 +146,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Alamat kantor Dinas Kependudukan dan Pencatatan Sipil adalah Jl. Urip Sumoharjo No. 11A Batang.",
-      "latency_total": 9.910454400000162,
-      "latency_wall": 9.910498200013535
+      "latency_total": 12.583906500018202,
+      "latency_wall": 12.583946800034028
     },
     {
       "id": "V12",
@@ -191,8 +159,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Nomor telepon Dinas Kesehatan Kabupaten Batang adalah (0285) 391479.",
-      "latency_total": 7.895480100007262,
-      "latency_wall": 7.895522099977825
+      "latency_total": 11.468418399977963,
+      "latency_wall": 11.468465899990406
     },
     {
       "id": "V13",
@@ -204,8 +172,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Alamat Dinas Pendidikan dan Kebudayaan adalah Jl. Slamet Riyadi No. 29 Batang.",
-      "latency_total": 10.11544620001223,
-      "latency_wall": 10.115546199987875
+      "latency_total": 10.238645999983419,
+      "latency_wall": 10.238709900004324
     },
     {
       "id": "V14",
@@ -217,8 +185,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Lokasi kantor Badan Perencanaan, Penelitian dan Pengembangan (Bappeda) Kabupaten Batang adalah di Jl. RA Kartini No. 1 Batang.",
-      "latency_total": 8.412280300020939,
-      "latency_wall": 8.412317499984056
+      "latency_total": 10.529671899974346,
+      "latency_wall": 10.529705900000408
     },
     {
       "id": "V15",
@@ -230,8 +198,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Kontak Dinas Sosial Kabupaten Batang adalah (0285) 392320.",
-      "latency_total": 9.467127199983224,
-      "latency_wall": 9.467168000002857
+      "latency_total": 10.811191499989945,
+      "latency_wall": 10.811235299974214
     },
     {
       "id": "V16",
@@ -242,9 +210,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 5,
-      "answer": "Alamat Dinas Perhubungan Batang adalah Jl. Raya Kandeman Km 5 Batang.",
-      "latency_total": 9.570034299977124,
-      "latency_wall": 9.570074300019769
+      "answer": "Alamat Dinas Perhubungan adalah Jl. Raya Kandeman Km 5 Batang.",
+      "latency_total": 11.42177840002114,
+      "latency_wall": 11.421823800017592
     },
     {
       "id": "V17",
@@ -256,8 +224,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Kantor Satpol PP Kabupaten Batang beralamat di Jl. Veteran No. 10 Batang.",
-      "latency_total": 9.544310600002063,
-      "latency_wall": 9.544340899999952
+      "latency_total": 9.938940799969714,
+      "latency_wall": 9.938991000002716
     },
     {
       "id": "V18",
@@ -269,8 +237,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Nomor kontak Dinas Pangan dan Pertanian Kabupaten Batang adalah (0285) 391092.",
-      "latency_total": 11.312607900006697,
-      "latency_wall": 11.312666499987245
+      "latency_total": 9.677700700005516,
+      "latency_wall": 9.67774220003048
     },
     {
       "id": "V19",
@@ -282,8 +250,8 @@
       "correct": true,
       "retrieved_docs": 5,
       "answer": "Alamat Dinas Lingkungan Hidup adalah Jl. RA Kartini No. 1 Batang.",
-      "latency_total": 8.721380300004967,
-      "latency_wall": 8.721413699997356
+      "latency_total": 10.538030900002923,
+      "latency_wall": 10.538069600006565
     },
     {
       "id": "V20",
@@ -294,9 +262,9 @@
       "predicted_intent": "valid",
       "correct": true,
       "retrieved_docs": 5,
-      "answer": "Berikut adalah alamat kantor kecamatan di Kabupaten Batang:\n\n*   **Kecamatan Batang**: Jl. Perintis Kemerdekaan No. 01 Batang\n*   **Kecamatan Kandeman**: Jl. Raya Kandeman\n*   **Kecamatan Reban**: Jl. Raya Reban-Limpung",
-      "latency_total": 7.882310999993933,
-      "latency_wall": 7.882349300023634
+      "answer": "Berikut adalah alamat kantor kecamatan di Kabupaten Batang:\n*   **Kecamatan Batang**: Jl. Perintis Kemerdekaan No. 01 Batang\n*   **Kecamatan Kandeman**: Jl. Raya Kandeman\n*   **Kecamatan Tersono**: Jl. Raya Tersono No. 01\n*   **Kecamatan Bandar**: Jl. Raya Bandar No. 123\n*   **Kecamatan Reban**: Jl. Raya Reban-Limpung",
+      "latency_total": 11.767920799960848,
+      "latency_wall": 11.767961899982765
     },
     {
       "id": "I01",
@@ -308,8 +276,8 @@
       "correct": true,
       "retrieved_docs": 0,
       "answer": "Halo! Saya adalah chatbot layanan publik khusus Kabupaten Batang. Saya siap membantu Anda dengan informasi seputar:\n*   Perizinan\n*   Kependudukan\n*   Pajak Daerah\n*   Hukum & Peraturan\n*   Informasi & Komunikasi\n\nAda yang bisa saya bantu?",
-      "latency_total": 2.606877100013662,
-      "latency_wall": 2.6069117999868467
+      "latency_total": 2.5010666999733075,
+      "latency_wall": 2.5011076999944635
     },
     {
       "id": "I02",
@@ -320,9 +288,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Selamat siang! Saya adalah asisten chatbot layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu?",
-      "latency_total": 2.509279999998398,
-      "latency_wall": 2.5093111000023782
+      "answer": "Selamat siang! Saya adalah asisten chatbot khusus layanan publik Kabupaten Batang. Saya siap membantu Anda dengan informasi seputar Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi. Ada yang bisa saya bantu?",
+      "latency_total": 3.3243826999678276,
+      "latency_wall": 3.324414499977138
     },
     {
       "id": "I03",
@@ -333,9 +301,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Halo! Saya adalah chatbot layanan publik khusus Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
-      "latency_total": 3.521025099995313,
-      "latency_wall": 3.5210499000095297
+      "answer": "Halo! Saya adalah asisten chatbot layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
+      "latency_total": 3.9973914999864064,
+      "latency_wall": 3.9974264999618754
     },
     {
       "id": "I04",
@@ -347,8 +315,8 @@
       "correct": true,
       "retrieved_docs": 0,
       "answer": "Halo! Saya adalah asisten chatbot khusus layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n*   Perizinan\n*   Kependudukan\n*   Pajak Daerah\n*   Hukum & Peraturan\n*   Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
-      "latency_total": 2.404267700010678,
-      "latency_wall": 2.404294600011781
+      "latency_total": 3.3911980999982916,
+      "latency_wall": 3.3912489999784157
     },
     {
       "id": "I05",
@@ -360,8 +328,8 @@
       "correct": true,
       "retrieved_docs": 0,
       "answer": "Halo! Saya adalah asisten chatbot khusus layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n*   Perizinan\n*   Kependudukan\n*   Pajak Daerah\n*   Hukum & Peraturan\n*   Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
-      "latency_total": 2.838134599995101,
-      "latency_wall": 2.8381660000013653
+      "latency_total": 3.1457129000336863,
+      "latency_wall": 3.1457454999908805
     },
     {
       "id": "I06",
@@ -372,9 +340,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Sama-sama. Ada lagi yang bisa saya bantu terkait informasi Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, atau Informasi & Komunikasi di Kabupaten Batang?",
-      "latency_total": 5.1399099999980535,
-      "latency_wall": 5.13993850001134
+      "answer": "Sama-sama. Ada lagi yang bisa saya bantu terkait informasi layanan publik Kabupaten Batang seperti Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, atau Informasi & Komunikasi?",
+      "latency_total": 3.4625770999700762,
+      "latency_wall": 3.4626136999577284
     },
     {
       "id": "I07",
@@ -385,9 +353,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Sama-sama. Apakah ada hal lain yang bisa saya bantu terkait layanan publik Kabupaten Batang, seperti perizinan, kependudukan, pajak daerah, hukum & peraturan, atau informasi & komunikasi?",
-      "latency_total": 6.395983700000215,
-      "latency_wall": 6.396015000005718
+      "answer": "Sama-sama. Ada lagi yang bisa saya bantu terkait layanan publik Kabupaten Batang seperti Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, atau Informasi & Komunikasi?",
+      "latency_total": 4.415188500017393,
+      "latency_wall": 4.415224700002
     },
     {
       "id": "I08",
@@ -398,9 +366,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Halo! Kabar saya baik, terima kasih.\n\nSaya adalah chatbot layanan publik khusus Kabupaten Batang. Saya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu?",
-      "latency_total": 4.452015899994876,
-      "latency_wall": 4.45205029999488
+      "answer": "Halo! Kabar saya baik, terima kasih. Saya adalah chatbot layanan publik khusus Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu?",
+      "latency_total": 4.4343012000317685,
+      "latency_wall": 4.4343387999688275
     },
     {
       "id": "I09",
@@ -411,9 +379,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Selamat pagi! Saya adalah asisten chatbot layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
-      "latency_total": 2.9689991000050213,
-      "latency_wall": 2.9690298000059556
+      "answer": "Selamat pagi! Saya adalah asisten chatbot khusus layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
+      "latency_total": 3.011517599981744,
+      "latency_wall": 3.011550900002476
     },
     {
       "id": "I10",
@@ -424,9 +392,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Halo! Saya adalah asisten chatbot khusus layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu hari ini?",
-      "latency_total": 2.519681399979163,
-      "latency_wall": 2.5197174999921117
+      "answer": "Halo! Saya adalah asisten chatbot khusus layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu?",
+      "latency_total": 3.372687600029167,
+      "latency_wall": 3.3727221000008285
     },
     {
       "id": "I11",
@@ -437,9 +405,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Layanan yang dapat saya bantu meliputi Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi. Apakah ada hal lain terkait layanan tersebut yang bisa saya bantu?",
-      "latency_total": 2.9470620999927633,
-      "latency_wall": 2.947092699992936
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Saya dapat membantu Anda dengan informasi seputar Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi. Apakah ada hal lain yang bisa saya bantu terkait layanan tersebut?",
+      "latency_total": 3.572363499959465,
+      "latency_wall": 3.5723992999992333
     },
     {
       "id": "I12",
@@ -450,9 +418,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Saya bisa membantu Anda dengan informasi seputar:\n*   Perizinan\n*   Kependudukan\n*   Pajak Daerah\n*   Hukum & Peraturan\n*   Informasi & Komunikasi\n\nAda yang bisa saya bantu terkait layanan-layanan tersebut?",
-      "latency_total": 2.6231372999900486,
-      "latency_wall": 2.6231799999950454
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada yang bisa saya bantu terkait kategori tersebut?",
+      "latency_total": 3.2685287999920547,
+      "latency_wall": 3.268564200028777
     },
     {
       "id": "I13",
@@ -464,8 +432,8 @@
       "correct": true,
       "retrieved_docs": 0,
       "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada hal lain yang bisa saya bantu terkait layanan publik Kabupaten Batang?",
-      "latency_total": 2.9994486999930814,
-      "latency_wall": 2.9994811000069603
+      "latency_total": 3.1691756999935023,
+      "latency_wall": 3.1692089999560267
     },
     {
       "id": "I14",
@@ -476,9 +444,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada hal terkait layanan publik Kabupaten Batang yang ingin Anda tanyakan?",
-      "latency_total": 3.246758499997668,
-      "latency_wall": 3.246785600000294
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang, seperti Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi. Ada yang bisa saya bantu terkait layanan tersebut?",
+      "latency_total": 4.087503300048411,
+      "latency_wall": 4.087557399994694
     },
     {
       "id": "I15",
@@ -489,9 +457,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada hal lain yang bisa saya bantu terkait layanan publik Kabupaten Batang?",
-      "latency_total": 3.0947947000095155,
-      "latency_wall": 3.094822999992175
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Layanan yang bisa saya berikan meliputi Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi.\n\nApakah ada hal lain terkait layanan publik Kabupaten Batang yang ingin Anda tanyakan?",
+      "latency_total": 2.9614293000195175,
+      "latency_wall": 2.961464899999555
     },
     {
       "id": "I16",
@@ -502,9 +470,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada hal lain yang bisa saya bantu terkait layanan publik Kabupaten Batang?",
-      "latency_total": 3.0170424999960233,
-      "latency_wall": 3.0170867000124417
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Saya bisa membantu Anda dengan informasi seputar Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, atau Informasi & Komunikasi.",
+      "latency_total": 3.2709324000170454,
+      "latency_wall": 3.270968199998606
     },
     {
       "id": "I17",
@@ -515,9 +483,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nAda yang bisa saya bantu terkait kategori tersebut?",
-      "latency_total": 3.1206020999816246,
-      "latency_wall": 3.120640100009041
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya bisa membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada hal lain yang bisa saya bantu terkait layanan publik Kabupaten Batang?",
+      "latency_total": 3.576900399988517,
+      "latency_wall": 3.5769385999883525
     },
     {
       "id": "I18",
@@ -528,9 +496,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya dapat membantu Anda dengan informasi seputar:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada yang bisa saya bantu terkait kategori tersebut?",
-      "latency_total": 2.716146699996898,
-      "latency_wall": 2.716193200001726
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nApakah ada yang bisa saya bantu terkait:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi?",
+      "latency_total": 3.267924400046468,
+      "latency_wall": 3.2679589000181295
     },
     {
       "id": "I19",
@@ -542,8 +510,8 @@
       "correct": true,
       "retrieved_docs": 0,
       "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.\n\nSaya siap membantu Anda dengan informasi mengenai:\n- Perizinan\n- Kependudukan\n- Pajak Daerah\n- Hukum & Peraturan\n- Informasi & Komunikasi\n\nApakah ada hal lain yang bisa saya bantu terkait layanan tersebut?",
-      "latency_total": 2.5992688999976963,
-      "latency_wall": 2.5993042000045534
+      "latency_total": 2.765067700005602,
+      "latency_wall": 2.765100100019481
     },
     {
       "id": "I20",
@@ -554,9 +522,9 @@
       "predicted_intent": "invalid",
       "correct": true,
       "retrieved_docs": 0,
-      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Saya dapat membantu Anda dengan informasi seputar Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi. Ada yang bisa saya bantu terkait hal tersebut?",
-      "latency_total": 3.0154220999975223,
-      "latency_wall": 3.0154558999929577
+      "answer": "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang. Saya dapat membantu Anda dengan informasi seputar Perizinan, Kependudukan, Pajak Daerah, Hukum & Peraturan, serta Informasi & Komunikasi.\n\nApakah ada yang bisa saya bantu terkait kategori tersebut?",
+      "latency_total": 3.7741834999760613,
+      "latency_wall": 3.7742279999656603
     }
   ]
 }
