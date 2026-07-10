@@ -39,6 +39,12 @@ SOSIAL_RAW_DIR: Path = RAW_DIR / "sosial"
 SOSIAL_PROCESSED_PKL: Path = PROCESSED_DIR / "sosial.pkl"
 SOSIAL_VECTOR_STORE: Path = VECTOR_STORE_DIR / "sosial"
 
+# Unified single index — ALL domains in one Chroma collection with a `domain`
+# metadata field. The shared retrieval substrate for naive/enhanced/agentic
+# (built by copying per-domain vectors; no re-embed). See vectorstore/unified.py.
+UNIFIED_COLLECTION: str = "unified"
+UNIFIED_VECTOR_STORE: Path = VECTOR_STORE_DIR / "unified"
+
 
 def load_env() -> str:
     """Load API key dari .env (local) atau st.secrets (Streamlit Cloud)."""

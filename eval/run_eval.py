@@ -141,7 +141,8 @@ def main():
     ap.add_argument("--testset", default=str(ROOT / "eval" / "testset.json"))
     ap.add_argument("--outdir", default=str(ROOT / "eval" / "results"))
     ap.add_argument("--systems", nargs="+", default=["naive", "enhanced", "agentic"],
-                    choices=["naive", "enhanced", "agentic"])
+                    help="naive | agentic | enhanced | enhanced@<preset> "
+                         "(presets: default, dense_only, hybrid_no_rerank, rerank_no_hybrid, no_intent)")
     ap.add_argument("--k", type=int, default=5, help="top-k for retrieval metrics")
     ap.add_argument("--limit", type=int, default=None,
                     help="run only first N questions (smoke test)")
@@ -166,17 +167,28 @@ def main():
     print(f"Loaded {len(testset)} questions. systems={args.systems}  k={args.k}  judge={use_judge}")
 
     # System registry — add/swap a system here; metrics stay system-agnostic
-    # because every system returns a RagResult.
+    # because every system returns a RagResult. Enhanced ablation cells are
+    # addressed as "enhanced@<preset>" (e.g. enhanced@dense_only); bare "enhanced"
+    # == enhanced@default. The pipeline is built ONCE per system (reuses the
+    # reranker model + intent router across queries).
+    def _mk_enhanced(preset: str):
+        from ragtrial.rag.enhanced import PRESETS, build_enhanced
+        rag = build_enhanced(PRESETS[preset])
+        return lambda q, verbose=False: rag.ask(q, verbose=verbose)
+
     ask_fns = {}
-    if "naive" in args.systems:
-        from ragtrial.rag.naive import ask_naive
-        ask_fns["naive"] = ask_naive
-    if "enhanced" in args.systems:
-        from ragtrial.rag.enhanced import ask_enhanced
-        ask_fns["enhanced"] = ask_enhanced
-    if "agentic" in args.systems:
-        from ragtrial.rag.agentic import ask_agentic
-        ask_fns["agentic"] = ask_agentic
+    for system in args.systems:
+        if system == "naive":
+            from ragtrial.rag.naive import ask_naive
+            ask_fns[system] = ask_naive
+        elif system == "agentic":
+            from ragtrial.rag.agentic import ask_agentic
+            ask_fns[system] = ask_agentic
+        elif system == "enhanced" or system.startswith("enhanced@"):
+            preset = system.split("@", 1)[1] if "@" in system else "default"
+            ask_fns[system] = _mk_enhanced(preset)
+        else:
+            raise SystemExit(f"unknown system: {system!r}")
 
     for system in args.systems:
         ask = ask_fns[system]

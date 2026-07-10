@@ -1,23 +1,23 @@
 """Naive RAG — the honest baseline.
 
-Fans out a dense top-k search to the SAME per-domain collections that enhanced
-and agentic use, then merges by distance into a global top-k — no router, no
-rewrite, no rerank, no hybrid. The database is identical across all three modes
-(controlled variable); naive differs only by searching every domain blindly and
-stuffing the merged chunks into a generic prompt.
+Canonical minimal RAG: a single dense top-k similarity search over the ONE unified
+collection (all domains), stuffed into a generic prompt. No router, no rewrite, no
+rerank, no hybrid, no intent gate. The unified index is the SAME store enhanced and
+agentic read (controlled variable); naive differs only by being the plainest path —
+dense retrieve → stuff → generate.
 """
 
 from __future__ import annotations
 
 import time
-from typing import List, Tuple
+from typing import List
 
 from langchain_core.documents import Document
 
-from ragtrial.capabilities.registry import SEARCHABLE_CAPABILITIES
 from ragtrial.llm import llm
 from ragtrial.rag.prompts import PROMPT_NAIVE
 from ragtrial.result import RagResult
+from ragtrial.vectorstore.store import unified_store
 
 
 def _stuff(docs: List[Document]) -> str:
@@ -34,15 +34,11 @@ def _sources_in(docs: List[Document]) -> List[str]:
     return out
 
 
-def ask_naive(question: str, k: int = 8, verbose: bool = True) -> RagResult:
+def ask_naive(question: str, k: int = 5, verbose: bool = True) -> RagResult:
     t0 = time.perf_counter()
 
     t_r0 = time.perf_counter()
-    scored: List[Tuple[Document, float]] = []
-    for cap in SEARCHABLE_CAPABILITIES.values():
-        scored.extend(cap.search_with_scores(question, k=k))
-    scored.sort(key=lambda ds: ds[1])  # lower distance = more similar
-    docs = [d for d, _ in scored[:k]]
+    docs = unified_store.search(question, k=k, strategy="dense")  # global, no filter
     t_retrieve = time.perf_counter() - t_r0
 
     t_g0 = time.perf_counter()
@@ -68,12 +64,20 @@ def ask_naive(question: str, k: int = 8, verbose: bool = True) -> RagResult:
         },
         # No intent handling — naive always retrieves (baseline/control group).
         meta={"intent": "valid"},
+        decisions={
+            "intent": "retrieve",   # naive never refuses
+            "rewrite": False,
+            "routing": "global",    # unified, no domain filter
+            "retrieval": "dense",
+            "rerank": False,
+            "iterations": 1,
+        },
     )
 
     if verbose:
         t = result.timings
         print(f"Q: {question}")
-        print(f"   Docs: {len(docs)} (fan-out all collections, dense top-{k} merged)")
+        print(f"   Docs: {len(docs)} (unified dense top-{k})")
         print(
             f"   Timing — retrieve: {t['retrieve']:.2f}s | "
             f"generate: {t['generate']:.2f}s | TOTAL: {t['total']:.2f}s"

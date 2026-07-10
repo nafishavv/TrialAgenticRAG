@@ -34,6 +34,12 @@ class RagResult:
     timings: Dict[str, float] = field(default_factory=dict)
     meta: Dict[str, Any] = field(default_factory=dict)
     """Mode-specific extras: route_reason, rewritten_query, steps (agent trace), ..."""
+    decisions: Dict[str, Any] = field(default_factory=dict)
+    """Normalized execution log — SAME keys across all 3 modes for uniform
+    visualization/debugging. Schema: intent ('retrieve'|'direct'), rewrite (bool),
+    routing ('global'|domain|[domains]|'none'), retrieval ('dense'|'hybrid'),
+    rerank (bool), iterations (int). Built from existing state; `meta` keeps the
+    rich per-mode detail."""
 
     def __post_init__(self) -> None:
         if not self.query:
@@ -55,6 +61,7 @@ class RagResult:
             "mode": self.mode,
             "timings": self.timings,
             "meta": self.meta,
+            "decisions": self.decisions,
         }
         # Surface common meta keys at top level for back-compat.
         for k in ("route_reason", "rewritten_query", "original_query", "steps"):

@@ -1,18 +1,18 @@
 """Enhanced RAG — a FIXED pipeline assembled from a config dataclass.
 
-The developer designs the path; every query flows through the same stages, with
-NO LLM deciding the control flow (that is what makes it 'enhanced', not agentic).
-Swap a component by changing one field on EnhancedRAGConfig — build_enhanced()
-looks each up in the stage factory dicts.
+Canonical Enhanced (on the unified index): intent gate -> retrieve GLOBAL top-N
+(hybrid) -> cross-encoder rerank to top_n -> generate. No domain routing, no query
+rewriting, NO LLM in the control flow (that is what makes it 'enhanced', not
+agentic). Every valid query follows the identical path.
 
-    cfg = EnhancedRAGConfig(rewriter="hyde", router="semantic",
-                            retrieval="dense", reranker="none")
+    cfg = EnhancedRAGConfig(retrieval="hybrid", reranker="cross_encoder")
     rag = build_enhanced(cfg)
     result = rag.ask("...")          # -> RagResult
 
-Default = canonical enhanced: semantic(embedding) route -> HyDE rewrite ->
-dense retrieve -> no rerank -> generate. Cross-encoder rerank is deferred (stub).
-Presets reproduce the retired modules' behavior so nothing is lost (see PRESETS).
+The retrieval stack is the only lever, exposed as a 2x2 ablation (hybrid {on,off} x
+rerank {on,off}) via PRESETS — that is the clean "does the retrieval stack pay off?"
+experiment. Domain routers (route.py) and HyDE (rewrite.py) remain in the tree as
+optional ablation plugs, but are OFF in the default.
 """
 
 from __future__ import annotations
@@ -27,26 +27,29 @@ from ragtrial.pipeline import GenerateStage, Pipeline, RERANKERS, ROUTERS, REWRI
 from ragtrial.pipeline.intent import INTENT_GATES
 from ragtrial.result import RagResult
 
+_GLOBAL_ROUTES = {None, "all", "both"}
+
 
 @dataclass
 class EnhancedRAGConfig:
-    intent: str = "semantic"        # none | semantic (VALID/INVALID gate — user intent handling)
-    rewriter: str = "hyde"          # passthrough | hyde | multiquery*
-    router: str = "semantic"        # none | semantic | llm
-    retrieval: str = "dense"        # dense | hybrid
-    reranker: str = "none"          # none | cross_encoder* (rerank deferred)
-    k: int = 5                      # top-k for single-domain retrieval
-    k_per_source: int = 4           # top-k per capability when fanning out
-    rerank_top_n: Optional[int] = None
+    intent: str = "semantic"        # none | semantic (VALID/INVALID gate)
+    rewriter: str = "passthrough"   # passthrough (default) | hyde | multiquery*
+    router: str = "none"            # none (global fan-out) | semantic | llm  (ablation)
+    retrieval: str = "hybrid"       # dense | hybrid
+    reranker: str = "cross_encoder" # none | cross_encoder
+    k_candidates: int = 10          # global candidate pool retrieved (into rerank)
+    top_n: int = 5                  # final docs after rerank -> generator
 
 
-# Presets. Default = canonical enhanced (intent gate + HyDE + semantic + dense). Reranker deferred.
+# Presets. Default = canonical (intent + hybrid + cross-encoder rerank, global).
+# The 4 retrieval-stack ablation cells (hybrid x rerank) share an identical
+# candidate pool — only the two switches differ, so the deltas are attributable.
 PRESETS: dict[str, EnhancedRAGConfig] = {
-    "default": EnhancedRAGConfig(),
-    "no_intent": EnhancedRAGConfig(intent="none"),                               # ablation: intent gate off
-    "no_hyde": EnhancedRAGConfig(rewriter="passthrough"),                         # ablation: HyDE off
-    "fanout_hybrid": EnhancedRAGConfig(router="none", retrieval="hybrid"),       # ~ old naive_combined
-    "llm_router_hybrid": EnhancedRAGConfig(router="llm", retrieval="hybrid"),    # ~ old static agentic
+    "default": EnhancedRAGConfig(),                                             # hybrid + rerank
+    "dense_only": EnhancedRAGConfig(retrieval="dense", reranker="none"),        # neither (~naive stack)
+    "hybrid_no_rerank": EnhancedRAGConfig(retrieval="hybrid", reranker="none"), # hybrid only
+    "rerank_no_hybrid": EnhancedRAGConfig(retrieval="dense", reranker="cross_encoder"),  # rerank only
+    "no_intent": EnhancedRAGConfig(intent="none"),                              # ablation: intent gate off
 }
 
 
@@ -66,6 +69,19 @@ class EnhancedRAG:
         self.config = config
         self.pipeline = pipeline
 
+    def _decisions(self, state) -> dict:
+        cfg = self.config
+        route = state.route
+        routing = "global" if route in _GLOBAL_ROUTES else route
+        return {
+            "intent": "direct" if state.intent == "invalid" else "retrieve",
+            "rewrite": cfg.rewriter != "passthrough",
+            "routing": routing,
+            "retrieval": cfg.retrieval,
+            "rerank": cfg.reranker != "none",
+            "iterations": 1,
+        }
+
     def ask(self, question: str, verbose: bool = True) -> RagResult:
         t0 = time.perf_counter()
         state = self.pipeline.run(question)
@@ -79,11 +95,12 @@ class EnhancedRAG:
             answer=state.answer,
             documents=state.documents,
             query=state.query,
-            route=state.route if state.route is not None else "all",
+            route=state.route if state.route is not None else "global",
             source_used=source_used,
             mode="enhanced",
             timings={**state.timings, "total": total},
             meta={**state.meta, "config": self.config.__dict__},
+            decisions=self._decisions(state),
         )
 
         if verbose:
@@ -93,10 +110,7 @@ class EnhancedRAG:
                 print(f"   Rewritten: {state.query}")
             print(f"   Route: {result.route}  ({state.meta.get('route_reason', '')})")
             print(f"   Source used: {source_used}  | docs: {len(state.documents)}")
-            print(
-                "   Timing — "
-                + " | ".join(f"{k}: {v:.2f}s" for k, v in t.items())
-            )
+            print("   Timing — " + " | ".join(f"{k}: {v:.2f}s" for k, v in t.items()))
             print(f"   Answer: {state.answer[:400]}{'...' if len(state.answer) > 400 else ''}\n")
         return result
 
@@ -105,14 +119,9 @@ def build_enhanced(config: Optional[EnhancedRAGConfig] = None) -> EnhancedRAG:
     """Assemble an EnhancedRAG from a config (defaults to the canonical pipeline)."""
     cfg = config or EnhancedRAGConfig()
 
-    rerank_cls = RERANKERS[cfg.reranker]
-    reranker = (
-        rerank_cls(top_n=cfg.rerank_top_n) if cfg.rerank_top_n is not None else rerank_cls()
-    )
-
-    # intent gate FIRST (decide retrieve-or-not on the original question), then
-    # route BEFORE rewrite: the router must classify the original question, not a
-    # fabricated HyDE passage. Rewrite then reshapes the query for retrieval only.
+    # intent gate FIRST (retrieve-or-not on the original question), then route
+    # (default none=global), then rewrite (default passthrough), retrieve a global
+    # candidate pool, rerank to top_n, generate.
     stages = []
     intent_cls = INTENT_GATES[cfg.intent]
     if intent_cls is not None:
@@ -120,8 +129,8 @@ def build_enhanced(config: Optional[EnhancedRAGConfig] = None) -> EnhancedRAG:
     stages += [
         ROUTERS[cfg.router](),
         REWRITERS[cfg.rewriter](),
-        RetrieveStage(strategy=cfg.retrieval, k=cfg.k, k_per_source=cfg.k_per_source),
-        reranker,
+        RetrieveStage(strategy=cfg.retrieval, k=cfg.k_candidates),
+        RERANKERS[cfg.reranker](top_n=cfg.top_n),
         GenerateStage(),
     ]
     return EnhancedRAG(cfg, Pipeline(stages))

@@ -36,11 +36,14 @@ from typing_extensions import TypedDict
 from ragtrial.capabilities import format_context
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import llm
+from ragtrial.pipeline.rerank import rerank_documents
 from ragtrial.rag.prompts import service_categories_block
 from ragtrial.result import RagResult
+from ragtrial.vectorstore.store import unified_store
 
 MAX_ITERATIONS = 5
-K_PER_TOOL = 5
+K_PER_TOOL = 10          # candidate pool per tool call (into rerank)
+RERANK_TOP_N = 5         # docs kept per tool call after rerank (matches enhanced top_n)
 _TOOL_PREFIX = "search_"
 
 
@@ -110,6 +113,7 @@ class AgentState(TypedDict):
     iterations: int
     t_agent: float
     t_tools: float
+    t_rerank: float
 
 
 # ============ Nodes ============
@@ -131,20 +135,24 @@ def _node_tools(state: AgentState) -> AgentState:
     docs: List[Document] = list(state["documents"])
     steps: List[Dict[str, Any]] = list(state["steps"])
     t_tools = state["t_tools"]
+    t_rerank = state["t_rerank"]
 
     for call in last.tool_calls:
         name = call["name"]
         query = (call.get("args") or {}).get("query", "")
         domain = name[len(_TOOL_PREFIX):] if name.startswith(_TOOL_PREFIX) else name
-        cap = SEARCHABLE_CAPABILITIES.get(domain)
 
-        if cap is None:
+        if domain not in SEARCHABLE_CAPABILITIES:
             content = f"Tool {name} tidak dikenal."
             steps.append({"tool": name, "query": query, "n_docs": 0, "error": "unknown_tool"})
         else:
+            # Routing = domain FILTER on the unified index (hybrid), then rerank.
             t0 = time.perf_counter()
-            found = cap.invoke(query, k=K_PER_TOOL)
+            found = unified_store.search(query, k=K_PER_TOOL, strategy="hybrid", domain=domain)
             t_tools += time.perf_counter() - t0
+            t0 = time.perf_counter()
+            found, _ = rerank_documents(query, found, top_n=RERANK_TOP_N)
+            t_rerank += time.perf_counter() - t0
             docs.extend(found)
             content = format_context(found, CAPABILITIES) if found else "Tidak ada hasil."
             steps.append({"tool": name, "query": query, "n_docs": len(found)})
@@ -152,7 +160,7 @@ def _node_tools(state: AgentState) -> AgentState:
         new_msgs.append(ToolMessage(content=content, tool_call_id=call["id"]))
 
     return {**state, "messages": state["messages"] + new_msgs, "documents": docs,
-            "steps": steps, "t_tools": t_tools}
+            "steps": steps, "t_tools": t_tools, "t_rerank": t_rerank}
 
 
 def _should_continue(state: AgentState) -> str:
@@ -233,6 +241,7 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         "iterations": 0,
         "t_agent": 0.0,
         "t_tools": 0.0,
+        "t_rerank": 0.0,
     }
     t0 = time.perf_counter()
     final = agentic_app.invoke(init)
@@ -251,6 +260,15 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
     docs = _dedup(final["documents"])
     source_used = _source_used(final["steps"])
 
+    # Normalized routing for the execution log: domain(s) the agent actually used.
+    routed: List[str] = []
+    for s in final["steps"]:
+        dom = s["tool"][len(_TOOL_PREFIX):] if s["tool"].startswith(_TOOL_PREFIX) else s["tool"]
+        if s.get("n_docs", 0) > 0 and dom not in routed:
+            routed.append(dom)
+    routing = "none" if not routed else (routed[0] if len(routed) == 1 else routed)
+    rewrote = any((s.get("query") or "").strip() != question.strip() for s in final["steps"])
+
     result = RagResult(
         question=question,
         answer=answer,
@@ -262,6 +280,7 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         timings={
             "route": 0.0,
             "retrieve": final["t_tools"],
+            "rerank": final["t_rerank"],
             "generate": final["t_agent"],
             "total": total,
         },
@@ -270,6 +289,14 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
             "iterations": final["iterations"],
             # Agent's implicit intent decision: called a tool = needed retrieval.
             "intent": "valid" if final["steps"] else "invalid",
+        },
+        decisions={
+            "intent": "retrieve" if final["steps"] else "direct",
+            "rewrite": rewrote,
+            "routing": routing,                       # domain | [domains] | "none"
+            "retrieval": "hybrid" if final["steps"] else "none",
+            "rerank": bool(final["steps"]),
+            "iterations": final["iterations"],
         },
     )
 
