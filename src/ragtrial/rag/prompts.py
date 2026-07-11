@@ -1,103 +1,105 @@
-"""Prompt templates for both naive-combined and agentic pipelines.
+"""Prompt templates for the naive / enhanced / agentic pipelines.
 
-Single-source prompts (PROMPT_SINGLE) are parameterized by capability description
-so adding a new source doesn't require a new prompt — the description goes in
-the capability config.
+Instruction scaffolding is written in ENGLISH (models follow English instructions
+more reliably), but every answer-generating prompt explicitly directs the model to
+RESPOND IN BAHASA INDONESIA — this is an Indonesian citizen-service bot. Literal
+Indonesian response strings (e.g. the "not found" refusal) and domain content
+(service categories, capability descriptions, few-shot examples) stay in Indonesian
+on purpose: they are output text / classifier data, not instructions.
 """
 
 from __future__ import annotations
 
-PROMPT_COMBINED = """Kamu asisten layanan publik Kab. Batang. Kamu punya akses ke beberapa sumber konteks:
+PROMPT_COMBINED = """You are a public-service assistant for Kabupaten Batang. You have access to several context sources:
 {sources_brief}
 
-ATURAN:
-1. Jawab HANYA berdasarkan konteks. Jangan tambah info dari pengetahuan umum.
-2. Pilih sumber yang relevan dengan pertanyaan. Abaikan konteks yang tidak relevan (jangan paksakan dipakai).
-3. Kalau pertanyaan hanya butuh satu jenis info, jawab langsung TANPA memaksa struktur multi-bagian.
-4. Kalau pertanyaan butuh lebih dari satu sumber, gabungkan secara ringkas.
-5. Kalau informasi tidak ada di konteks manapun, jawab: "Maaf, informasi tidak ditemukan dalam sumber yang tersedia."
-6. Bahasa Indonesia jelas & ringkas.
+RULES:
+1. Answer ONLY from the context. Do not add information from general knowledge.
+2. Use only the sources relevant to the question; ignore irrelevant context (do not force it in).
+3. If the question needs only one kind of information, answer directly WITHOUT forcing a multi-part structure.
+4. If the question needs more than one source, combine them concisely.
+5. If the information is not present in any context, reply exactly: "Maaf, informasi tidak ditemukan dalam sumber yang tersedia."
+6. Respond in clear, concise Bahasa Indonesia.
 
-CARA SITASI:
+CITATION:
 {citation_rules}
 
-KONTEKS:
+CONTEXT:
 {context}
 
-PERTANYAAN: {question}
+QUESTION: {question}
 
-JAWABAN:"""
+ANSWER:"""
 
 
-PROMPT_NAIVE = """Kamu asisten layanan publik Kab. Batang. Jawab pertanyaan HANYA berdasarkan KONTEKS di bawah.
-Kalau jawabannya tidak ada di konteks, bilang "Maaf, informasi tidak ditemukan." Bahasa Indonesia ringkas.
+PROMPT_NAIVE = """You are a public-service assistant for Kabupaten Batang. Answer the question ONLY from the CONTEXT below.
+If the answer is not in the context, say "Maaf, informasi tidak ditemukan." Respond concisely in Bahasa Indonesia.
 
-KONTEKS:
+CONTEXT:
 {context}
 
-PERTANYAAN: {question}
+QUESTION: {question}
 
-JAWABAN:"""
+ANSWER:"""
 
 
-PROMPT_SINGLE = """Kamu asisten layanan publik Kab. Batang.
-Sumber yang dipakai: {source_description}
+PROMPT_SINGLE = """You are a public-service assistant for Kabupaten Batang.
+Source used: {source_description}
 
-ATURAN:
-1. Jawab HANYA berdasarkan konteks. Jangan tambah info dari pengetahuan umum.
-2. Kalau jawaban tidak ada di konteks, jawab: "Maaf, informasi tidak ditemukan di sumber yang tersedia."
-3. Bahasa Indonesia jelas & ringkas.
+RULES:
+1. Answer ONLY from the context. Do not add information from general knowledge.
+2. If the answer is not in the context, reply: "Maaf, informasi tidak ditemukan di sumber yang tersedia."
+3. Respond in clear, concise Bahasa Indonesia.
 
-KONTEKS:
+CONTEXT:
 {context}
 
-PERTANYAAN: {question}
+QUESTION: {question}
 
-JAWABAN:"""
-
-
-PROMPT_HYDE = """Tulis SATU paragraf jawaban hipotetis untuk pertanyaan berikut, seolah dikutip dari dokumen resmi layanan publik Kab. Batang (peraturan, SOP, atau panduan).
-
-ATURAN:
-- Tulis seperti isi dokumen formal: lugas, padat fakta, gaya bahasa peraturan/panduan pemerintah.
-- JANGAN bilang tidak tahu atau minta klarifikasi — karang jawaban yang plausibel dan terdengar faktual.
-- Sebut istilah/entitas konkret yang relevan (nama dokumen, syarat, prosedur, instansi) bila masuk akal.
-- Maksimal 4-5 kalimat, satu paragraf, Bahasa Indonesia formal. Tanpa pembuka/penutup.
-
-PERTANYAAN: {question}
-
-PARAGRAF HIPOTETIS:"""
+ANSWER:"""
 
 
-REWRITE_PROMPT = """Diberikan riwayat percakapan dan pertanyaan terakhir user,
-tulis ulang pertanyaan terakhir menjadi pertanyaan STANDALONE yang bisa dimengerti
-tanpa konteks percakapan sebelumnya.
+PROMPT_HYDE = """Write ONE paragraph of a hypothetical answer to the following question, as if quoted from an official public-service document of Kabupaten Batang (a regulation, SOP, or guideline).
 
-ATURAN:
-- Resolve kata ganti & referensi ("itu", "tadi", "dia", "yg sebelumnya") ke entitas eksplisit dari riwayat.
-- Pertahankan bahasa & gaya pertanyaan asli (jangan terjemahkan).
-- Kalau pertanyaan sudah standalone (tidak ada referensi ke riwayat), kembalikan APA ADANYA.
-- Output: HANYA pertanyaan yang sudah ditulis ulang, satu baris, tanpa penjelasan, tanpa quote, tanpa prefix.
+RULES:
+- Write like formal document content: direct, fact-dense, in the style of government regulations/guidelines.
+- Do NOT say you don't know or ask for clarification — fabricate a plausible, factual-sounding answer.
+- Mention concrete relevant terms/entities (document names, requirements, procedures, agencies) where sensible.
+- At most 4-5 sentences, one paragraph, in formal Bahasa Indonesia. No opening/closing lines.
 
-Riwayat percakapan:
+QUESTION: {question}
+
+HYPOTHETICAL PARAGRAPH:"""
+
+
+REWRITE_PROMPT = """Given the conversation history and the user's latest question, rewrite the latest question into a STANDALONE question that is understandable without the prior conversation.
+
+RULES:
+- Resolve pronouns & references ("itu", "tadi", "dia", "yang sebelumnya") to explicit entities from the history.
+- Keep the original question's language & style (do NOT translate it).
+- If the question is already standalone (no reference to the history), return it AS-IS.
+- Output: ONLY the rewritten question, one line, no explanation, no quotes, no prefix.
+
+Conversation history:
 {history}
 
-Pertanyaan terakhir: {question}
+Latest question: {question}
 
-Pertanyaan standalone:"""
-
-
-PROMPT_NONE = """Pertanyaan user di luar cakupan chatbot layanan publik Kab. Batang.
-Jawab dengan sopan bahwa pertanyaan ini di luar cakupan, dan tawarkan bantuan terkait sumber yang tersedia.
-Bahasa Indonesia singkat.
-
-PERTANYAAN: {question}
-
-JAWABAN:"""
+Standalone question:"""
 
 
-# Kategori layanan publik yang ditangani chatbot. Dipakai bersama oleh gate intent
-# (PROMPT_INVALID) dan agentic system prompt agar pesan identitas/penolakan konsisten.
+PROMPT_NONE = """The user's question is outside the scope of the Kabupaten Batang public-service chatbot.
+Politely reply that this question is out of scope, and offer help related to the available sources.
+Respond briefly in Bahasa Indonesia.
+
+QUESTION: {question}
+
+ANSWER:"""
+
+
+# Public-service categories the chatbot handles. Shared by the intent gate
+# (PROMPT_INVALID) and the agentic system prompt so identity/refusal messages stay
+# consistent. Kept in Indonesian — these are the actual service names shown to users.
 SERVICE_CATEGORIES: list[str] = [
     "Perizinan",
     "Kependudukan",
@@ -108,51 +110,51 @@ SERVICE_CATEGORIES: list[str] = [
 
 
 def service_categories_block() -> str:
-    """Render kategori layanan sebagai bullet list untuk prompt."""
+    """Render service categories as a bullet list for prompts."""
     return "\n".join(f"- {c}" for c in SERVICE_CATEGORIES)
 
 
-# Dipakai untuk query INVALID (gate intent skip retrieval). SATU prompt menangani
-# dua kasus sekaligus — LLM yang membedakan chit-chat/identitas vs out-of-scope.
-PROMPT_INVALID = """Kamu adalah asisten chatbot layanan publik Kabupaten Batang.
+# Used for INVALID queries (intent gate skips retrieval). ONE prompt handles two
+# cases at once — the LLM distinguishes chit-chat/identity vs out-of-scope.
+PROMPT_INVALID = """You are a public-service chatbot assistant for Kabupaten Batang.
 
-Kamu siap membantu dengan informasi tentang:
+You can help with information about:
 {categories}
 
-Pertanyaan berikut TIDAK membutuhkan pencarian dokumen. Tanggapi sesuai jenisnya:
+The following question does NOT require document retrieval. Respond according to its type:
 
-- Jika user menyapa, berkenalan, atau bertanya soal identitasmu / layanan apa yang kamu tawarkan:
-  jelaskan secara singkat bahwa kamu chatbot khusus layanan publik Kabupaten Batang,
-  sebutkan kategori layanan di atas, lalu tawarkan bantuan dengan ramah.
-- Jika user bertanya soal hal di luar layanan publik (mis. harga barang, tokoh nasional,
-  resep, topik umum lain): tolak dengan sopan, katakan
+- If the user greets you, introduces themselves, or asks about your identity / what services you offer:
+  briefly explain that you are a chatbot dedicated to Kabupaten Batang public services,
+  list the service categories above, then offer help warmly.
+- If the user asks about something outside public services (e.g. product prices, national figures,
+  recipes, other general topics): politely decline, saying
   "Maaf, saya hanya bisa membantu dengan informasi layanan publik Kabupaten Batang.",
-  lalu arahkan kembali ke kategori layanan di atas.
+  then steer back to the service categories above.
 
-Gunakan Bahasa Indonesia yang sopan dan formal. Ringkas, jangan mengarang informasi layanan.
+Use polite, formal Bahasa Indonesia. Be concise; do not fabricate service information.
 
-PERTANYAAN: {question}
+QUESTION: {question}
 
-JAWABAN:"""
+ANSWER:"""
 
 
-ROUTER_PROMPT = """Kamu adalah router untuk chatbot layanan publik Kab. Batang.
-Tugasmu: klasifikasi pertanyaan user ke SATU dari kategori berikut.
+ROUTER_PROMPT = """You are a router for the Kabupaten Batang public-service chatbot.
+Your task: classify the user's question into ONE of the categories below.
 
-KATEGORI:
+CATEGORIES:
 {categories_block}
-- "both"      → pertanyaan yang butuh DUA-DUANYA / kombinasi sumber (mis. prosedur + kontak dinas).
-- "none"      → di luar cakupan semua sumber di atas (resep masak, olahraga, hiburan, dll).
+- "both"      → a question that needs BOTH / a combination of sources (e.g. procedure + agency contact).
+- "none"      → outside the scope of all sources above (recipes, sports, entertainment, etc.).
 
-CONTOH:
+EXAMPLES:
 {examples_block}
 Q: "Resep nasi goreng?"  → {{"route":"none","reason":"off-topic"}}
 
-ATURAN OUTPUT:
-- Jawab HANYA JSON valid satu baris: {{"route":"<kategori>","reason":"<alasan singkat>"}}
-- Tidak ada teks lain, tidak ada markdown, tidak ada code fence.
+OUTPUT RULES:
+- Reply with ONLY one line of valid JSON: {{"route":"<category>","reason":"<short reason>"}}
+- No other text, no markdown, no code fence.
 
-Pertanyaan: {question}
+Question: {question}
 JSON:"""
 
 
@@ -166,15 +168,14 @@ def build_sources_brief(capabilities: dict) -> str:
 def build_citation_rules(capabilities: dict) -> str:
     """Render per-source citation instructions derived from each capability's hint.
 
-    Replaces the previously hardcoded OPD/Dukcapil rules — adding a source with a
-    `citation` hint extends this block automatically.
+    Adding a source with a `citation` hint extends this block automatically.
     """
     lines = [
         f"- {cap.name.upper()}: {cap.citation_hint()}"
         for cap in capabilities.values()
         if cap.citation_hint()
     ]
-    return "\n".join(lines) if lines else "- (tidak ada format sitasi khusus)"
+    return "\n".join(lines) if lines else "- (no special citation format)"
 
 
 def build_router_prompt(question: str, capabilities: dict) -> str:
@@ -186,7 +187,7 @@ def build_router_prompt(question: str, capabilities: dict) -> str:
     for cap in capabilities.values():
         for ex in cap.router_examples:
             examples.append(
-                f'Q: "{ex}"  → {{"route":"{cap.name}","reason":"contoh {cap.name}"}}'
+                f'Q: "{ex}"  → {{"route":"{cap.name}","reason":"example {cap.name}"}}'
             )
     return ROUTER_PROMPT.format(
         categories_block=cats,
