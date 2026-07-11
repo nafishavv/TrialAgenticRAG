@@ -31,38 +31,10 @@ DEFAULT_MAX_LENGTH = 256
 rerank gain (legal signal is early in the chunk). 128 ~2x faster again but risks
 cutting pasal bodies. 256 = the balance (holds for both bge-base and v2-m3)."""
 
-# Reranker backend: 'local' (bge cross-encoder on CPU, free/reproducible, ~4-8s) or
-# 'jina' (Jina Reranker API on their GPU, ~0.7s but paid/networked). Default local;
-# opt into jina by setting RERANK_BACKEND=jina + JINA_API_KEY in .env.
-JINA_RERANK_URL = "https://api.jina.ai/v1/rerank"
-DEFAULT_JINA_MODEL = "jina-reranker-v2-base-multilingual"
-
 # Lazy cache keyed by (model_name, max_length) — the cross-encoder is ~2GB.
+# (A Jina Reranker API backend was trialed and archived — see archive/rerank_jina.py
+#  and implementation-revision-plan.md §9.3 for why local bge-base is the default.)
 _MODELS: dict = {}
-
-
-def _rerank_jina(query: str, docs, top_n, model: str = None):
-    """Rerank via the Jina Reranker API (remote GPU). Needs JINA_API_KEY."""
-    import requests
-
-    key = os.getenv("JINA_API_KEY")
-    if not key:
-        raise RuntimeError("RERANK_BACKEND=jina but JINA_API_KEY is not set (.env).")
-    model = model or os.getenv("JINA_RERANK_MODEL", DEFAULT_JINA_MODEL)
-    resp = requests.post(
-        JINA_RERANK_URL,
-        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        json={
-            "model": model,
-            "query": query,
-            "documents": [d.page_content for d in docs],
-            "top_n": top_n or len(docs),
-        },
-        timeout=60,
-    )
-    resp.raise_for_status()
-    results = resp.json()["results"]
-    return [docs[r["index"]] for r in results], [float(r["relevance_score"]) for r in results]
 
 
 def _get_cross_encoder(model_name: str, max_length: int = DEFAULT_MAX_LENGTH):
@@ -84,19 +56,15 @@ def rerank_documents(
     top_n: Optional[int] = None,
     model_name: str = DEFAULT_RERANK_MODEL,
     max_length: int = DEFAULT_MAX_LENGTH,
-    backend: Optional[str] = None,
 ) -> Tuple[List[Document], List[float]]:
     """Score (query, doc) pairs with a cross-encoder, sort desc, keep top_n.
 
     Shared by enhanced (Stage) and agentic (tools node). Returns the reranked
     documents AND their scores (aligned), so callers can stash scores in meta.
-    A no-op on empty input. Backend ('local'|'jina') defaults to $RERANK_BACKEND.
+    A no-op on empty input.
     """
     if not docs:
         return docs, []
-    backend = (backend or os.getenv("RERANK_BACKEND", "local")).lower()
-    if backend == "jina":
-        return _rerank_jina(query, docs, top_n)
     model = _get_cross_encoder(model_name, max_length)
     scores = model.predict([(query, d.page_content) for d in docs])
     ranked = sorted(zip(docs, scores), key=lambda ds: float(ds[1]), reverse=True)
