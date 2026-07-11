@@ -133,6 +133,9 @@ def run_one_query(
         "retrieval": retrieval,
         "answer_eval": answer_eval,
         "timings": {**timings, "wall": wall},
+        # Normalized execution log + agent trace (observability for self-correction).
+        "decisions": result.get("decisions", {}),
+        "steps": (result.get("meta") or {}).get("steps", []),
     }
 
 
