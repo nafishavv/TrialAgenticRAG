@@ -4,6 +4,11 @@ Cara pakai (dari root project):
     python -m eval.run_eval --systems agentic naive --k 5
     python -m eval.run_eval --systems agentic --k 5 --limit 5   # cepet, test 5 soal
     python -m eval.run_eval --no-judge                          # skip LLM judge (cepet, retrieval-only)
+    python -m eval.run_eval --systems agentic --resume          # lanjutkan run yg terputus
+
+Checkpointing: hasil ditulis ulang (atomik) tiap SATU soal selesai, jadi run yg
+mati di tengah (Ctrl-C / crash kuota / laptop sleep) tetap simpan progresnya.
+Pakai --resume untuk lanjut: soal yg sudah sukses dilewati, yg error/belum diulang.
 
 Output:
     eval/results/per_query_<system>.json   — full per-query record
@@ -38,6 +43,29 @@ def load_testset(path: Path) -> List[Dict[str, Any]]:
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     return data["questions"]
+
+
+def _load_existing(outpath: Path) -> List[Dict[str, Any]]:
+    """Read prior per-query records (for --resume). Tolerant of a missing/corrupt file."""
+    if not outpath.exists():
+        return []
+    try:
+        with open(outpath, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def _save_atomic(outpath: Path, records: List[Dict[str, Any]]) -> None:
+    """Write via temp+rename so a kill mid-write never corrupts the results file.
+
+    Called after EVERY question, so an interrupted run (Ctrl-C, quota crash, sleep)
+    keeps all progress so far — re-run with --resume to finish only what's left.
+    """
+    tmp = outpath.with_suffix(outpath.suffix + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
+    tmp.replace(outpath)
 
 
 def run_one_query(
@@ -155,6 +183,9 @@ def main():
                     help="run only specific question IDs (e.g. DK001 OP005)")
     ap.add_argument("--sleep", type=float, default=0.0,
                     help="detik jeda antar query — throttle utk hindari 429 quota embedding")
+    ap.add_argument("--resume", action="store_true",
+                    help="lanjutkan run yg terputus: skip soal yg SUDAH sukses di "
+                         "per_query_<system>.json, ulang yg error/belum ada")
     args = ap.parse_args()
 
     out = Path(args.outdir)
@@ -195,27 +226,43 @@ def main():
 
     for system in args.systems:
         ask = ask_fns[system]
+        outpath = out / f"per_query_{system}.json"
         print(f"\n=== Running system: {system} ===")
-        records = []
+
+        # Resume: keep prior SUCCESSFUL records, skip those ids; re-run errored/missing.
+        by_id: Dict[str, Dict[str, Any]] = {}
+        if args.resume:
+            done_ok = {r["id"]: r for r in _load_existing(outpath) if "error" not in r}
+            by_id.update(done_ok)
+            if done_ok:
+                print(f"  resume: {len(done_ok)} soal sudah sukses, dilewati.")
+
+        def _flush() -> None:
+            # Persist after every question, in testset order (extras appended).
+            ordered = [by_id[q["id"]] for q in testset if q["id"] in by_id]
+            seen = {q["id"] for q in testset}
+            ordered += [r for i, r in by_id.items() if i not in seen]
+            _save_atomic(outpath, ordered)
+
         for i, q in enumerate(testset, 1):
+            if args.resume and q["id"] in by_id:
+                print(f"  [{i}/{len(testset)}] {q['id']}: SKIP (sudah sukses)")
+                continue
             print(f"  [{i}/{len(testset)}] {q['id']}: {q['question'][:60]}...")
             try:
-                rec = run_one_query(q, system, args.k, use_judge, ask)
-                records.append(rec)
+                by_id[q["id"]] = run_one_query(q, system, args.k, use_judge, ask)
             except Exception as e:
                 print(f"    ERROR on {q['id']}: {e}")
-                records.append({
+                by_id[q["id"]] = {
                     "id": q["id"], "system": system, "error": str(e),
                     "question": q["question"],
-                })
+                }
+            _flush()  # checkpoint: progress survives an interrupted run
             if args.sleep:
                 time.sleep(args.sleep)
 
-        # save
-        outpath = out / f"per_query_{system}.json"
-        with open(outpath, "w", encoding="utf-8") as f:
-            json.dump(records, f, ensure_ascii=False, indent=2)
-        print(f"  -> saved {outpath}")
+        n_err = sum(1 for r in by_id.values() if "error" in r)
+        print(f"  -> saved {outpath}  ({len(by_id)} records, {n_err} error)")
 
 
 if __name__ == "__main__":
