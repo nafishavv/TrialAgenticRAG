@@ -14,7 +14,7 @@ from typing import List
 
 from langchain_core.documents import Document
 
-from ragtrial.llm import llm
+from ragtrial.llm import llm, invoke_with_retry
 from ragtrial.rag.prompts import PROMPT_NAIVE
 from ragtrial.result import RagResult
 from ragtrial.vectorstore.store import unified_store
@@ -42,7 +42,7 @@ def ask_naive(question: str, k: int = 5, verbose: bool = True) -> RagResult:
     t_retrieve = time.perf_counter() - t_r0
 
     t_g0 = time.perf_counter()
-    answer = llm.invoke(PROMPT_NAIVE.format(context=_stuff(docs), question=question)).content
+    answer = invoke_with_retry(llm, PROMPT_NAIVE.format(context=_stuff(docs), question=question)).content
     t_generate = time.perf_counter() - t_g0
 
     srcs = _sources_in(docs)

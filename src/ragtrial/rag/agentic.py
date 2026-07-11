@@ -35,7 +35,7 @@ from typing_extensions import TypedDict
 
 from ragtrial.capabilities import format_context
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
-from ragtrial.llm import llm
+from ragtrial.llm import llm, invoke_with_retry
 from ragtrial.pipeline.rerank import rerank_documents
 from ragtrial.rag.prompts import service_categories_block
 from ragtrial.result import RagResult
@@ -127,7 +127,7 @@ class AgentState(TypedDict):
 # ============ Nodes ============
 def _node_agent(state: AgentState) -> AgentState:
     t0 = time.perf_counter()
-    ai = _llm_with_tools.invoke(state["messages"])
+    ai = invoke_with_retry(_llm_with_tools, state["messages"])
     dt = time.perf_counter() - t0
     return {
         **state,

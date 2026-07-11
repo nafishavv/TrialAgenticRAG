@@ -8,6 +8,7 @@ Add one: implement Stage subclass, add to REWRITERS.
 
 from __future__ import annotations
 
+from ragtrial.llm import invoke_with_retry
 from ragtrial.llm import llm as default_llm
 from ragtrial.pipeline.base import RagState, Stage
 from ragtrial.rag.prompts import PROMPT_HYDE
@@ -41,7 +42,7 @@ class HyDERewriter(Stage):
         if state.intent == "invalid":
             # No retrieval will happen — skip the HyDE LLM call entirely.
             return state
-        passage = self.llm.invoke(PROMPT_HYDE.format(question=state.question)).content
+        passage = invoke_with_retry(self.llm, PROMPT_HYDE.format(question=state.question)).content
         state.meta["original_query"] = state.question
         state.meta["hyde_passage"] = passage
         state.query = passage

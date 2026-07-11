@@ -13,6 +13,7 @@ from typing import Dict, Optional
 
 from ragtrial.capabilities.base import Capability, format_context
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
+from ragtrial.llm import invoke_with_retry
 from ragtrial.llm import llm as default_llm
 from ragtrial.pipeline.base import RagState, Stage
 from ragtrial.rag.prompts import (
@@ -64,5 +65,5 @@ class GenerateStage(Stage):
                 question=q,
             )
 
-        state.answer = self.llm.invoke(prompt).content
+        state.answer = invoke_with_retry(self.llm, prompt).content
         return state

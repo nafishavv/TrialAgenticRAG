@@ -21,6 +21,7 @@ import numpy as np
 from ragtrial.capabilities.base import Capability
 from ragtrial.capabilities.registry import SEARCHABLE_CAPABILITIES
 from ragtrial.llm import embeddings as default_embeddings
+from ragtrial.llm import invoke_with_retry
 from ragtrial.llm import llm as default_llm
 from ragtrial.pipeline.base import RagState, Stage
 from ragtrial.rag.prompts import build_router_prompt
@@ -116,7 +117,7 @@ class LLMRouter(Stage):
 
     def run(self, state: RagState) -> RagState:
         prompt = build_router_prompt(state.query, self.caps)
-        raw = self.llm.invoke(prompt).content.strip()
+        raw = invoke_with_retry(self.llm, prompt).content.strip()
         if raw.startswith("```"):
             raw = raw.strip("`")
             if raw.startswith("json"):

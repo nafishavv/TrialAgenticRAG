@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional
 from langchain_core.documents import Document
 
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
-from ragtrial.llm import make_judge_llm
+from ragtrial.llm import invoke_with_retry, make_judge_llm
 
 # ---------- LLM judge setup ----------
 _judge_llm = make_judge_llm(temperature=0.0, max_tokens=256)
@@ -221,7 +221,7 @@ ATURAN OUTPUT:
 
 def _judge_invoke(prompt: str) -> str:
     """Single LLM call, returns stripped text."""
-    return _judge_llm.invoke(prompt).content.strip()
+    return invoke_with_retry(_judge_llm, prompt).content.strip()
 
 
 def judge_fact_recall(answer: str, expected_facts: List[str]) -> Dict[str, Any]:

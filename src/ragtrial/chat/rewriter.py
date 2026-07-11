@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List
 
+from ragtrial.llm import invoke_with_retry
 from ragtrial.rag.prompts import REWRITE_PROMPT
 
 if TYPE_CHECKING:
@@ -46,7 +47,7 @@ def rewrite_query(
         history=_format_history(history, max_context_pairs),
         question=current_question,
     )
-    rewritten = llm.invoke(prompt).content.strip()
+    rewritten = invoke_with_retry(llm, prompt).content.strip()
 
     if rewritten.startswith('"') and rewritten.endswith('"'):
         rewritten = rewritten[1:-1].strip()
