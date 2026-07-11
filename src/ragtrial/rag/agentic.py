@@ -44,6 +44,7 @@ from ragtrial.vectorstore.store import unified_store
 MAX_ITERATIONS = 5
 K_PER_TOOL = 10          # candidate pool per tool call (into rerank)
 RERANK_TOP_N = 5         # docs kept per tool call after rerank (matches enhanced top_n)
+RERANK_SUFFICIENCY = 0.30  # top rerank score below this -> inject [LOW RELEVANCE SIGNAL] so the agent may re-search
 _TOOL_PREFIX = "search_"
 
 
@@ -77,31 +78,38 @@ def _system_prompt(capabilities) -> str:
         f"- {_TOOL_PREFIX}{name}: {cap.description}" for name, cap in capabilities.items()
     )
     return (
-        "Kamu asisten layanan publik Kabupaten Batang. Kamu siap membantu soal:\n"
+        "You are a public-service assistant for Kabupaten Batang. You can help with:\n"
         f"{service_categories_block()}\n\n"
-        "Kamu punya tools pencarian per domain:\n"
+        "You have per-domain search tools:\n"
         f"{tool_lines}\n\n"
-        "USER INTENT — putuskan SENDIRI apakah perlu mencari (retrieval) atau tidak:\n"
-        "1. Pertanyaan layanan publik (perizinan, kependudukan, pajak, hukum, kontak/alamat dinas, dll)\n"
-        "   → SELALU panggil tool yang relevan dulu (boleh lebih dari satu), WALAU kamu ragu datanya\n"
-        "   tersedia — jangan menebak cakupan sendiri, biar hasil tool yang menentukan. Untuk jawaban\n"
-        "   FAKTUAL layanan, jawab HANYA berdasarkan hasil tool — jangan mengarang dari pengetahuan umum.\n"
-        "   Kalau hasil kurang relevan, boleh panggil tool lagi dengan query yang ditulis ulang.\n"
-        "   Kalau setelah dicari info tidak ada: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
-        "2. Sapaan / pertanyaan soal identitasmu / layanan apa yang kamu tawarkan (mis. \"halo\",\n"
-        "   \"siapa kamu?\", \"bisa bantu apa?\") → JANGAN panggil tool. Jawab langsung dengan ramah:\n"
-        "   jelaskan kamu chatbot layanan publik Kab. Batang, sebutkan kategori layanan di atas,\n"
-        "   lalu tawarkan bantuan.\n"
-        "3. Pertanyaan di luar layanan publik (mis. harga barang, tokoh nasional, resep, topik umum)\n"
-        "   → JANGAN panggil tool. Tolak dengan sopan: \"Maaf, saya hanya bisa membantu dengan\n"
-        "   informasi layanan publik Kabupaten Batang.\", lalu arahkan ke kategori layanan.\n"
-        "4. Saat memanggil search_opd untuk dinas tertentu, SELALU gunakan nama lengkap resmi,\n"
-        "   bukan singkatan. Contoh: 'Dukcapil' → 'Dinas Kependudukan dan Pencatatan Sipil',\n"
-        "   'Dinkes' → 'Dinas Kesehatan', 'Dispenduk' → 'Dinas Kependudukan dan Pencatatan Sipil',\n"
-        "   'BPKAD' → 'Badan Pengelolaan Keuangan dan Aset Daerah', dst.\n"
-        "   Jika hasil pertama tidak mengandung dinas yang dimaksud, WAJIB coba ulang dengan nama\n"
-        "   lengkap yang berbeda sebelum menyimpulkan tidak ada informasi.\n"
-        "5. Bahasa Indonesia sopan, jelas & ringkas. Sebutkan sumber kalau relevan."
+        "USER INTENT — decide YOURSELF whether retrieval (a tool call) is needed:\n"
+        "1. Public-service questions (permits, civil registration, taxes, law, agency contacts/addresses,\n"
+        "   etc.) → ALWAYS call a relevant tool first (you may call more than one), EVEN if you doubt the\n"
+        "   data exists — do not assume coverage yourself; let the tool result decide. For FACTUAL service\n"
+        "   answers, answer ONLY from tool results — do not invent from general knowledge.\n"
+        "2. Greetings / questions about your identity / what services you offer (e.g. \"halo\", \"siapa\n"
+        "   kamu?\", \"bisa bantu apa?\") → do NOT call a tool. Answer directly and warmly: say you are a\n"
+        "   public-service chatbot for Kab. Batang, list the service categories above, then offer help.\n"
+        "3. Questions outside public services (e.g. product prices, national figures, recipes, general\n"
+        "   topics) → do NOT call a tool. Decline politely: \"Maaf, saya hanya bisa membantu dengan\n"
+        "   informasi layanan publik Kabupaten Batang.\", then point back to the service categories.\n"
+        "4. When calling search_opd for a specific agency, ALWAYS use the full official name, not an\n"
+        "   abbreviation. E.g. 'Dukcapil' → 'Dinas Kependudukan dan Pencatatan Sipil', 'Dinkes' → 'Dinas\n"
+        "   Kesehatan', 'BPKAD' → 'Badan Pengelolaan Keuangan dan Aset Daerah', etc.\n\n"
+        "SUFFICIENCY CHECK — after each tool call, BEFORE answering, judge the results:\n"
+        "1. If the tool results ALREADY contain enough relevant information to answer → ANSWER NOW. Do NOT\n"
+        "   search again. (Re-searching when the evidence is already there wastes time — prefer a fast\n"
+        "   answer.)\n"
+        "2. If the results are irrelevant / do not answer the question / carry a [LOW RELEVANCE SIGNAL]\n"
+        "   → SEARCH AGAIN ONCE, diagnosing WHY it failed:\n"
+        "     - wrong domain?         → call a different, more appropriate domain tool\n"
+        "     - query too narrow/broad/informal? → rewrite the query (more specific / official terms)\n"
+        "     - unsure of the domain?  → search across several domains\n"
+        "   Limit: AT MOST 1-2 retries.\n"
+        "3. If after retrying the results are STILL inadequate → do NOT keep forcing it. Answer with what\n"
+        "   you have, or say honestly: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
+        "   Principle: re-search ONLY to fix a clearly failed retrieval — never 'just in case'.\n\n"
+        "Respond in polite, clear, concise Bahasa Indonesia. Cite the source when relevant."
     )
 
 
@@ -143,7 +151,7 @@ def _node_tools(state: AgentState) -> AgentState:
         domain = name[len(_TOOL_PREFIX):] if name.startswith(_TOOL_PREFIX) else name
 
         if domain not in SEARCHABLE_CAPABILITIES:
-            content = f"Tool {name} tidak dikenal."
+            content = f"Unknown tool {name}."
             steps.append({"tool": name, "query": query, "n_docs": 0, "error": "unknown_tool"})
         else:
             # Routing = domain FILTER on the unified index (hybrid), then rerank.
@@ -151,11 +159,22 @@ def _node_tools(state: AgentState) -> AgentState:
             found = unified_store.search(query, k=K_PER_TOOL, strategy="hybrid", domain=domain)
             t_tools += time.perf_counter() - t0
             t0 = time.perf_counter()
-            found, _ = rerank_documents(query, found, top_n=RERANK_TOP_N)
+            found, scores = rerank_documents(query, found, top_n=RERANK_TOP_N)
             t_rerank += time.perf_counter() - t0
+            top = scores[0] if scores else 0.0
+            weak = top < RERANK_SUFFICIENCY
             docs.extend(found)
-            content = format_context(found, CAPABILITIES) if found else "Tidak ada hasil."
-            steps.append({"tool": name, "query": query, "n_docs": len(found)})
+            content = format_context(found, CAPABILITIES) if found else "No results found."
+            if weak:
+                # Self-correction signal: low relevance -> the agent may re-search
+                # (different domain / reformulated query / no filter). See system prompt.
+                content += (
+                    f"\n\n[LOW RELEVANCE SIGNAL: top score {top:.2f} < {RERANK_SUFFICIENCY}. "
+                    "These results may be inadequate. If this is not the answer being sought, "
+                    "SEARCH AGAIN: try a different domain, reformulated keywords, or drop the domain filter.]"
+                )
+            steps.append({"tool": name, "query": query, "n_docs": len(found),
+                          "top_score": round(top, 3), "weak": weak})
 
         new_msgs.append(ToolMessage(content=content, tool_call_id=call["id"]))
 
