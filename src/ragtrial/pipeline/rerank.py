@@ -2,8 +2,9 @@
 
 Implemented:
   - none (NoopReranker) — passthrough, optional top-N trim.
-  - cross_encoder (CrossEncoderReranker) — BAAI/bge-reranker-v2-m3, a native
-    XLM-RoBERTa cross-encoder (loads via sentence-transformers, NO trust_remote_code).
+  - cross_encoder (CrossEncoderReranker) — BAAI/bge-reranker-base by default
+    (v2-m3 available via $RERANK_MODEL), an XLM-RoBERTa cross-encoder (loads via
+    sentence-transformers, NO trust_remote_code).
 
 The scoring itself lives in `rerank_documents()` — a framework-agnostic helper so
 BOTH the enhanced pipeline Stage AND the agentic tools node share ONE reranker
@@ -19,13 +20,16 @@ from langchain_core.documents import Document
 
 from ragtrial.pipeline.base import RagState, Stage
 
-DEFAULT_RERANK_MODEL = os.getenv("RERANK_MODEL", "BAAI/bge-reranker-v2-m3")
-"""Override per run with $RERANK_MODEL (e.g. BAAI/bge-reranker-base — 278M, ~2x
-faster on CPU than the 560M v2-m3, standard arch so it loads cleanly)."""
+DEFAULT_RERANK_MODEL = os.getenv("RERANK_MODEL", "BAAI/bge-reranker-base")
+"""Default = bge-reranker-base (278M): ~7x faster on CPU than the 560M v2-m3
+(~1.8s vs ~12.6s warm) and recall-equal in the canonical hybrid stack — see the
+reranker comparison in implementation-revision-plan.md §9.3, which is why base is
+the chosen default. Override with $RERANK_MODEL=BAAI/bge-reranker-v2-m3 for the
+higher-quality (slower) ranking mode."""
 DEFAULT_MAX_LENGTH = 256
-"""Truncation length for (query, doc) pairs. bge-v2-m3 is a 560M model on CPU;
-512 is ~2x slower than 256 with little rerank gain (legal signal is early in the
-chunk). 128 ~2x faster again but risks cutting pasal bodies. 256 = the balance."""
+"""Truncation length for (query, doc) pairs. 512 is ~2x slower than 256 with little
+rerank gain (legal signal is early in the chunk). 128 ~2x faster again but risks
+cutting pasal bodies. 256 = the balance (holds for both bge-base and v2-m3)."""
 
 # Reranker backend: 'local' (bge cross-encoder on CPU, free/reproducible, ~4-8s) or
 # 'jina' (Jina Reranker API on their GPU, ~0.7s but paid/networked). Default local;
@@ -116,7 +120,7 @@ class NoopReranker(Stage):
 
 
 class CrossEncoderReranker(Stage):
-    """Cross-encoder rerank (BAAI/bge-reranker-v2-m3). An encoder model, not an LLM.
+    """Cross-encoder rerank (BAAI/bge-reranker-base by default). An encoder model, not an LLM.
 
     Scores each retrieved doc against the REAL user question (meta['original_query']
     when a rewriter stashed it — e.g. HyDE — else the raw question), so reranking
