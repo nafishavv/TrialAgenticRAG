@@ -4,6 +4,8 @@ RAG layanan publik Kab. Batang dengan **3 mode**: naive, enhanced, agentic.
 Sumber data saat ini:
 - **Dukcapil** — Buku Saku administrasi kependudukan (KTP, KK, akta, dll)
 - **OPD** — Direktori Organisasi Perangkat Daerah (alamat, telepon, email)
+- **Perizinan** — syarat/prosedur/biaya izin (SIPUAS)
+- **Sosial** — produk hukum sektor sosial (JDIH)
 
 Arsitektur dibangun untuk **skala naik**: domain heterogen (banyak file per domain),
 komponen RAG yang bisa di-swap, dan integrasi tool (text-to-sql / web search) di masa depan.
@@ -49,9 +51,27 @@ uv run python scripts/ask.py --chat --mode enhanced
 uv run python scripts/preprocess.py --source all
 uv run python scripts/build_vectorstore.py --source all
 
-# UI
-uv run streamlit run app.py
+# Web app (FastAPI + frontend statis) → buka http://127.0.0.1:8000
+uv run python scripts/serve.py
 ```
+
+> UI Streamlit lama diarsipkan di `archive/streamlit/` (tidak dipakai lagi;
+> web app sekarang FastAPI + `web/`).
+
+## Web app & tracing
+
+- `scripts/serve.py` menjalankan FastAPI (`src/ragtrial/server/`) yang serve
+  frontend statis dari `web/` + API: `POST /api/chat`, `GET /api/meta`,
+  `GET /api/health`. Startup melakukan warmup model di background —
+  request pertama tidak menunggu cold-load.
+- UI hanya menampilkan jawaban + "Sumber (n) • latency". SEMUA detail riset
+  (chunk, skor rerank, keputusan routing/intent, trace agent) otomatis
+  tersimpan sebagai **trace JSONL** di `data/traces/`:
+  - `traces-YYYY-MM-DD.jsonl` — basic (ringkas, 1 baris per query)
+  - `full/traces-full-YYYY-MM-DD.jsonl` — full (chunk + meta), join via `query_id`
+- Level trace: env `RAGTRIAL_TRACE=off|basic|full` (default `full`).
+  CLI: `--no-trace` untuk mematikan per run.
+- Foto hero landing page: lihat `web/assets/img/README.md`.
 
 ## Enhanced — swap komponen lewat config
 
@@ -63,8 +83,9 @@ cfg = EnhancedRAGConfig(rewriter="passthrough", router="semantic",
 rag = build_enhanced(cfg)
 result = rag.ask("Apa syarat KTP elektronik?")   # -> RagResult
 ```
-Ganti komponen = ganti 1 field. Preset siap pakai: `fanout_hybrid`, `llm_router_hybrid`
-(lihat `PRESETS`). Implemented: `hyde`. Stub menunggu diisi: `multiquery`, `cross_encoder`.
+Ganti komponen = ganti 1 field. Preset siap pakai (lihat `PRESETS`): `default`,
+`dense_only`, `hybrid_no_rerank`, `rerank_no_hybrid`, `no_intent`.
+Implemented: `hyde`, `cross_encoder`. Stub menunggu diisi: `multiquery`.
 
 ## Evaluation
 
@@ -81,16 +102,20 @@ Semua mode mengembalikan `RagResult`, jadi metrik bersifat system-agnostic.
 
 ```
 src/ragtrial/
-├── result.py                 # RagResult — kontrak output 3 mode
+├── result.py                 # RagResult — kontrak output 3 mode (+ helper decisions/sources)
+├── modes.py                  # registry dispatch mode tunggal (naive|enhanced|agentic)
 ├── capabilities/             # Capability ABC + VectorSourceCapability + registry
 ├── sources/<domain>/         # co-located: preprocess + chunk + capability per domain
 ├── pipeline/                 # stage komposabel enhanced (rewrite/route/retrieve/rerank/generate)
-├── vectorstore/              # builder Chroma per domain
+├── vectorstore/              # builder Chroma per domain + unified store
 ├── rag/                      # naive.py | enhanced.py | agentic.py | prompts.py
-└── chat/session.py           # ChatSession(mode=…)
-scripts/  ask.py · preprocess.py · build_vectorstore.py
+├── chat/session.py           # ChatSession — service layer bersama (web/CLI), ChatTurnResult
+├── tracing/                  # trace JSONL otomatis per query (basic + full)
+└── server/                   # FastAPI: /api/chat /api/meta /api/health + serve web/
+web/      frontend statis (index.html · css · js · assets)
+scripts/  ask.py · serve.py · preprocess.py · build_vectorstore.py
 eval/     run_eval.py · eval_core.py · analyze.py
-data/     raw/<domain>/ · processed/<domain>.{pkl,json} · vector_stores/<domain>/
+data/     raw/<domain>/ · processed/ · vector_stores/ · traces/
 ```
 
 ---

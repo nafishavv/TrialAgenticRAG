@@ -377,10 +377,22 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("Mencari jawaban…"):
             try:
-                result = session.ask(user_input)
+                turn = session.ask(user_input)
             except Exception as e:
                 st.error(f"Error: {e}")
                 st.stop()
+        # Adapt the ChatTurnResult envelope to the dict shape this legacy UI renders.
+        result = {
+            "answer": turn.answer,
+            "documents": turn.documents,
+            "timings": {
+                "retrieve": turn.result.timings.get("retrieve", 0.0),
+                "generate": turn.result.timings.get("generate", 0.0),
+                "total": turn.timings["total"],
+            },
+            "rewritten_query": turn.effective_query,
+            "original_query": turn.original_query,
+        }
         st.markdown(result["answer"])
 
     _render_metrics(result)
