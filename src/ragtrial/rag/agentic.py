@@ -38,7 +38,7 @@ from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
 from ragtrial.llm import llm, invoke_with_retry
 from ragtrial.pipeline.rerank import rerank_documents
 from ragtrial.rag.prompts import service_categories_block
-from ragtrial.result import RagResult
+from ragtrial.result import RagResult, collapse_sources, make_decisions
 from ragtrial.vectorstore.store import unified_store
 
 MAX_ITERATIONS = 5
@@ -120,8 +120,14 @@ class AgentState(TypedDict):
     steps: List[Dict[str, Any]]
     iterations: int
     t_agent: float
+    t_agent_steps: List[float]   # per-invocation LLM latency; last = final answer synth
     t_tools: float
     t_rerank: float
+    # Retrieve sub-timings accumulated across ALL tool calls (see store.search).
+    t_embed_query: float
+    t_search: float
+    t_bm25: float
+    t_fuse: float
 
 
 # ============ Nodes ============
@@ -134,6 +140,7 @@ def _node_agent(state: AgentState) -> AgentState:
         "messages": state["messages"] + [ai],
         "iterations": state["iterations"] + 1,
         "t_agent": state["t_agent"] + dt,
+        "t_agent_steps": state["t_agent_steps"] + [dt],
     }
 
 
@@ -144,6 +151,7 @@ def _node_tools(state: AgentState) -> AgentState:
     steps: List[Dict[str, Any]] = list(state["steps"])
     t_tools = state["t_tools"]
     t_rerank = state["t_rerank"]
+    sub_acc = {k: state[k] for k in ("t_embed_query", "t_search", "t_bm25", "t_fuse")}
 
     for call in last.tool_calls:
         name = call["name"]
@@ -156,8 +164,13 @@ def _node_tools(state: AgentState) -> AgentState:
         else:
             # Routing = domain FILTER on the unified index (hybrid), then rerank.
             t0 = time.perf_counter()
-            found = unified_store.search(query, k=K_PER_TOOL, strategy="hybrid", domain=domain)
+            sub: dict = {}
+            found = unified_store.search(
+                query, k=K_PER_TOOL, strategy="hybrid", domain=domain, timings=sub
+            )
             t_tools += time.perf_counter() - t0
+            for key in ("t_embed_query", "t_search", "t_bm25", "t_fuse"):
+                sub_acc[key] += sub.get(key, 0.0)
             t0 = time.perf_counter()
             found, scores = rerank_documents(query, found, top_n=RERANK_TOP_N)
             t_rerank += time.perf_counter() - t0
@@ -179,7 +192,7 @@ def _node_tools(state: AgentState) -> AgentState:
         new_msgs.append(ToolMessage(content=content, tool_call_id=call["id"]))
 
     return {**state, "messages": state["messages"] + new_msgs, "documents": docs,
-            "steps": steps, "t_tools": t_tools, "t_rerank": t_rerank}
+            "steps": steps, "t_tools": t_tools, "t_rerank": t_rerank, **sub_acc}
 
 
 def _should_continue(state: AgentState) -> str:
@@ -239,15 +252,14 @@ def _dedup(docs: List[Document]) -> List[Document]:
     return out
 
 
-def _source_used(steps: List[Dict[str, Any]]) -> str:
-    domains = []
+def _domains_used(steps: List[Dict[str, Any]]) -> List[str]:
+    """Ordered unique domains whose tool calls actually returned docs."""
+    domains: List[str] = []
     for s in steps:
         dom = s["tool"][len(_TOOL_PREFIX):] if s["tool"].startswith(_TOOL_PREFIX) else s["tool"]
         if s.get("n_docs", 0) > 0 and dom not in domains:
             domains.append(dom)
-    if not domains:
-        return "none"
-    return domains[0] if len(domains) == 1 else "both"
+    return domains
 
 
 def ask_agentic(question: str, verbose: bool = True) -> RagResult:
@@ -259,8 +271,13 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         "steps": [],
         "iterations": 0,
         "t_agent": 0.0,
+        "t_agent_steps": [],
         "t_tools": 0.0,
         "t_rerank": 0.0,
+        "t_embed_query": 0.0,
+        "t_search": 0.0,
+        "t_bm25": 0.0,
+        "t_fuse": 0.0,
     }
     t0 = time.perf_counter()
     final = agentic_app.invoke(init)
@@ -277,16 +294,19 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         answer = "Maaf, tidak bisa menyelesaikan jawaban."
 
     docs = _dedup(final["documents"])
-    source_used = _source_used(final["steps"])
-
-    # Normalized routing for the execution log: domain(s) the agent actually used.
-    routed: List[str] = []
-    for s in final["steps"]:
-        dom = s["tool"][len(_TOOL_PREFIX):] if s["tool"].startswith(_TOOL_PREFIX) else s["tool"]
-        if s.get("n_docs", 0) > 0 and dom not in routed:
-            routed.append(dom)
+    # Routing for the execution log = domain(s) the agent actually used.
+    routed = _domains_used(final["steps"])
+    source_used = collapse_sources(routed)
     routing = "none" if not routed else (routed[0] if len(routed) == 1 else routed)
     rewrote = any((s.get("query") or "").strip() != question.strip() for s in final["steps"])
+
+    # Split agent LLM time: the LAST invocation synthesizes the final answer
+    # (t_generate); every earlier invocation was tool-selection reasoning
+    # (t_orchestrate). n_llm_calls = number of agent invocations = iterations.
+    agent_steps = final["t_agent_steps"]
+    n_llm_calls = len(agent_steps)
+    t_generate = agent_steps[-1] if agent_steps else 0.0
+    t_orchestrate = sum(agent_steps[:-1]) if len(agent_steps) > 1 else 0.0
 
     result = RagResult(
         question=question,
@@ -297,11 +317,20 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         source_used=source_used,
         mode="agentic",
         timings={
-            "route": 0.0,
-            "retrieve": final["t_tools"],
+            # Retrieve sub-timings, accumulated across all tool calls.
+            "t_embed_query": final["t_embed_query"],
+            "t_search": final["t_search"],
+            "t_bm25": final["t_bm25"],
+            "t_fuse": final["t_fuse"],
+            "retrieve": final["t_tools"],       # whole-search sum (back-compat)
             "rerank": final["t_rerank"],
-            "generate": final["t_agent"],
+            # Agent LLM time, split into orchestration vs final answer synthesis.
+            "t_orchestrate": t_orchestrate,
+            "t_generate": t_generate,
+            "generate": final["t_agent"],       # orchestrate+generate sum (back-compat)
             "total": total,
+            "n_llm_calls": n_llm_calls,
+            "n_iterations": final["iterations"],
         },
         meta={
             "steps": final["steps"],
@@ -309,14 +338,14 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
             # Agent's implicit intent decision: called a tool = needed retrieval.
             "intent": "valid" if final["steps"] else "invalid",
         },
-        decisions={
-            "intent": "retrieve" if final["steps"] else "direct",
-            "rewrite": rewrote,
-            "routing": routing,                       # domain | [domains] | "none"
-            "retrieval": "hybrid" if final["steps"] else "none",
-            "rerank": bool(final["steps"]),
-            "iterations": final["iterations"],
-        },
+        decisions=make_decisions(
+            intent="retrieve" if final["steps"] else "direct",
+            rewrite=rewrote,
+            routing=routing,                          # domain | [domains] | "none"
+            retrieval="hybrid" if final["steps"] else "none",
+            rerank=bool(final["steps"]),
+            iterations=final["iterations"],
+        ),
     )
 
     if verbose:

@@ -67,6 +67,15 @@ class Capability(ABC):
         """
         return None
 
+    def citation_label(self, doc: Document) -> str:
+        """Human-readable source label for user-facing citation lists ("Sumber").
+
+        Unlike format_header (prompt-internal, verbose), this is the short label
+        shown in the UI and stored in traces. Override per source to use its
+        metadata (document title, page, regulation number, ...).
+        """
+        return self.name.title()
+
     def _tag(self, docs: List[Document]) -> List[Document]:
         """Stamp `metadata._source = self.name` on each doc (idempotent)."""
         for d in docs:

@@ -24,6 +24,12 @@ def _gold_id(doc: Document) -> str | None:
     return None
 
 
+def _label(doc: Document) -> str:
+    m = doc.metadata or {}
+    nama = m.get("nama_opd")
+    return f"Direktori OPD Kab. Batang — {nama}" if nama else "Direktori OPD Kab. Batang"
+
+
 opd_capability = VectorSourceCapability(
     name="opd",
     description=(
@@ -40,4 +46,5 @@ opd_capability = VectorSourceCapability(
     header_formatter=_header,
     gold_id_fn=_gold_id,
     citation="sebutkan [Sumber: <nama_opd>, nomor <nomor>].",
+    label_formatter=_label,
 )

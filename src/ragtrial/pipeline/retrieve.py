@@ -42,7 +42,13 @@ class RetrieveStage(Stage):
         if route == "none":
             state.documents = []
             return state
+        # Capture per-stage sub-timings (embed/search/bm25/fuse) alongside the
+        # coarse `retrieve` stage timing the Pipeline records around this call.
+        sub: dict = {}
         state.documents = unified_store.search(
-            state.query, k=self.k, strategy=self.strategy, domain=self._domain(route)
+            state.query, k=self.k, strategy=self.strategy,
+            domain=self._domain(route), timings=sub,
         )
+        for key, val in sub.items():
+            state.timings[key] = state.timings.get(key, 0.0) + val
         return state

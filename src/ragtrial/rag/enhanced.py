@@ -19,13 +19,11 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
-from typing import List, Optional
-
-from langchain_core.documents import Document
+from typing import Optional
 
 from ragtrial.pipeline import GenerateStage, Pipeline, RERANKERS, ROUTERS, REWRITERS, RetrieveStage
 from ragtrial.pipeline.intent import INTENT_GATES
-from ragtrial.result import RagResult
+from ragtrial.result import RagResult, collapse_sources, make_decisions, sources_in
 
 _GLOBAL_ROUTES = {None, "all", "both"}
 
@@ -53,15 +51,6 @@ PRESETS: dict[str, EnhancedRAGConfig] = {
 }
 
 
-def _sources_in(docs: List[Document]) -> List[str]:
-    out: List[str] = []
-    for d in docs:
-        s = (d.metadata or {}).get("_source")
-        if s and s not in out:
-            out.append(s)
-    return out
-
-
 class EnhancedRAG:
     """A built pipeline + the config that produced it."""
 
@@ -72,23 +61,34 @@ class EnhancedRAG:
     def _decisions(self, state) -> dict:
         cfg = self.config
         route = state.route
-        routing = "global" if route in _GLOBAL_ROUTES else route
-        return {
-            "intent": "direct" if state.intent == "invalid" else "retrieve",
-            "rewrite": cfg.rewriter != "passthrough",
-            "routing": routing,
-            "retrieval": cfg.retrieval,
-            "rerank": cfg.reranker != "none",
-            "iterations": 1,
-        }
+        return make_decisions(
+            intent="direct" if state.intent == "invalid" else "retrieve",
+            rewrite=cfg.rewriter != "passthrough",
+            routing="global" if route in _GLOBAL_ROUTES else route,
+            retrieval=cfg.retrieval,
+            rerank=cfg.reranker != "none",
+            iterations=1,
+        )
+
+    def _n_llm_calls(self, state) -> int:
+        """LLM (generation) invocations for THIS run. Intent gate + semantic router
+        + cross-encoder rerank are embedding/encoder calls, NOT LLM — so the
+        canonical enhanced path is a single generate call. Ablation plugs that DO
+        use an LLM (router='llm', rewriter='hyde'/'multiquery') are added."""
+        cfg = self.config
+        n = 1  # final GenerateStage
+        if cfg.router == "llm":
+            n += 1
+        if cfg.rewriter in ("hyde", "multiquery") and state.intent != "invalid":
+            n += 1
+        return n
 
     def ask(self, question: str, verbose: bool = True) -> RagResult:
         t0 = time.perf_counter()
         state = self.pipeline.run(question)
         total = time.perf_counter() - t0
 
-        srcs = _sources_in(state.documents)
-        source_used = "none" if not srcs else (srcs[0] if len(srcs) == 1 else "both")
+        source_used = collapse_sources(sources_in(state.documents))
 
         result = RagResult(
             question=question,
@@ -98,7 +98,12 @@ class EnhancedRAG:
             route=state.route if state.route is not None else "global",
             source_used=source_used,
             mode="enhanced",
-            timings={**state.timings, "total": total},
+            timings={
+                **state.timings,
+                "total": total,
+                "n_llm_calls": self._n_llm_calls(state),
+                "n_iterations": 1,          # fixed pipeline: single pass
+            },
             meta={**state.meta, "config": self.config.__dict__},
             decisions=self._decisions(state),
         )

@@ -12,6 +12,8 @@ Interactive chat (multi-turn, with conversation memory):
 
 Modes: naive (fan-out dense baseline) | enhanced (semantic+dense pipeline) |
        agentic (LLM tool-calling loop). Chat commands: 'exit'/'quit', 'reset'.
+
+Every query is traced to data/traces/ (see ragtrial.tracing); --no-trace disables.
 """
 
 from __future__ import annotations
@@ -19,35 +21,44 @@ from __future__ import annotations
 import argparse
 import sys
 
-MODES = ["naive", "enhanced", "agentic"]
+from ragtrial.modes import DEFAULT_MODE, MODES
 
 
-def _ask_fn(mode: str):
-    if mode == "naive":
-        from ragtrial.rag.naive import ask_naive
-        return ask_naive
-    if mode == "agentic":
-        from ragtrial.rag.agentic import ask_agentic
-        return ask_agentic
-    from ragtrial.rag.enhanced import ask_enhanced
-    return ask_enhanced
+def _make_session(args: argparse.Namespace, rewrite: bool):
+    from ragtrial.chat import ChatSession
+
+    kwargs = {"trace_writer": None} if args.no_trace else {}
+    return ChatSession(
+        mode=args.mode,
+        max_history_turns=args.max_turns,
+        rewrite_followups=rewrite,
+        client="cli",
+        **kwargs,
+    )
+
+
+def _print_stats(turn) -> None:
+    t = turn.timings
+    pt = turn.result.timings
+    rewrite_note = ""
+    if turn.rewrite_applied:
+        rewrite_note = f' [rewritten: "{turn.effective_query}"]'
+    print(
+        f"     [src={turn.source_used} | rewrite={t['rewrite_followup']:.2f}s | "
+        f"retrieve={pt.get('retrieve', 0.0):.2f}s | generate={pt.get('generate', 0.0):.2f}s | "
+        f"total={t['total']:.2f}s | docs={len(turn.documents)}]{rewrite_note}\n"
+    )
 
 
 def _run_oneshot(args: argparse.Namespace) -> None:
-    ask = _ask_fn(args.mode)
-    result = ask(args.question, verbose=not args.quiet)
+    session = _make_session(args, rewrite=False)
+    turn = session.ask(args.question, verbose=not args.quiet)
     if args.quiet:
-        print(result.answer)
+        print(turn.answer)
 
 
 def _run_chat(args: argparse.Namespace) -> None:
-    from ragtrial.chat import ChatSession
-
-    session = ChatSession(
-        mode=args.mode,
-        max_history_turns=args.max_turns,
-        rewrite_followups=not args.no_rewrite,
-    )
+    session = _make_session(args, rewrite=not args.no_rewrite)
 
     print(
         f"[Chat mode - {args.mode} RAG | max_turns={args.max_turns} | "
@@ -73,22 +84,13 @@ def _run_chat(args: argparse.Namespace) -> None:
             continue
 
         try:
-            result = session.ask(user_input)
+            turn = session.ask(user_input)
         except Exception as e:
             print(f"[Error: {e}]\n", file=sys.stderr)
             continue
 
-        t = result["timings"]
-        rewrite_note = ""
-        if result["rewritten_query"] != result["original_query"]:
-            rewrite_note = f' [rewritten: "{result["rewritten_query"]}"]'
-
-        print(f"Bot: {result['answer']}")
-        print(
-            f"     [src={result['source_used']} | rewrite={t['rewrite']:.2f}s | "
-            f"retrieve={t['retrieve']:.2f}s | generate={t['generate']:.2f}s | "
-            f"total={t['total']:.2f}s | docs={len(result['documents'])}]{rewrite_note}\n"
-        )
+        print(f"Bot: {turn.answer}")
+        _print_stats(turn)
 
 
 def main() -> None:
@@ -97,11 +99,12 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     ap.add_argument("question", nargs="?", help="Question for one-shot mode (omit with --chat)")
-    ap.add_argument("--mode", choices=MODES, default="enhanced", help="RAG pipeline (default: enhanced)")
+    ap.add_argument("--mode", choices=MODES, default=DEFAULT_MODE, help=f"RAG pipeline (default: {DEFAULT_MODE})")
     ap.add_argument("--quiet", action="store_true", help="One-shot: print answer only")
     ap.add_argument("--chat", action="store_true", help="Enter interactive chat REPL")
     ap.add_argument("--max-turns", type=int, default=5, help="Chat: max history turns (default: 5)")
     ap.add_argument("--no-rewrite", action="store_true", help="Chat: disable follow-up query rewriting")
+    ap.add_argument("--no-trace", action="store_true", help="Disable trace persistence for this run")
     args = ap.parse_args()
 
     if args.chat:

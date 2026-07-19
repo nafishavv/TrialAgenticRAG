@@ -24,6 +24,13 @@ def _gold_id(doc: Document) -> str | None:
     return None
 
 
+def _label(doc: Document) -> str:
+    m = doc.metadata or {}
+    page = m.get("page", m.get("page_start"))
+    hal = f", hal. {page}" if page is not None else ""
+    return f"Buku Saku Adminduk Kab. Batang 2023{hal}"
+
+
 dukcapil_capability = VectorSourceCapability(
     name="dukcapil",
     description=(
@@ -41,4 +48,5 @@ dukcapil_capability = VectorSourceCapability(
     header_formatter=_header,
     gold_id_fn=_gold_id,
     citation="sebutkan section/halaman kalau ada di header konteks.",
+    label_formatter=_label,
 )

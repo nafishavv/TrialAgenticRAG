@@ -29,6 +29,15 @@ def _gold_id(doc: Document) -> str | None:
     return None
 
 
+def _label(doc: Document) -> str:
+    m = doc.metadata or {}
+    tipe = m.get("tipe_dokumen") or "Produk Hukum"
+    nomor = m.get("nomor")
+    tahun = m.get("tahun")
+    no_thn = f" No. {nomor} Tahun {tahun}" if nomor and tahun else ""
+    return f"JDIH Kab. Batang — {tipe}{no_thn}"
+
+
 sosial_capability = VectorSourceCapability(
     name="sosial",
     description=(
@@ -52,4 +61,5 @@ sosial_capability = VectorSourceCapability(
     gold_id_fn=_gold_id,
     citation="sebutkan jenis/nomor/tahun peraturan dan Pasal kalau ada di header konteks; "
              "kalau status 'Tidak Berlaku', ingatkan bahwa peraturan sudah dicabut.",
+    label_formatter=_label,
 )

@@ -1,7 +1,9 @@
 """Query-rewrite stages. Enhanced rewrites EVERY query (no LLM 'should I?' choice).
 
 Implemented:  passthrough (no-op), hyde.
-Stubbed (TODO): multiquery — slot exists + registered; fill in `run()`.
+Stubbed (TODO): multiquery — class exists but is NOT registered, so a config
+naming it fails at build time (KeyError), not mid-query. Register it in
+REWRITERS once run() is implemented.
 
 Add one: implement Stage subclass, add to REWRITERS.
 """
@@ -64,5 +66,5 @@ class MultiQueryRewriter(Stage):
 REWRITERS: dict[str, type[Stage]] = {
     "passthrough": PassthroughRewriter,
     "hyde": HyDERewriter,
-    "multiquery": MultiQueryRewriter,
+    # "multiquery": MultiQueryRewriter,   # TODO: register setelah run() diisi
 }

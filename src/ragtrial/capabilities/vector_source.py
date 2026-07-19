@@ -37,6 +37,7 @@ class VectorSourceCapability(Capability):
     header_formatter: Optional[Callable[[Document, int], str]] = None
     gold_id_fn: Optional[Callable[[Document], Optional[str]]] = None
     citation: Optional[str] = None
+    label_formatter: Optional[Callable[[Document], str]] = None
     searchable: bool = True
 
     # Lazy-initialized
@@ -103,3 +104,8 @@ class VectorSourceCapability(Capability):
 
     def citation_hint(self) -> Optional[str]:
         return self.citation
+
+    def citation_label(self, doc: Document) -> str:
+        if self.label_formatter is not None:
+            return self.label_formatter(doc)
+        return super().citation_label(doc)

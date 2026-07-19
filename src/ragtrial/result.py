@@ -12,9 +12,59 @@ live in `meta` so the top-level shape stays stable across modes.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from langchain_core.documents import Document
+
+CANONICAL_TIMING_KEYS = (
+    "intent", "route", "rewrite", "retrieve", "rerank",
+    "t_orchestrate", "t_generate", "generate", "total",
+)
+"""Shared timing vocabulary across the 3 modes (eval/analyze.py reads these with
+.get(key, 0.0)). A mode only emits the keys for stages it actually ran — absent
+stages are OMITTED, never zero-filled. `rewrite_followup` (conversational rewrite)
+is a ChatSession-level timing, not a pipeline one."""
+
+
+def sources_in(docs: List[Document]) -> List[str]:
+    """Ordered unique `_source` tags across docs (single shared implementation)."""
+    out: List[str] = []
+    for d in docs:
+        s = (d.metadata or {}).get("_source")
+        if s and s not in out:
+            out.append(s)
+    return out
+
+
+def collapse_sources(srcs: List[str]) -> str:
+    """Collapse a source list to the `source_used` label: 'none' | <single> | 'both'."""
+    if not srcs:
+        return "none"
+    return srcs[0] if len(srcs) == 1 else "both"
+
+
+def make_decisions(
+    *,
+    intent: str = "retrieve",
+    rewrite: bool = False,
+    routing: Union[str, List[str]] = "global",
+    retrieval: str = "dense",
+    rerank: bool = False,
+    iterations: int = 1,
+) -> Dict[str, Any]:
+    """Keyword-only builder for the normalized `decisions` log.
+
+    Every mode builds its decisions through this, so the key set can never drift
+    between pipelines (a typo'd key becomes a TypeError instead of silent skew).
+    """
+    return {
+        "intent": intent,
+        "rewrite": rewrite,
+        "routing": routing,
+        "retrieval": retrieval,
+        "rerank": rerank,
+        "iterations": iterations,
+    }
 
 
 @dataclass

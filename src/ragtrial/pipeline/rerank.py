@@ -61,7 +61,8 @@ def rerank_documents(
 
     Shared by enhanced (Stage) and agentic (tools node). Returns the reranked
     documents AND their scores (aligned), so callers can stash scores in meta.
-    A no-op on empty input.
+    Each kept doc also gets its score stamped as metadata['_rerank_score'], so
+    the score travels with the Document into traces. A no-op on empty input.
     """
     if not docs:
         return docs, []
@@ -70,6 +71,8 @@ def rerank_documents(
     ranked = sorted(zip(docs, scores), key=lambda ds: float(ds[1]), reverse=True)
     if top_n is not None:
         ranked = ranked[:top_n]
+    for d, s in ranked:
+        d.metadata["_rerank_score"] = float(s)
     return [d for d, _ in ranked], [float(s) for _, s in ranked]
 
 

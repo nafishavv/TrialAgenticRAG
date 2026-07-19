@@ -45,6 +45,14 @@ SOSIAL_VECTOR_STORE: Path = VECTOR_STORE_DIR / "sosial"
 UNIFIED_COLLECTION: str = "unified"
 UNIFIED_VECTOR_STORE: Path = VECTOR_STORE_DIR / "unified"
 
+# Query traces (JSONL, gitignored) — basic tier in TRACES_DIR, full tier in
+# TRACES_FULL_DIR, linked by query_id. See ragtrial/tracing/.
+TRACES_DIR: Path = DATA_DIR / "traces"
+TRACES_FULL_DIR: Path = TRACES_DIR / "full"
+
+# Static frontend served by the FastAPI app (see ragtrial/server/).
+WEB_DIR: Path = PROJECT_ROOT / "web"
+
 
 def load_env() -> str:
     """Load API key dari .env (local) atau st.secrets (Streamlit Cloud)."""

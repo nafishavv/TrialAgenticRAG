@@ -14,6 +14,7 @@ IDF — i.e. it matches what a physically separate collection would give.
 
 from __future__ import annotations
 
+import time
 from typing import Dict, List, Literal, Optional, Tuple
 
 from langchain_chroma import Chroma
@@ -80,25 +81,67 @@ class UnifiedVectorStore:
             self._bm25[key] = r
         return self._bm25[key]
 
+    # Sub-timing keys populated into the caller-provided `timings` dict by search().
+    TIMING_KEYS = ("t_embed_query", "t_search", "t_bm25", "t_fuse")
+
     def search(
         self,
         query: str,
         k: int = 5,
         strategy: Strategy = "hybrid",
         domain: Optional[str] = None,
+        timings: Optional[Dict[str, float]] = None,
     ) -> List[Document]:
-        """Top-k docs. `domain=None` = global; else filtered to that domain."""
+        """Top-k docs. `domain=None` = global; else filtered to that domain.
+
+        If `timings` (a dict) is passed, it is populated in place with per-stage
+        sub-timings under the keys in `TIMING_KEYS`:
+          - t_embed_query : query-embedding API call (rawan 429)
+          - t_search      : pure Chroma dense vector search
+          - t_bm25        : BM25 build/query (0.0 for dense-only)
+          - t_fuse        : RRF fusion (0.0 for dense-only)
+        Existing callers that don't pass `timings` are unaffected. Results are
+        byte-identical to the previous EnsembleRetriever path (same RRF, same
+        weights, same ordering) — only the internals are timed.
+        """
         self._ensure_vs()
         where = self._where(domain)
+        t = timings if timings is not None else {}
+        # Init all keys so callers always see the full schema (0.0 where n/a).
+        for key in self.TIMING_KEYS:
+            t.setdefault(key, 0.0)
+
+        # Embed the query ONCE (dense path would otherwise embed inside Chroma),
+        # so t_embed_query is cleanly isolated from the vector search itself.
+        t0 = time.perf_counter()
+        qvec = embeddings.embed_query(query)
+        t["t_embed_query"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
+        dense_docs = self._vs.similarity_search_by_vector(
+            qvec, k=(k if strategy == "dense" else self.fetch_k), filter=where
+        )
+        t["t_search"] = time.perf_counter() - t0
+
         if strategy == "dense":
-            return self._vs.similarity_search(query, k=k, filter=where)
+            return dense_docs[:k]
+
         # hybrid: domain-local BM25 + domain-filtered dense, fused by RRF.
-        bm25 = self._bm25_for(domain)
+        t0 = time.perf_counter()
+        bm25 = self._bm25_for(domain)          # first call pays the (cached) build
+        bm25_docs = bm25.invoke(query)
+        t["t_bm25"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
         dense = self._vs.as_retriever(
             search_kwargs={"k": self.fetch_k, **({"filter": where} if where else {})}
         )
         ensemble = EnsembleRetriever(retrievers=[bm25, dense], weights=list(self.weights))
-        return ensemble.invoke(query)[:k]
+        # Fuse the ALREADY-retrieved lists directly (same RRF the ensemble's own
+        # .invoke would run) so BM25 + dense are not re-queried.
+        fused = ensemble.weighted_reciprocal_rank([bm25_docs, dense_docs])
+        t["t_fuse"] = time.perf_counter() - t0
+        return fused[:k]
 
     def search_with_scores(
         self, query: str, k: int = 5, domain: Optional[str] = None
@@ -107,6 +150,11 @@ class UnifiedVectorStore:
         self._ensure_vs()
         pairs = self._vs.similarity_search_with_score(query, k=k, filter=self._where(domain))
         return [(d, float(s)) for d, s in pairs]
+
+    def count(self) -> int:
+        """Number of chunks in the unified collection (health/readiness probe)."""
+        self._ensure_vs()
+        return self._vs._collection.count()
 
 
 # Module-level singleton — all tiers share one store (one BM25 cache, one client).
