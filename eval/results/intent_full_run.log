@@ -1,0 +1,27 @@
+Both GOOGLE_API_KEY and GEMINI_API_KEY are set. Using GOOGLE_API_KEY.
+Both GOOGLE_API_KEY and GEMINI_API_KEY are set. Using GOOGLE_API_KEY.
+Both GOOGLE_API_KEY and GEMINI_API_KEY are set. Using GOOGLE_API_KEY.
+[92m21:16:11 - LiteLLM:WARNING[0m: common_utils.py:979 - litellm: could not pre-load bedrock-runtime response stream shape — Bedrock event-stream decoding will be unavailable. Error: No module named 'botocore'
+2026-07-06 21:16:11 - LiteLLM - WARNING - common_utils.py:979 - _load_bedrock_response_stream_shape() - litellm: could not pre-load bedrock-runtime response stream shape — Bedrock event-stream decoding will be unavailable. Error: No module named 'botocore'
+[92m21:16:12 - LiteLLM:WARNING[0m: common_utils.py:24 - litellm: could not pre-load sagemaker-runtime response stream shape — SageMaker event-stream decoding will be unavailable. Error: No module named 'botocore'
+2026-07-06 21:16:12 - LiteLLM - WARNING - common_utils.py:24 - _load_sagemaker_response_stream_shape() - litellm: could not pre-load sagemaker-runtime response stream shape — SageMaker event-stream decoding will be unavailable. Error: No module named 'botocore'
+2026-07-06 21:16:12 - chromadb.telemetry.product.posthog - INFO - posthog.py:22 - __init__() - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-07-06 21:16:13 - chromadb.telemetry.product.posthog - INFO - posthog.py:22 - __init__() - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-07-06 21:16:14 - chromadb.telemetry.product.posthog - INFO - posthog.py:22 - __init__() - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-07-06 21:16:14 - chromadb.telemetry.product.posthog - INFO - posthog.py:22 - __init__() - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-07-06 21:16:15 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:16:24 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:16:35 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:16:42 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:16:50 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:16:56 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:02 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:10 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:17 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:26 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:33 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:40 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:17:50 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:18:00 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:18:07 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.
+2026-07-06 21:18:14 - google_genai.models - INFO - models.py:5701 - generate_content() - AFC is enabled with max remote calls: 10.

@@ -1,0 +1,74 @@
+{
+  "system": "naive",
+  "summary": {
+    "accuracy": 1.0,
+    "macro_f1": 0.5,
+    "recall_invalid": 0.0,
+    "recall_valid": 1.0,
+    "per_class": {
+      "valid": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 3
+      },
+      "invalid": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      }
+    },
+    "confusion_matrix": {
+      "valid": {
+        "valid": 3,
+        "invalid": 0
+      },
+      "invalid": {
+        "valid": 0,
+        "invalid": 0
+      }
+    },
+    "latency_mean": 6.095103799996044,
+    "latency_p95": 6.0447453999950085,
+    "n": 3
+  },
+  "records": [
+    {
+      "id": "SO001",
+      "question": "Berdasarkan Peraturan Daerah Nomor 2 Tahun 2024 Tentang Pengarusutamaan Gender, bagaimana penjelasan mengenai Pasal 28?",
+      "expected_intent": "valid",
+      "expected_route": "sosial",
+      "query_type": "lexical_exact",
+      "predicted_intent": "valid",
+      "correct": true,
+      "retrieved_docs": 8,
+      "latency_total": 8.342784199980088,
+      "latency_wall": 8.342826100008097
+    },
+    {
+      "id": "SO002",
+      "question": "Berdasarkan Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana penjelasan mengenai Pasal 158, baik dari ayat (1) hingga ayat (4)?",
+      "expected_intent": "valid",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "predicted_intent": "valid",
+      "correct": true,
+      "retrieved_docs": 8,
+      "latency_total": 6.0447453999950085,
+      "latency_wall": 6.044803400000092
+    },
+    {
+      "id": "SO003",
+      "question": "Berdasarkan Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana penjelasan yang diberikan untuk setiap bagian dari Pasal 123?",
+      "expected_intent": "valid",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "predicted_intent": "valid",
+      "correct": true,
+      "retrieved_docs": 8,
+      "latency_total": 3.8977818000130355,
+      "latency_wall": 3.8978360000182875
+    }
+  ]
+}
