@@ -31,7 +31,6 @@ from eval.eval_core import (
     recall_at_k,
     precision_at_k,
     mrr,
-    judge_fact_recall,
     judge_faithfulness,
     judge_refusal,
     judge_answer_relevance,
@@ -91,9 +90,11 @@ def run_one_query(
 
     gold_set = gold_chunks_to_set(q["gold_chunks"])
 
-    # 2) Routing (modes that produce a route decision)
+    # 2) Routing — AGENTIC ONLY. Enhanced retrieves globally (router='none'), so a
+    #    routing metric is moot there; naive has no route. Only agentic makes a
+    #    domain decision worth scoring.
     routing = None
-    if system in ("agentic", "enhanced"):
+    if system == "agentic":
         routing = {
             "predicted_route": result.get("route", ""),
             "expected_route": q["expected_route"],
@@ -114,36 +115,30 @@ def run_one_query(
             "mrr": mrr(retrieved_ids, gold_set, k=10),
         }
 
-    # 4) Answer quality (LLM judges)
+    # 4) Persist retrieval context (page_content of retrieved docs) so the judge
+    #    phase (run_judge.py) can score faithfulness OFFLINE without re-running the
+    #    pipeline. Stored as a list of strings; joined at judge time.
+    retrieved_context = [d.page_content for d in docs]
+
+    # 5) Answer quality (LLM judges) — OPTIONAL inline convenience path.
+    #    The recommended flow is the GENERATE phase (--no-judge) + a separate,
+    #    cacheable judge phase (eval.run_judge). fact_recall is DROPPED (circular:
+    #    LLM-generated key judged by an LLM). Only faithfulness/answer_relevance/
+    #    refusal remain — the same three run_judge computes. Correctness -> experts.
     answer_eval: Dict[str, Any] = {}
     if use_judge:
-        # Refusal check
         ref = judge_refusal(answer)
-        should_refuse = q["expected_route"] == "none" or all(
-            f.startswith("TODO_") for f in q.get("expected_facts", [])
-        ) and not gold_set
-        # For 'none' queries, refusal=YES is correct
+        answer_eval["refused"] = ref["refused"]
+        # For 'none' queries, refusal=YES is the correct behavior.
         if q["expected_route"] == "none":
             answer_eval["refusal_correct"] = ref["refused"]
-        answer_eval["refused"] = ref["refused"]
+        else:
+            # Faithfulness vs retrieved context + answer relevance (non-none only).
+            ctx = "\n\n---\n\n".join(retrieved_context)
+            answer_eval["faithfulness"] = judge_faithfulness(answer, ctx)["faithfulness"]
+            answer_eval["answer_relevance"] = judge_answer_relevance(question, answer)["answer_relevance"]
 
-        # Fact recall (only for non-none queries with real facts)
-        if q["expected_route"] != "none":
-            facts = judge_fact_recall(answer, q.get("expected_facts", []))
-            answer_eval["fact_recall"] = facts["fact_recall"]
-            answer_eval["fact_recall_skipped"] = facts.get("skipped", False)
-            answer_eval["fact_per"] = facts["per_fact"]
-
-            # Faithfulness vs retrieved context
-            ctx = "\n\n---\n\n".join(d.page_content for d in docs)
-            faith = judge_faithfulness(answer, ctx)
-            answer_eval["faithfulness"] = faith["faithfulness"]
-
-            # Answer relevance
-            rel = judge_answer_relevance(question, answer)
-            answer_eval["answer_relevance"] = rel["answer_relevance"]
-
-    # 5) Timing
+    # 6) Timing
     timings = result.get("timings", {}) or {}
 
     return {
@@ -156,6 +151,7 @@ def run_one_query(
         "system": system,
         "answer": answer,
         "retrieved_ids": retrieved_ids,
+        "retrieved_context": retrieved_context,
         "gold_ids": sorted(gold_set),
         "routing": routing,
         "retrieval": retrieval,

@@ -54,9 +54,9 @@ def aggregate(records: List[Dict[str, Any]], k: int = 5) -> Dict[str, Any]:
         retr[key] = nanmean(vals)
     summary["retrieval"] = retr
 
-    # ---- Answer quality ----
+    # ---- Answer quality ---- (fact_recall DROPPED: circular LLM-key metric)
     aq = {}
-    for key in ["fact_recall", "faithfulness", "answer_relevance"]:
+    for key in ["faithfulness", "answer_relevance"]:
         vals = [r["answer_eval"].get(key) for r in non_none if r.get("answer_eval") and key in r["answer_eval"]]
         aq[key] = nanmean(vals)
     # Refusal correctness (only for none queries)
@@ -71,8 +71,19 @@ def aggregate(records: List[Dict[str, Any]], k: int = 5) -> Dict[str, Any]:
         aq["false_refusal_rate"] = nanmean([1.0 if x else 0.0 for x in refused_non_none])
     summary["answer"] = aq
 
-    # ---- Latency ----
-    lat_keys = ["route", "retrieve", "generate", "total", "wall"]
+    # ---- Latency (per-stage) ----
+    # Union across tiers; keys absent for a tier are simply skipped. Zero-valued
+    # entries (e.g. route=0.0, or t_bm25=0.0 for naive dense) are dropped so a
+    # stage only appears where it actually ran.
+    lat_keys = [
+        "t_embed_query", "t_search", "t_bm25", "t_fuse",  # retrieve sub-stages (P1.1)
+        "retrieve",                                       # whole retrieve (back-compat)
+        "rerank", "t_rerank",                             # cross-encoder
+        "intent", "route", "rewrite", "t_decision",       # decision overhead
+        "t_orchestrate",                                  # agentic tool-selection turns
+        "generate", "t_generate",                         # final answer synthesis
+        "total", "wall",                                  # end-to-end
+    ]
     lat = {}
     for key in lat_keys:
         vals = [r["timings"].get(key, 0.0) for r in valid if r.get("timings")]
@@ -84,6 +95,30 @@ def aggregate(records: List[Dict[str, Any]], k: int = 5) -> Dict[str, Any]:
                 "p95": percentile(vals, 0.95),
             }
     summary["latency"] = lat
+
+    # ---- Counts (LLM calls / agentic loop iterations) ----
+    counts = {}
+    for key in ["n_llm_calls", "n_iterations"]:
+        vals = [r["timings"].get(key) for r in valid
+                if r.get("timings") and isinstance(r["timings"].get(key), (int, float))]
+        if vals:
+            counts[key] = {"mean": nanmean(vals), "p50": percentile(vals, 0.5),
+                           "p95": percentile(vals, 0.95)}
+    summary["counts"] = counts
+
+    # ---- Decisions breakdown (rewrite / re-retrieve tagging, free from the log) ----
+    dec_records = [r for r in valid if r.get("decisions")]
+    if dec_records:
+        rewrite_ids = [r["id"] for r in dec_records if r["decisions"].get("rewrite")]
+        iters = [(r["id"], int(r["decisions"].get("iterations", 1))) for r in dec_records]
+        re_retrieve_ids = [rid for rid, it in iters if it > 1]
+        summary["decisions"] = {
+            "rewrite_rate": len(rewrite_ids) / len(dec_records),
+            "avg_iterations": nanmean([it for _, it in iters]),
+            "re_retrieve_rate": len(re_retrieve_ids) / len(dec_records),
+            "rewrite_ids": rewrite_ids,
+            "re_retrieve_ids": re_retrieve_ids,
+        }
 
     return summary
 
@@ -122,7 +157,20 @@ def print_summary(name: str, s: Dict[str, Any]) -> None:
     if "latency" in s:
         lat = s["latency"]
         for k, v in lat.items():
-            print(f"Latency {k:9s}  mean={v['mean']:.2f}s  p50={v['p50']:.2f}s  p95={v['p95']:.2f}s")
+            print(f"Latency {k:14s}  mean={v['mean']:.2f}s  p50={v['p50']:.2f}s  p95={v['p95']:.2f}s")
+
+    if s.get("counts"):
+        for k, v in s["counts"].items():
+            print(f"Count   {k:14s}  mean={v['mean']:.2f}   p50={v['p50']:.2f}   p95={v['p95']:.2f}")
+
+    if s.get("decisions"):
+        d = s["decisions"]
+        print(f"Decisions:  rewrite_rate={d['rewrite_rate']:.3f}  "
+              f"avg_iterations={d['avg_iterations']:.2f}  re_retrieve_rate={d['re_retrieve_rate']:.3f}")
+        if d["rewrite_ids"]:
+            print(f"  rewrite ids ({len(d['rewrite_ids'])}): {', '.join(d['rewrite_ids'])}")
+        if d["re_retrieve_ids"]:
+            print(f"  re-retrieve ids ({len(d['re_retrieve_ids'])}): {', '.join(d['re_retrieve_ids'])}")
 
 
 def print_comparison(summaries: Dict[str, Dict[str, Any]], k: int = 5) -> None:
@@ -151,8 +199,8 @@ def print_comparison(summaries: Dict[str, Dict[str, Any]], k: int = 5) -> None:
         vals = [summaries[s].get("retrieval", {}).get(key, float("nan")) for s in systems]
         rows.append((f"retrieval.{key}", vals))
 
-    # Answer quality
-    for key in ["fact_recall", "faithfulness", "answer_relevance",
+    # Answer quality (fact_recall dropped)
+    for key in ["faithfulness", "answer_relevance",
                 "refusal_correct_rate", "false_refusal_rate"]:
         vals = [summaries[s].get("answer", {}).get(key, float("nan")) for s in systems]
         rows.append((f"answer.{key}", vals))
@@ -162,8 +210,9 @@ def print_comparison(summaries: Dict[str, Dict[str, Any]], k: int = 5) -> None:
         vals = [summaries[s].get("routing", {}).get(key, float("nan")) for s in systems]
         rows.append((f"routing.{key}", vals))
 
-    # Latency
-    for stage in ["retrieve", "generate", "total", "wall"]:
+    # Latency — per-stage means (union across tiers) + key p95s
+    for stage in ["t_embed_query", "t_search", "t_bm25", "t_fuse", "retrieve",
+                  "rerank", "t_orchestrate", "t_generate", "generate", "total", "wall"]:
         vals = [summaries[s].get("latency", {}).get(stage, {}).get("mean", float("nan"))
                 for s in systems]
         rows.append((f"latency.{stage}(mean)", vals))
@@ -172,10 +221,25 @@ def print_comparison(summaries: Dict[str, Dict[str, Any]], k: int = 5) -> None:
                 for s in systems]
         rows.append((f"latency.{stage}(p95)", vals))
 
+    # Counts
+    for key in ["n_llm_calls", "n_iterations"]:
+        vals = [summaries[s].get("counts", {}).get(key, {}).get("mean", float("nan"))
+                for s in systems]
+        rows.append((f"counts.{key}(mean)", vals))
+
     for label, vals in rows:
         print(label.ljust(28) + "".join(_fmt(v) for v in vals))
 
     print()
+
+
+def load_testset_ids(path: Path) -> set:
+    """Set of question ids in the testset (for stale-id detection)."""
+    if not path.exists():
+        return set()
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return {q["id"] for q in data.get("questions", [])}
 
 
 def main():
@@ -184,11 +248,18 @@ def main():
     ap.add_argument("--breakdown", nargs="+", default=[],
                     help="dimensi breakdown: query_type difficulty expected_route chunk_scope")
     ap.add_argument("--k", type=int, default=5)
+    ap.add_argument("--ids", nargs="+", default=None,
+                    help="aggregate over ONLY these question ids (subset agregasi)")
+    ap.add_argument("--testset", default=str(ROOT / "eval" / "testset.json"),
+                    help="testset for stale-id detection (ids in results not in testset)")
     ap.add_argument("--save", action="store_true",
                     help="simpan summary ke eval/results/summary_<system>.json")
     ap.add_argument("--no-compare", action="store_true",
                     help="skip comparison table")
     args = ap.parse_args()
+
+    id_filter = set(args.ids) if args.ids else None
+    testset_ids = load_testset_ids(Path(args.testset))
 
     summaries: Dict[str, Dict[str, Any]] = {}
 
@@ -197,6 +268,21 @@ def main():
         if not recs:
             print(f"[skip] no records for {system}")
             continue
+
+        # (d) warn about stale ids present in results but absent from the testset.
+        if testset_ids:
+            stale = sorted({r["id"] for r in recs if r.get("id") not in testset_ids})
+            if stale:
+                print(f"[warn] {system}: {len(stale)} stale id(s) not in testset: "
+                      f"{', '.join(stale)}")
+
+        # (b) subset filter — aggregate over only the requested ids.
+        if id_filter is not None:
+            recs = [r for r in recs if r.get("id") in id_filter]
+            if not recs:
+                print(f"[skip] {system}: no records match --ids filter")
+                continue
+
         s = aggregate(recs, k=args.k)
         summaries[system] = s
         print_summary(system, s)
@@ -210,8 +296,8 @@ def main():
                     line_parts.append(f"hit@{args.k}={sub['retrieval'].get(f'hit@{args.k}', float('nan')):.2f}")
                     line_parts.append(f"recall={sub['retrieval'].get(f'recall@{args.k}', float('nan')):.2f}")
                 if "answer" in sub:
-                    line_parts.append(f"fact={sub['answer'].get('fact_recall', float('nan')):.2f}")
                     line_parts.append(f"faith={sub['answer'].get('faithfulness', float('nan')):.2f}")
+                    line_parts.append(f"rel={sub['answer'].get('answer_relevance', float('nan')):.2f}")
                 print("   " + "  ".join(line_parts))
 
         if args.save:
