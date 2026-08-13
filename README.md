@@ -1,172 +1,162 @@
 # RAGTrial
 
-RAG layanan publik Kab. Batang dengan **3 mode**: naive, enhanced, agentic.
-Sumber data saat ini:
-- **Dukcapil** — Buku Saku administrasi kependudukan (KTP, KK, akta, dll)
-- **OPD** — Direktori Organisasi Perangkat Daerah (alamat, telepon, email)
-- **Perizinan** — syarat/prosedur/biaya izin (SIPUAS)
-- **Sosial** — produk hukum sektor sosial (JDIH)
+**RAGTrial** is a Retrieval-Augmented Generation chatbot for public-service information in Kabupaten Batang, Indonesia.
 
-Arsitektur dibangun untuk **skala naik**: domain heterogen (banyak file per domain),
-komponen RAG yang bisa di-swap, dan integrasi tool (text-to-sql / web search) di masa depan.
-Detail desain + alasan: **[docs/REFACTOR_3WAY.md](docs/REFACTOR_3WAY.md)**.
+The project explores three RAG approaches — **Naive RAG**, **Enhanced RAG**, and **Agentic RAG** — and compares how different retrieval and orchestration strategies affect question answering.
 
 ---
 
-## Tiga mode
+## Overview
 
-| Mode | Apa | Kontrol alur |
-|---|---|---|
-| **naive** | 1 collection gabungan → dense top-k → stuff → 1 LLM call | Tetap, minimal (baseline) |
-| **enhanced** | pipeline fixed `rewrite → route → retrieve → rerank → generate`, di-config | Developer yang desain |
-| **agentic** | tool-calling loop: LLM pilih tool, iterasi, retry, skip | Dinamis, LLM yang putuskan |
+Public-service information is spread across handbooks, regional regulations, licensing pages, and agency directories. Most of it is public, but it is hard to search: a citizen usually has to know which document holds the answer before they can find it.
+
+RAG is a good fit for this, since the answers already exist in official documents and should be retrieved and cited rather than memorized by a model. The system takes a question in Bahasa Indonesia, finds the relevant passages, and answers from them.
+
+The more interesting question is *how much machinery the retrieval side actually needs*. Adding hybrid search, reranking, or an agent loop makes a system more capable in principle, but also slower and harder to reason about. Rather than assuming a more complex pipeline is always better, this project builds three architectures on the same data and compares them.
 
 ---
 
-## Setup
+## Three RAG Approaches
 
-```bash
-uv sync && uv pip install -e .
+| Approach | Idea | Who controls the flow |
+| --- | --- | --- |
+| **Naive RAG** | Retrieve and answer, nothing else | Fixed |
+| **Enhanced RAG** | A designed pipeline with stronger retrieval | Developer |
+| **Agentic RAG** | An LLM decides how to search | The model, at runtime |
 
-# Register nbstripout git filter (sekali per clone)
-uv run nbstripout --install --attributes .gitattributes
+### Naive RAG
 
-# .env di root project:  GEMINI_API_KEY=...  (atau GOOGLE_API_KEY=...)
-```
+A simple baseline. It retrieves the most similar passages and uses them as context for the LLM. No routing, no reranking, no filtering — it always retrieves and always answers.
 
-## Quick start
+### Enhanced RAG
 
-```bash
-# Tanya (default: enhanced)
-uv run python scripts/ask.py "Apa syarat KTP elektronik?"
+A fixed pipeline with extra retrieval components: it first decides whether a question needs retrieval at all, then combines semantic and keyword search, reranks the candidates, and generates an answer. The steps are decided ahead of time by the developer, and every question follows the same path.
 
-# Pilih mode
-uv run python scripts/ask.py "Alamat Disdukcapil?" --mode naive
-uv run python scripts/ask.py "Urus pindah domisili, ke dinas mana?" --mode agentic
+### Agentic RAG
 
-# Chat multi-turn (pilih mode juga)
-uv run python scripts/ask.py --chat --mode enhanced
+An LLM-driven workflow. Each domain is exposed as a search tool, and the model decides which tools to use, how to phrase the query, whether the results are good enough, and whether to search again — or to skip retrieval entirely for greetings and out-of-scope questions.
 
-# Pipeline data: preprocess → build store per domain
-uv run python scripts/preprocess.py --source all
-uv run python scripts/build_vectorstore.py --source all
+All three run on the same documents, the same index, and the same models, so the comparison reflects the architecture rather than the setup around it.
 
-# Web app (FastAPI + frontend statis) → buka http://127.0.0.1:8000
-uv run python scripts/serve.py
-```
+---
 
-> UI Streamlit lama diarsipkan di `archive/streamlit/` (tidak dipakai lagi;
-> web app sekarang FastAPI + `web/`).
+## Data & Use Case
 
-## Web app & tracing
+The system works with public-service information from Kabupaten Batang, covering:
 
-- `scripts/serve.py` menjalankan FastAPI (`src/ragtrial/server/`) yang serve
-  frontend statis dari `web/` + API: `POST /api/chat`, `GET /api/meta`,
-  `GET /api/health`. Startup melakukan warmup model di background —
-  request pertama tidak menunggu cold-load.
-- UI hanya menampilkan jawaban + "Sumber (n) • latency". SEMUA detail riset
-  (chunk, skor rerank, keputusan routing/intent, trace agent) otomatis
-  tersimpan sebagai **trace JSONL** di `data/traces/`:
-  - `traces-YYYY-MM-DD.jsonl` — basic (ringkas, 1 baris per query)
-  - `full/traces-full-YYYY-MM-DD.jsonl` — full (chunk + meta), join via `query_id`
-- Level trace: env `RAGTRIAL_TRACE=off|basic|full` (default `full`).
-  CLI: `--no-trace` untuk mematikan per run.
-- Foto hero landing page: lihat `web/assets/img/README.md`.
+- **Civil registration** — ID cards, family cards, birth and death certificates
+- **Government agencies** — directory and contact information for local offices
+- **Licensing** — requirements, procedures, and fees
+- **Social & regulatory** — regional regulations related to social services
 
-## Enhanced — swap komponen lewat config
+These domains are intentionally different in character. An agency lookup and a question about a regional regulation stress retrieval in very different ways, which makes this a useful setting for comparing retrieval strategies. The pipeline is built so that more public-service domains can be added as the project grows.
 
-```python
-from ragtrial.rag.enhanced import build_enhanced, EnhancedRAGConfig
+---
 
-cfg = EnhancedRAGConfig(rewriter="passthrough", router="semantic",
-                        retrieval="dense", reranker="none")
-rag = build_enhanced(cfg)
-result = rag.ask("Apa syarat KTP elektronik?")   # -> RagResult
-```
-Ganti komponen = ganti 1 field. Preset siap pakai (lihat `PRESETS`): `default`,
-`dense_only`, `hybrid_no_rerank`, `rerank_no_hybrid`, `no_intent`.
-Implemented: `hyde`, `cross_encoder`. Stub menunggu diisi: `multiquery`.
+## Technical Highlights
+
+- **Hybrid retrieval** combining semantic and lexical search.
+- **Cross-encoder reranking** to refine retrieved candidates before generation.
+- **Intent handling** so the assistant can decline questions outside its scope instead of guessing.
+- **Agentic retrieval** with LLM-driven tool selection and self-correction when results look weak.
+- **LangGraph orchestration** for the agentic workflow.
+- **Modular pipeline** where retrieval components can be swapped or configured independently.
+- **Query tracing** that records what was retrieved and which decisions were made on every query, so runs can be inspected afterwards.
+- **Web and CLI interfaces** sharing the same underlying session layer.
+
+---
 
 ## Evaluation
 
+The project includes an evaluation framework used to compare the three architectures on the same test questions. It looks at:
+
+- **Retrieval quality** — whether the right passages are found
+- **Answer quality** — faithfulness to the retrieved context and relevance to the question
+- **Refusal behavior** — how each architecture handles out-of-scope questions
+- **Routing and intent** — which domain the system decides to search, and whether it should search at all
+- **Efficiency** — latency broken down by stage, and how many model calls each approach needs
+
+Results are compared per domain and per question type, and individual retrieval components can be turned on and off to see what each one contributes. Experiments are still running as part of the thesis, so no final numbers are reported here.
+
+---
+
+## Tech Stack
+
+- **Python 3.12**
+- **LangChain** — retrieval, tools, prompting
+- **LangGraph** — agentic workflow
+- **ChromaDB** — vector store
+- **Gemini** — LLM and embeddings
+- **BAAI/bge-reranker** — cross-encoder reranking
+- **FastAPI** — backend, with a lightweight static frontend
+- **uv** — environment and dependency management
+
+---
+
+## Running the Project
+
+Requires Python 3.12+ and a Gemini API key.
+
+```bash
+uv sync && uv pip install -e .
+```
+
+Create a `.env` file in the project root:
+
+```
+GEMINI_API_KEY=your_key_here
+```
+
+Build the index from the source documents:
+
+```bash
+uv run python scripts/preprocess.py --source all
+uv run python scripts/build_vectorstore.py --source all
+```
+
+Ask a question from the CLI, choosing the architecture with `--mode`:
+
+```bash
+uv run python scripts/ask.py "Apa syarat KTP elektronik?"
+uv run python scripts/ask.py "Alamat Disdukcapil?" --mode naive
+uv run python scripts/ask.py "Urus pindah domisili, ke dinas mana?" --mode agentic
+
+uv run python scripts/ask.py --chat          # multi-turn
+```
+
+Or run the web app at `http://127.0.0.1:8000`:
+
+```bash
+uv run python scripts/serve.py
+```
+
+To run the evaluation across all three architectures:
+
 ```bash
 uv run python -m eval.run_eval --systems naive enhanced agentic
-uv run python -m eval.run_eval --systems enhanced --limit 5 --no-judge   # smoke
-uv run python -m eval.analyze --systems naive enhanced agentic --breakdown query_type difficulty
-```
-Semua mode mengembalikan `RagResult`, jadi metrik bersifat system-agnostic.
-
----
-
-## Struktur (ringkas)
-
-```
-src/ragtrial/
-├── result.py                 # RagResult — kontrak output 3 mode (+ helper decisions/sources)
-├── modes.py                  # registry dispatch mode tunggal (naive|enhanced|agentic)
-├── capabilities/             # Capability ABC + VectorSourceCapability + registry
-├── sources/<domain>/         # co-located: preprocess + chunk + capability per domain
-├── pipeline/                 # stage komposabel enhanced (rewrite/route/retrieve/rerank/generate)
-├── vectorstore/              # builder Chroma per domain + unified store
-├── rag/                      # naive.py | enhanced.py | agentic.py | prompts.py
-├── chat/session.py           # ChatSession — service layer bersama (web/CLI), ChatTurnResult
-├── tracing/                  # trace JSONL otomatis per query (basic + full)
-└── server/                   # FastAPI: /api/chat /api/meta /api/health + serve web/
-web/      frontend statis (index.html · css · js · assets)
-scripts/  ask.py · serve.py · preprocess.py · build_vectorstore.py
-eval/     run_eval.py · eval_core.py · analyze.py
-data/     raw/<domain>/ · processed/ · vector_stores/ · traces/
 ```
 
 ---
 
-## Menambah domain data baru (worked example: `pajak`)
+## Documentation
 
-```bash
-# 1. taruh file (boleh banyak / nested)
-data/raw/pajak/<...>.pdf
-```
-```python
-# 2. src/ragtrial/sources/pajak/preprocess.py
-def preprocess(pdf_path) -> list[Document]: ...        # handler per tipe file
-
-# 3. src/ragtrial/sources/pajak/chunk.py
-def chunk_for_vectorstore(docs) -> list[Document]: ... # mis. split per pasal
-
-# 4. src/ragtrial/sources/pajak/capability.py
-pajak_capability = VectorSourceCapability(
-    name="pajak", description="Pajak daerah Kab. Batang ...",
-    collection_name="pajak", persist_directory=VECTOR_STORE_DIR / "pajak",
-    router_examples=["Berapa tarif PBB?"], strategy="hybrid",
-    gold_id_fn=..., citation="sebutkan pasal/ayat.",
-)
-
-# 5. src/ragtrial/sources/pajak/__init__.py
-def build_documents() -> list[Document]: ...           # walk data/raw/pajak/
-source = Source(name="pajak", raw_dir=..., processed_pkl=..., capability=pajak_capability,
-                build_documents=build_documents, chunk=chunk_for_vectorstore)
-```
-```python
-# 6. daftarkan di src/ragtrial/sources/__init__.py
-from ragtrial.sources.pajak import source as pajak_source
-_ALL = [dukcapil_source, opd_source, pajak_source]     # ← satu baris
-```
-```bash
-# 7. build
-uv run python scripts/preprocess.py --source pajak
-uv run python scripts/build_vectorstore.py --source pajak
-```
-**Itu doang.** Nol perubahan di registry/prompts/eval/ketiga mode RAG — semua auto-pickup.
-
-## Menambah tool non-vector (mis. text-to-sql)
-
-Implement `Capability` ABC (`invoke()` balikin `List[Document]`), daftarkan di
-`capabilities/registry.py`. Otomatis jadi tool agentic (`search_<name>`) dan ikut enhanced fan-out.
+| Document | What it covers |
+| --- | --- |
+| [docs/ARCHITECTURE_REVIEW.md](docs/ARCHITECTURE_REVIEW.md) | Technical audit of the system: pipelines, capability assessment, gaps vs the state of the art |
+| [architecture_mapping.md](architecture_mapping.md) | Concept → source-file map, per-file responsibility, end-to-end pipeline traces |
+| [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Per-capability inventory of what is built vs planned, and the reasoning behind each keep/cut |
+| [docs/EVAL_REPORT.md](docs/EVAL_REPORT.md) | Full evaluation results, breakdowns, anomaly analysis and limitations |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Prioritized remaining work, plus the ablation-study design |
+| [docs/DATA_REPORT.md](docs/DATA_REPORT.md) | Data sources, preprocessing, chunking strategy and corpus statistics |
+| [docs/INDEXING.md](docs/INDEXING.md) | The indexing (pre-retrieval) stage, with verified index numbers |
+| [docs/TESTSET_CURATION.md](docs/TESTSET_CURATION.md) | How the evaluation test set was selected and curated |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Running the app locally and deploying it publicly |
+| [docs/archive/](docs/archive/) | Superseded planning documents and refactor history, kept for provenance |
 
 ---
 
-## Catatan
+## Project Status
 
-- **Vector store dipisah per domain** (schema/chunking beda); ketiga mode pakai collection per-domain yang sama — naive fan-out ke semua lalu merge global top-k (database identik = controlled variable).
-- **Path absolut via `Path(__file__)`** — script jalan dari cwd manapun; eval dari project root.
-- **`docs/REFACTOR_3WAY.md`** = desain + alasan + cara extend; **PROGRESS.md** = state report.
+**Active development.**
+
+The three RAG architectures, the public-service data pipeline, the web and CLI interfaces, and the evaluation framework are implemented and working. The project is currently being refined and evaluated as part of an undergraduate thesis, so some parts of the pipeline may still change.
