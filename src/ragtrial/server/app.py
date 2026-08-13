@@ -21,7 +21,7 @@ import threading
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from ragtrial.config import WEB_DIR
@@ -140,6 +140,36 @@ def health() -> HealthResponse:
         ready=ready,
         n_documents=n_docs,
         api_key_present=bool(os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")),
+    )
+
+
+@app.get("/api/traces/export")
+def export_traces(token: str = ""):
+    """Download semua trace JSONL sebagai ZIP — untuk hosting ber-disk ephemeral.
+
+    Hanya aktif bila env RAGTRIAL_ADMIN_TOKEN di-set; token salah → 404 (endpoint
+    tidak mengaku ada). Traces adalah data penelitian: tarik rutin sebelum
+    redeploy/restart di platform tanpa persistent storage.
+    """
+    import io
+    import os
+    import zipfile
+
+    from ragtrial.config import TRACES_DIR
+
+    expected = os.getenv("RAGTRIAL_ADMIN_TOKEN")
+    if not expected or token != expected:
+        return _error(404, "invalid_request", "Not found")
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for p in sorted(TRACES_DIR.rglob("*.jsonl")):
+            z.write(p, p.relative_to(TRACES_DIR).as_posix())
+    buf.seek(0)
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": "attachment; filename=traces.zip"},
     )
 
 

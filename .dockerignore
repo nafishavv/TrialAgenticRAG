@@ -1,0 +1,16 @@
+# Jangan bawa ini ke dalam image deploy
+.venv/
+.git/
+.env
+__pycache__/
+*.py[oc]
+notebooks/
+archive/
+eval/results/
+data/raw/
+data/processed/
+data/traces/
+docs/
+*.md
+!README.md
+!web/assets/img/README.md
