@@ -23,77 +23,6 @@
   },
   "questions": [
     {
-      "id": "SO001",
-      "question": "Berdasarkan Peraturan Daerah Nomor 2 Tahun 2024 Tentang Pengarusutamaan Gender, bagaimana penjelasan mengenai Pasal 28?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "lexical_exact",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-2-2024#penjelasan:5"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan mengenai Pasal 28 dalam Peraturan Daerah Nomor 2 Tahun 2024 Tentang Pengarusutamaan Gender adalah 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 28 Cukup jelas.",
-        "Peraturan Daerah Nomor 2 Tahun 2024 Tentang Pengarusutamaan Gender."
-      ],
-      "notes": "Soal ini menguji kemampuan menemukan informasi spesifik mengenai penjelasan pasal dalam dokumen resmi."
-    },
-    {
-      "id": "SO002",
-      "question": "Berdasarkan Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana penjelasan mengenai Pasal 158, baik dari ayat (1) hingga ayat (4)?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "semantic",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:158"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk Pasal 158, mulai dari ayat (1) hingga ayat (4), dinyatakan cukup jelas dalam Peraturan Daerah Nomor 1 Tahun 2016 ini.",
-      "expected_facts": [
-        "Pasal 158 Ayat (1) dinyatakan cukup jelas.",
-        "Pasal 158 Ayat (2) dinyatakan cukup jelas.",
-        "Pasal 158 Ayat (3) dinyatakan cukup jelas.",
-        "Pasal 158 Ayat (4) dinyatakan cukup jelas."
-      ],
-      "notes": "Soal ini menguji kemampuan memahami informasi eksplisit dan langsung dari konteks, khususnya mengenai status penjelasan pasal."
-    },
-    {
-      "id": "SO003",
-      "question": "Berdasarkan Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana penjelasan yang diberikan untuk setiap bagian dari Pasal 123?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "semantic",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:123"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Menurut Peraturan Daerah tersebut, penjelasan untuk Pasal 123 dari Ayat (1) hingga Ayat (5) dinyatakan sudah cukup jelas.",
-      "expected_facts": [
-        "Pasal 123 Ayat (1) dinyatakan cukup jelas.",
-        "Pasal 123 Ayat (2) dinyatakan cukup jelas.",
-        "Pasal 123 Ayat (3) dinyatakan cukup jelas.",
-        "Pasal 123 Ayat (4) dinyatakan cukup jelas.",
-        "Pasal 123 Ayat (5) dinyatakan cukup jelas."
-      ],
-      "notes": "Soal ini menguji pemahaman sinonim dari 'Cukup jelas' dan kemampuan mengekstrak informasi spesifik dari konteks dokumen."
-    },
-    {
       "id": "SO004",
       "question": "Dalam konteks penyelenggaraan kesejahteraan sosial di Kabupaten Batang, apa saja contoh fasilitas yang didanai oleh anggaran pemerintah daerah dan/atau pusat untuk mendukung fungsi tersebut?",
       "expected_route": "sosial",
@@ -115,99 +44,6 @@
         "Contoh fasilitasnya antara lain Rumah Sakit Daerah, Shelter, Rumah Singgah, Kendaraan Angkut Sosial, fasilitas di Panti Jompo, Panti Asuhan, dan Yayasan."
       ],
       "notes": "Soal ini menguji pemahaman sinonim dari 'sarana dan prasarana' serta kemampuan mengekstrak contoh fasilitas yang disebutkan dalam konteks."
-    },
-    {
-      "id": "SO005",
-      "question": "Bagaimana penjelasan Pasal 127 Ayat (1), Ayat (2), Ayat (3), dan Ayat (4) berdasarkan dokumen Peraturan Daerah Nomor 1 Tahun 2016 Tentang Penyelenggaraan Transportasi Darat?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "lexical_exact",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:127"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk Pasal 127 Ayat (1), Ayat (2), Ayat (3), dan Ayat (4) adalah 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 127 Ayat (1) Cukup jelas.",
-        "Pasal 127 Ayat (2) Cukup jelas.",
-        "Pasal 127 Ayat (3) Cukup jelas.",
-        "Pasal 127 Ayat (4) Cukup jelas."
-      ],
-      "notes": "Soal ini menguji kemampuan menemukan informasi spesifik dan verbatim mengenai penjelasan pasal dari konteks yang diberikan."
-    },
-    {
-      "id": "SO006",
-      "question": "Bagaimana penjelasan mengenai Pasal 100 Ayat (1) dan Ayat (2) dalam Peraturan Daerah Nomor 1 Tahun 2016 Tentang Penyelenggaraan Transportasi Darat?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "lexical_exact",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:100"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan mengenai Pasal 100 Ayat (1) adalah cukup jelas, dan penjelasan mengenai Ayat (2) juga cukup jelas.",
-      "expected_facts": [
-        "Pasal 100 Ayat (1) Cukup jelas.",
-        "Ayat (2) Cukup jelas."
-      ],
-      "notes": "Soal ini menguji pemahaman langsung terhadap penjelasan spesifik pasal dan ayat yang disebutkan dalam konteks."
-    },
-    {
-      "id": "SO007",
-      "question": "Apakah ada penjelasan lebih lanjut mengenai Pasal 118 Ayat (1) dan Ayat (2) dalam Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "paraphrase",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:118"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Tidak ada penjelasan lebih lanjut yang diberikan untuk Pasal 118 Ayat (1) dan Ayat (2) dalam Peraturan Daerah tersebut, karena keduanya dinyatakan 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 118 Ayat (1) dinyatakan 'Cukup jelas'.",
-        "Pasal 118 Ayat (2) dinyatakan 'Cukup jelas'.",
-        "Dokumen ini adalah Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat."
-      ],
-      "notes": "Soal ini menguji kemampuan memahami bahwa frasa 'Cukup jelas' berarti tidak ada rincian tambahan yang diberikan dalam konteks penjelasan pasal."
-    },
-    {
-      "id": "SO008",
-      "question": "Berdasarkan Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana penjelasan mengenai setiap sub-bagian pada Pasal 53?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "semantic",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:53"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk setiap sub-bagian pada Pasal 53, yaitu Ayat (1), Ayat (2), Ayat (3), dan Ayat (4), adalah 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 53 Ayat (1) dijelaskan sebagai 'Cukup jelas'.",
-        "Pasal 53 Ayat (2) dijelaskan sebagai 'Cukup jelas'.",
-        "Pasal 53 Ayat (3) dijelaskan sebagai 'Cukup jelas'.",
-        "Pasal 53 Ayat (4) dijelaskan sebagai 'Cukup jelas'."
-      ],
-      "notes": "Soal ini menguji kemampuan memahami informasi eksplisit mengenai penjelasan pasal dalam dokumen resmi, menggunakan sinonim 'sub-bagian' untuk 'ayat'."
     },
     {
       "id": "SO009",
@@ -280,7 +116,7 @@
     },
     {
       "id": "SO012",
-      "question": "Menurut Peraturan Daerah Nomor 4 Tahun 2014, apa yang dimaksud dengan Jaminan Sosial?",
+      "question": "Apa yang dimaksud dengan Jaminan Sosial menurut peraturan daerah di Kabupaten Batang?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -325,7 +161,7 @@
     },
     {
       "id": "SO014",
-      "question": "Menurut dokumen ini, bagaimana seharusnya isi pertimbangan dalam Konsideran Peraturan Daerah agar sesuai dengan Undang-Undang Nomor 12 Tahun 2011?",
+      "question": "Bagaimana seharusnya isi pertimbangan dalam Konsideran sebuah Peraturan Daerah agar sesuai dengan Undang-Undang Nomor 12 Tahun 2011?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "lexical_exact",
@@ -348,7 +184,7 @@
     },
     {
       "id": "SO015",
-      "question": "Berdasarkan konteks, apa saja yang BUKAN termasuk asas dalam Peraturan Daerah Kabupaten Batang Nomor 2 Tahun 2024 tentang Pengarusutamaan Gender?",
+      "question": "Apa saja yang BUKAN termasuk asas dalam aturan Pengarusutamaan Gender di Kabupaten Batang?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "negation_edge",
@@ -462,7 +298,7 @@
     },
     {
       "id": "SO020",
-      "question": "Berdasarkan Peraturan Terjemahan Resmi Nomor 11 Tahun 2019, apa saja kewajiban dan tanggung jawab Pemerintah Desa/Kelurahan terkait perlindungan anak?",
+      "question": "Apa saja kewajiban dan tanggung jawab Pemerintah Desa/Kelurahan di Kabupaten Batang terkait perlindungan anak?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -485,7 +321,7 @@
     },
     {
       "id": "SO021",
-      "question": "Berdasarkan Peraturan Terjemahan Resmi Nomor 11 Tahun 2019, apa saja indikator untuk Kabupaten Layak Anak?",
+      "question": "Apa saja indikator untuk mencapai status Kabupaten Layak Anak?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -507,7 +343,7 @@
     },
     {
       "id": "SO022",
-      "question": "Berdasarkan konteks yang diberikan, apakah Peraturan Bupati Nomor 34 Tahun 2024 tentang Perubahan Atas Peraturan Bupati Nomor 23 Tahun 2022 Tentang Teknis Pemberian Bantuan Langsung Tunai yang Bersumber Dari Dana Bagi Hasil Cukai Hasil Tembakau masih berlaku?",
+      "question": "Apakah Peraturan Bupati Batang Nomor 34 Tahun 2024 tentang Perubahan Atas Perbup Nomor 23 Tahun 2022 (Teknis Pemberian Bantuan Langsung Tunai dari Dana Bagi Hasil Cukai Hasil Tembakau) masih berlaku?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "negation_edge",
@@ -529,7 +365,7 @@
     },
     {
       "id": "SO023",
-      "question": "Berdasarkan Peraturan Daerah Nomor 6 Tahun 2018, area-area apa saja yang ditetapkan sebagai tempat dilarangnya merokok?",
+      "question": "Di Kabupaten Batang, tempat apa saja yang termasuk kawasan dilarang merokok?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "semantic",
@@ -583,31 +419,8 @@
       "notes": "Soal ini menguji kemampuan memahami dan memparafrasekan daftar entitas yang dapat berkolaborasi dengan Pemerintah Daerah dalam layanan rehabilitasi anak."
     },
     {
-      "id": "SO025",
-      "question": "Berdasarkan Peraturan Daerah Nomor 2 Tahun 2016 tentang Pengelolaan Pemakaman, bagaimana penjelasan untuk pasal-pasal dari 17 hingga 39?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "semantic",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-2-2016#penjelasan:17"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk pasal-pasal dari 17 hingga 39 dalam Peraturan Daerah Nomor 2 Tahun 2016 tentang Pengelolaan Pemakaman adalah 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 17 hingga Pasal 39 dijelaskan sebagai 'Cukup jelas'.",
-        "Informasi ini terdapat dalam Peraturan Daerah Nomor 2 Tahun 2016.",
-        "Peraturan ini berkaitan dengan Pengelolaan Pemakaman."
-      ],
-      "notes": "Soal ini menguji kemampuan menemukan informasi spesifik mengenai penjelasan pasal-pasal dalam rentang tertentu dari dokumen yang diberikan."
-    },
-    {
       "id": "SO026",
-      "question": "Menurut dokumen tersebut, apa saja bentuk partisipasi yang dapat dilakukan oleh masyarakat dalam mendukung ketersediaan pangan di Kabupaten Batang?",
+      "question": "Apa saja bentuk partisipasi masyarakat dalam mendukung ketersediaan pangan di Kabupaten Batang?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "semantic",
@@ -629,7 +442,7 @@
     },
     {
       "id": "SO027",
-      "question": "Berdasarkan konteks yang diberikan, jelaskan perbedaan utama antara Sistem Jaringan Jalan Primer dan Sistem Jaringan Jalan Sekunder dalam konteks pelayanan distribusi barang dan jasa.",
+      "question": "Apa perbedaan utama antara Sistem Jaringan Jalan Primer dan Sistem Jaringan Jalan Sekunder dalam pelayanan distribusi barang dan jasa?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "analytical",
@@ -697,7 +510,7 @@
     },
     {
       "id": "SO030",
-      "question": "Jelaskan kategori anak yang dianggap 'terlantar' menurut peraturan ini, termasuk rentang usia dan penyebab utamanya?",
+      "question": "Anak seperti apa yang dikategorikan 'terlantar' menurut aturan di Batang, termasuk rentang usia dan penyebab utamanya?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "paraphrase",
@@ -810,7 +623,7 @@
     },
     {
       "id": "SO035",
-      "question": "Berdasarkan Peraturan Daerah Nomor 6 Tahun 2018 tentang Kawasan Tanpa Rokok, apa saja yang TIDAK termasuk dalam definisi 'media luar ruang'?",
+      "question": "Dalam aturan Kawasan Tanpa Rokok di Batang, apa saja yang TIDAK termasuk dalam definisi 'media luar ruang'?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "negation_edge",
@@ -833,7 +646,7 @@
     },
     {
       "id": "SO036",
-      "question": "Apa kewajiban Pemerintah Daerah terkait penyelenggaraan program Jaminan Sosial di Daerah berdasarkan dokumen ini?",
+      "question": "Apa saja kewajiban Pemerintah Daerah Batang terkait penyelenggaraan program Jaminan Sosial?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -859,7 +672,7 @@
     },
     {
       "id": "SO037",
-      "question": "Berdasarkan Peraturan Daerah Nomor 10 Tahun 2020, apakah Undang-Undang Nomor 5 Tahun 1999 tentang Larangan Praktek Monopoli dan Persaingan Usaha Tidak Sehat masih berlaku dalam konteks peraturan ini?",
+      "question": "Dalam dasar hukum Peraturan Daerah Batang Nomor 10 Tahun 2020, apakah tercantum Undang-Undang Nomor 5 Tahun 1999 tentang Larangan Praktek Monopoli dan Persaingan Usaha Tidak Sehat?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "negation_edge",
@@ -908,7 +721,7 @@
     },
     {
       "id": "SO039",
-      "question": "Berdasarkan dokumen tersebut, apakah Peraturan Bupati Batang Nomor 40 Tahun 2018 masih berlaku pada tanggal diundangkannya?",
+      "question": "Apakah Peraturan Bupati Batang Nomor 40 Tahun 2018 masih berlaku?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "negation_edge",
@@ -927,29 +740,6 @@
         "Peraturan Bupati Batang Nomor 40 Tahun 2018 diundangkan pada tanggal 19 November 2018."
       ],
       "notes": "Soal ini menguji pemahaman pembaca tentang status keberlakuan suatu peraturan berdasarkan metadata dan tanggal pengundangan."
-    },
-    {
-      "id": "SO040",
-      "question": "Bagaimana penjelasan terkait ketentuan yang tercantum dalam Pasal 107 ayat (1) dan ayat (2) dari Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "paraphrase",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:107"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan mengenai Pasal 107 ayat (1) dan ayat (2) dalam Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat dinyatakan cukup jelas.",
-      "expected_facts": [
-        "Pasal 107 Ayat (1) dinyatakan cukup jelas.",
-        "Pasal 107 Ayat (2) dinyatakan cukup jelas.",
-        "Dokumen ini adalah Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat."
-      ],
-      "notes": "Soal ini menguji kemampuan memahami informasi eksplisit mengenai tingkat kejelasan suatu pasal dalam dokumen resmi."
     },
     {
       "id": "SO041",
@@ -1047,28 +837,6 @@
       "notes": "Soal ini menguji kemampuan memahami dan merangkum berbagai jenis bantuan sosial berupa uang yang diberikan langsung kepada penerima, tanpa menyalin frasa kunci dari dokumen."
     },
     {
-      "id": "SO045",
-      "question": "Bagaimana penjelasan mengenai Pasal 46 Ayat (1) dan Ayat (2) dalam Peraturan Daerah Nomor 1 Tahun 2016?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "lexical_exact",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:46"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan mengenai Pasal 46 Ayat (1) dan Ayat (2) dalam Peraturan Daerah Nomor 1 Tahun 2016 adalah 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 46 Ayat (1) Cukup jelas",
-        "Ayat (2) Cukup jelas"
-      ],
-      "notes": "Soal ini menguji pemahaman pengguna tentang penjelasan spesifik untuk Pasal 46 Ayat (1) dan Ayat (2) berdasarkan konteks yang diberikan."
-    },
-    {
       "id": "SO046",
       "question": "Dalam konteks Perlindungan Anak di Kabupaten Batang, apa yang dimaksud dengan 'nondiskriminasi' menurut Peraturan Daerah Nomor 11 Tahun 2019?",
       "expected_route": "sosial",
@@ -1093,7 +861,7 @@
     },
     {
       "id": "SO047",
-      "question": "Dalam konteks penyelenggaraan cadangan pangan, sumber pendanaan yang diatur dalam dokumen ini TIDAK BOLEH berasal dari mana?",
+      "question": "Dalam penyelenggaraan cadangan pangan di Batang, sumber pendanaannya TIDAK BOLEH berasal dari mana?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "negation_edge",
@@ -1116,7 +884,7 @@
     },
     {
       "id": "SO048",
-      "question": "Menurut Peraturan Daerah Nomor 2 Tahun 2016, kepada siapa jenazah yang akan dibawa dari dalam wilayah Daerah keluar wilayah Indonesia harus dilaporkan?",
+      "question": "Kepada siapa harus dilaporkan jika jenazah akan dibawa dari wilayah Kabupaten Batang ke luar wilayah Indonesia?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -1139,7 +907,7 @@
     },
     {
       "id": "SO049",
-      "question": "Peraturan perundang-undangan apa yang mengatur tentang usaha-usaha berskala kecil dan menengah, sebagaimana disebutkan dalam dokumen ini?",
+      "question": "Peraturan perundang-undangan apa yang menjadi dasar hukum terkait usaha berskala kecil dan menengah di Kabupaten Batang?",
       "expected_route": "sosial",
       "difficulty": "easy",
       "query_type": "semantic",
@@ -1158,29 +926,6 @@
         "Lembaran Negara Republik Indonesia Tahun 2008 Nomor 93"
       ],
       "notes": "Soal ini menguji kemampuan menemukan informasi spesifik dengan menggunakan sinonim untuk 'usaha mikro, kecil dan menengah'."
-    },
-    {
-      "id": "SO050",
-      "question": "Berdasarkan konteks yang diberikan dari Peraturan Daerah Nomor 2 Tahun 2024 Tentang Pengarusutamaan Gender, mengapa penjelasan untuk Pasal 29 hingga Pasal 45 tidak dirinci lebih lanjut?",
-      "expected_route": "sosial",
-      "difficulty": "medium",
-      "query_type": "analytical",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-2-2024#penjelasan:29"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk Pasal 29 hingga Pasal 45 dalam Peraturan Daerah tersebut tidak dirinci lebih lanjut karena setiap pasal tersebut secara eksplisit dinyatakan 'Cukup jelas', mengindikasikan bahwa isi pasal-pasal tersebut sudah dianggap mudah dipahami tanpa memerlukan uraian tambahan.",
-      "expected_facts": [
-        "Pasal 29 sampai Pasal 45 dinyatakan 'Cukup jelas'.",
-        "Konteks berasal dari Peraturan Daerah Nomor 2 Tahun 2024.",
-        "Peraturan Daerah tersebut tentang Pengarusutamaan Gender."
-      ],
-      "notes": "Soal ini menguji kemampuan penalaran untuk menyimpulkan alasan di balik frasa 'Cukup jelas' yang berulang pada beberapa pasal dalam dokumen resmi."
     },
     {
       "id": "SO051",
@@ -1230,7 +975,7 @@
     },
     {
       "id": "SO053",
-      "question": "Berdasarkan Peraturan Daerah Nomor 2 Tahun 2023, sanksi administratif apa saja yang TIDAK termasuk dalam kategori yang dapat dikenakan kepada peserta Jaminan Kesehatan yang melanggar kewajiban?",
+      "question": "Sanksi administratif apa saja yang TIDAK bisa dikenakan kepada peserta Jaminan Kesehatan di Batang yang melanggar kewajiban?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "negation_edge",
@@ -1273,30 +1018,6 @@
         "Peran korban dalam sistem peradilan pidana dan proses penuntutan (Rodriguez, 1992; Cardenas, 1986)."
       ],
       "notes": "Soal ini menguji pemahaman pembaca terhadap isu-isu krusial yang berkaitan dengan hak-hak korban tindak pidana dalam kerangka sistem peradilan pidana, dengan menggunakan sinonim untuk 'isu-isu utama' menjadi 'sorotan' dan 'sistem peradilan pidana' menjadi 'sistem peradilan pidana'."
-    },
-    {
-      "id": "SO055",
-      "question": "Berdasarkan konteks Pasal 55 Ayat (1) hingga (4) dari Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana isi penjelasan dari ayat-ayat tersebut?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "analytical",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:55"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk Pasal 55 Ayat (1), Ayat (2), Ayat (3), dan Ayat (4) dari Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat semuanya dinyatakan sebagai 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 55 Ayat (1) dinyatakan 'Cukup jelas'.",
-        "Pasal 55 Ayat (2) dinyatakan 'Cukup jelas'.",
-        "Pasal 55 Ayat (3) dinyatakan 'Cukup jelas'.",
-        "Pasal 55 Ayat (4) dinyatakan 'Cukup jelas'."
-      ],
-      "notes": "Soal ini menguji kemampuan peserta untuk meringkas dan memahami bahwa penjelasan untuk setiap ayat Pasal 55 adalah sama, yaitu 'Cukup jelas', berdasarkan konteks yang diberikan."
     },
     {
       "id": "SO056",
@@ -1369,7 +1090,7 @@
     },
     {
       "id": "SO059",
-      "question": "Peraturan Daerah Kabupaten Batang Nomor 10 Tahun 2020 ini didasarkan pada beberapa undang-undang. Undang-undang mana yang TIDAK termasuk dalam dasar hukum pembentukan peraturan daerah ini berdasarkan konteks yang diberikan?",
+      "question": "Undang-undang mana yang TIDAK termasuk dalam dasar hukum pembentukan Peraturan Daerah Batang Nomor 10 Tahun 2020?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "negation_edge",
@@ -1388,31 +1109,6 @@
         "Undang-Undang Nomor 5 Tahun 1999 disebutkan dalam konteks, namun tidak sebagai dasar hukum pembentukan Peraturan Daerah Nomor 10 Tahun 2020."
       ],
       "notes": "Soal ini menguji kemampuan pengguna untuk mengidentifikasi undang-undang yang TIDAK menjadi dasar hukum dari daftar yang disediakan dalam konteks, meskipun undang-undang tersebut disebutkan."
-    },
-    {
-      "id": "SO060",
-      "question": "Berdasarkan Peraturan Daerah Nomor 1 Tahun 2016 tentang Penyelenggaraan Transportasi Darat, bagaimana penjelasan untuk Pasal 36 Ayat (1), Ayat (2), Ayat (3), Ayat (4), dan Ayat (5)?",
-      "expected_route": "sosial",
-      "difficulty": "easy",
-      "query_type": "lexical_exact",
-      "chunk_scope": "single",
-      "gold_chunks": {
-        "sosial": [
-          "id:sosial-perda-1-2016#penjelasan:36"
-        ],
-        "dukcapil": [],
-        "opd": [],
-        "perizinan": []
-      },
-      "expected_answer": "Penjelasan untuk Pasal 36 Ayat (1), Ayat (2), Ayat (3), Ayat (4), dan Ayat (5) adalah 'Cukup jelas'.",
-      "expected_facts": [
-        "Pasal 36 Ayat (1) Cukup jelas",
-        "Pasal 36 Ayat (2) Cukup jelas",
-        "Pasal 36 Ayat (3) Cukup jelas",
-        "Pasal 36 Ayat (4) Cukup jelas",
-        "Pasal 36 Ayat (5) Cukup jelas"
-      ],
-      "notes": "Soal ini menguji kemampuan menemukan informasi spesifik mengenai penjelasan pasal dan ayat yang disebutkan dalam dokumen."
     },
     {
       "id": "SO061",
@@ -1466,7 +1162,7 @@
     },
     {
       "id": "SO063",
-      "question": "Berdasarkan Peraturan Bupati Nomor 37 Tahun 2024, apa saja tugas utama Forum TJSP dan siapa saja yang menjadi anggotanya?",
+      "question": "Apa saja tugas utama Forum Tanggung Jawab Sosial Perusahaan (TJSP) di Kabupaten Batang dan siapa saja anggotanya?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1490,7 +1186,7 @@
     },
     {
       "id": "SO064",
-      "question": "Berdasarkan Peraturan Daerah Nomor 4 Tahun 2015, siapa yang berwenang melakukan razia dan apa saja objek razia terkait perbuatan cabul atau pelacuran di wilayah Kabupaten Batang?",
+      "question": "Di Kabupaten Batang, siapa yang berwenang melakukan razia dan apa saja objek razia terkait perbuatan cabul atau pelacuran?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1514,7 +1210,7 @@
     },
     {
       "id": "SO065",
-      "question": "Berdasarkan Peraturan Bupati Nomor 42 Tahun 2024, apa saja tugas Pokja PUG kabupaten/kota dalam konteks peningkatan partisipasi sekolah dan siapa yang bertanggung jawab atas pemberdayaan perempuan sebagai Kepala Sekretariat Pokja PUG?",
+      "question": "Apa saja tugas Pokja Pengarusutamaan Gender (PUG) di Batang terkait peningkatan partisipasi sekolah, dan siapa yang menjabat sebagai Kepala Sekretariat Pokja PUG?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1538,7 +1234,7 @@
     },
     {
       "id": "SO066",
-      "question": "Berdasarkan Peraturan Bupati Nomor 70 Tahun 2025, apa saja tahapan dalam pelaporan dan siapa saja yang terlibat dalam upaya pengarusutamaan gender di Daerah?",
+      "question": "Apa saja tahapan pelaporan dan siapa saja yang terlibat dalam upaya pengarusutamaan gender di Kabupaten Batang?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1588,7 +1284,7 @@
     },
     {
       "id": "SO068",
-      "question": "Berdasarkan Peraturan Bupati Nomor 30 Tahun 2024, apa saja langkah yang dilakukan Pemerintah Daerah dalam penyelenggaraan Program Jaminan Sosial Ketenagakerjaan bagi Pekerja Rentan, dan siapa yang menerima Keputusan Bupati untuk proses pendaftaran serta penginputan data kepesertaan?",
+      "question": "Apa saja langkah Pemerintah Daerah Batang dalam Program Jaminan Sosial Ketenagakerjaan bagi Pekerja Rentan, dan siapa yang menerima Keputusan Bupati untuk pendaftaran dan penginputan data kepesertaan?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1612,7 +1308,7 @@
     },
     {
       "id": "SO069",
-      "question": "Berdasarkan Peraturan Daerah Nomor 2 Tahun 2024 yang menjadi landasan hukum dan pedoman bagi Pemerintah Daerah dalam penyelenggaraan pemerintahan, pembangunan, dan pelayanan masyarakat yang Responsif Gender, apa saja yang paling sedikit harus dimuat dalam Rencana Aksi Daerah Pengarusutamaan Gender (RAD PUG) dan kapan peraturan pelaksanaannya harus ditetapkan?",
+      "question": "Apa saja yang minimal harus dimuat dalam Rencana Aksi Daerah Pengarusutamaan Gender (RAD PUG) Kabupaten Batang, dan kapan peraturan pelaksananya harus ditetapkan?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1637,7 +1333,7 @@
     },
     {
       "id": "SO070",
-      "question": "Berdasarkan Peraturan Daerah Nomor 10 Tahun 2020, jika sebuah perusahaan yang memiliki komitmen dalam Tanggung Jawab Sosial dan Lingkungan (CSR) melanggar Pasal 4, sanksi apa yang dapat dikenakan, dan siapa yang berwenang melakukan penyidikan terhadap pelanggaran Peraturan Daerah tersebut?",
+      "question": "Kalau sebuah perusahaan melanggar kewajiban Tanggung Jawab Sosial dan Lingkungan (CSR) di Batang, sanksi apa yang bisa dikenakan, dan siapa yang berwenang menyidik pelanggarannya?",
       "expected_route": "sosial",
       "difficulty": "medium",
       "query_type": "multi_chunk",
@@ -1754,7 +1450,7 @@
     },
     {
       "id": "DK005",
-      "question": "Berdasarkan dokumen, apa saja kondisi yang memungkinkan penerbitan kembali kutipan akta pencatatan sipil, termasuk untuk subjek yang telah meninggal dunia, dan apa syarat umum yang harus dipenuhi?",
+      "question": "Apa saja kondisi yang memungkinkan penerbitan kembali kutipan akta pencatatan sipil, termasuk untuk subjek yang telah meninggal dunia, dan apa syarat umum yang harus dipenuhi?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "lexical_exact",
@@ -1777,7 +1473,7 @@
     },
     {
       "id": "DK006",
-      "question": "Selain untuk memberikan pemahaman dan solusi atas isu-isu yang muncul dalam pelayanan administrasi kependudukan, tujuan lain dari dokumen ini adalah untuk menyelaraskan pandangan dan aturan agar sistem pendaftaran penduduk dan pencatatan sipil dapat terpadu. Apa manfaat utama dari penyelarasan ini bagi warga?",
+      "question": "Apa manfaat utama bagi warga dari upaya menyelaraskan aturan agar sistem pendaftaran penduduk dan pencatatan sipil menjadi terpadu?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "semantic",
@@ -1822,7 +1518,7 @@
     },
     {
       "id": "DK008",
-      "question": "Berdasarkan Peraturan Menteri Dalam Negeri Nomor 19 Tahun 2018, bagaimana cara Dinas Kependudukan dan Pencatatan Sipil meningkatkan kualitas layanan administrasi kependudukan?",
+      "question": "Bagaimana cara Dinas Kependudukan dan Pencatatan Sipil meningkatkan kualitas layanan administrasi kependudukan?",
       "expected_route": "dukcapil",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -1845,7 +1541,7 @@
     },
     {
       "id": "DK009",
-      "question": "Bagaimana prosedur koreksi terhadap kekeliruan data pada akta kelahiran, seperti informasi tempat lahir atau urutan anak, menurut dokumen ini?",
+      "question": "Bagaimana prosedur mengoreksi kesalahan data pada akta kelahiran, misalnya tempat lahir atau urutan anak?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "paraphrase",
@@ -1916,7 +1612,7 @@
     },
     {
       "id": "DK012",
-      "question": "Berdasarkan konteks, tahapan apa saja yang harus diikuti dalam proses Pelayanan Pendaftaran Penduduk dan Pencatatan Sipil?",
+      "question": "Apa saja tahapan yang harus diikuti dalam proses Pelayanan Pendaftaran Penduduk dan Pencatatan Sipil?",
       "expected_route": "dukcapil",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -1940,7 +1636,7 @@
     },
     {
       "id": "DK013",
-      "question": "Berdasarkan konteks yang diberikan, bagaimana pencatatan pengangkatan anak dilaksanakan dan apa yang terjadi dengan nama orang tua kandung pada akta kelahiran?",
+      "question": "Bagaimana pencatatan pengangkatan anak dilakukan, dan apa yang terjadi dengan nama orang tua kandung di akta kelahiran?",
       "expected_route": "dukcapil",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -2053,7 +1749,7 @@
     },
     {
       "id": "DK018",
-      "question": "Mengapa administrasi kependudukan dianggap sangat berperan penting dalam pembangunan di Indonesia berdasarkan konteks yang diberikan?",
+      "question": "Mengapa administrasi kependudukan dianggap sangat penting perannya dalam pembangunan di Indonesia?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "analytical",
@@ -2122,7 +1818,7 @@
     },
     {
       "id": "DK021",
-      "question": "Berdasarkan dokumen, siapa saja yang memiliki wewenang untuk menerbitkan surat keterangan kematian, dan dalam jangka waktu berapa lama pelaporan kematian harus dilakukan?",
+      "question": "Siapa saja yang berwenang menerbitkan surat keterangan kematian, dan dalam jangka waktu berapa lama pelaporan kematian harus dilakukan?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "semantic",
@@ -2190,7 +1886,7 @@
     },
     {
       "id": "DK024",
-      "question": "Berdasarkan dokumen, bagaimana alur proses pencatatan perceraian bagi warga selain Islam di Indonesia, dan dokumen apa saja yang wajib disiapkan?",
+      "question": "Bagaimana alur proses pencatatan perceraian bagi warga selain Islam di Indonesia, dan dokumen apa saja yang wajib disiapkan?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "analytical",
@@ -2564,7 +2260,7 @@
     },
     {
       "id": "DK040",
-      "question": "Berdasarkan konteks yang diberikan, jelaskan bagaimana seorang penduduk yang sudah memiliki KTP-el dan memilih untuk tinggal seorang diri dapat memperoleh Kartu Keluarga, serta apa statusnya dalam Kartu Keluarga tersebut?",
+      "question": "Kalau saya sudah punya KTP-el dan tinggal sendiri, bagaimana cara membuat Kartu Keluarga, dan apa status saya di KK tersebut?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "analytical",
@@ -2587,7 +2283,7 @@
     },
     {
       "id": "DK041",
-      "question": "Berdasarkan dokumen, jelaskan perbedaan utama dalam persyaratan dan tata cara pencatatan pengangkatan anak antara di Indonesia dan pengangkatan anak Warga Negara Asing (WNA) oleh WNI di luar negeri, terutama jika negara setempat tidak menyelenggarakan pencatatan tersebut.",
+      "question": "Apa perbedaan utama dalam persyaratan dan tata cara pencatatan pengangkatan anak antara di Indonesia dan pengangkatan anak WNA oleh WNI di luar negeri, terutama jika negara setempat tidak menyelenggarakan pencatatan tersebut?",
       "expected_route": "dukcapil",
       "difficulty": "medium",
       "query_type": "analytical",
@@ -2678,7 +2374,7 @@
     },
     {
       "id": "DK045",
-      "question": "Menurut dokumen, apa yang menjadi dasar hukum bagi penerbitan akta kelahiran WNI bukan penduduk di Indonesia?",
+      "question": "Apa yang menjadi dasar hukum bagi penerbitan akta kelahiran WNI bukan penduduk di Indonesia?",
       "expected_route": "dukcapil",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -2700,7 +2396,7 @@
     },
     {
       "id": "DK046",
-      "question": "Berdasarkan konteks, apa saja dokumen yang perlu dilampirkan oleh Orang Asing (OA) saat mengurus pindah penduduk bagi pemegang izin tinggal terbatas dengan tujuan berbeda kelurahan/kecamatan namun masih dalam 1 (satu) kabupaten/kota?",
+      "question": "Orang asing pemegang izin tinggal terbatas yang ingin pindah alamat antar-kecamatan dalam Kabupaten Batang, dokumen apa saja yang perlu dilampirkan?",
       "expected_route": "dukcapil",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -3498,7 +3194,7 @@
     },
     {
       "id": "PZ001",
-      "question": "Berdasarkan dokumen, apa saja dokumen persyaratan yang termasuk dalam 'Dokumen Pernyataan Pemenuhan Komitmen' untuk Izin Pusat Kegiatan Belajar Masyarakat (PKBM)?",
+      "question": "Apa saja dokumen persyaratan yang termasuk dalam 'Dokumen Pernyataan Pemenuhan Komitmen' untuk Izin Pusat Kegiatan Belajar Masyarakat (PKBM)?",
       "expected_route": "perizinan",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -3690,7 +3386,7 @@
     },
     {
       "id": "PZ009",
-      "question": "Berdasarkan dokumen, bagaimana alur pengajuan Izin Operasional/Pendirian TK yang melibatkan sistem OSS dan peran DPMPTSP?",
+      "question": "Bagaimana alur pengajuan Izin Operasional/Pendirian TK yang melibatkan sistem OSS dan peran DPMPTSP?",
       "expected_route": "perizinan",
       "difficulty": "medium",
       "query_type": "analytical",
@@ -3851,7 +3547,7 @@
     },
     {
       "id": "PZ016",
-      "question": "Berdasarkan dokumen perizinan Izin Praktik Psikolog Klinis, mengapa pemohon tidak perlu khawatir mengenai biaya dan berapa lama waktu yang dibutuhkan untuk menyelesaikan proses perizinan ini?",
+      "question": "Untuk Izin Praktik Psikolog Klinis, mengapa pemohon tidak perlu khawatir soal biaya, dan berapa lama waktu yang dibutuhkan untuk menyelesaikan prosesnya?",
       "expected_route": "perizinan",
       "difficulty": "easy",
       "query_type": "analytical",
@@ -3987,7 +3683,7 @@
     },
     {
       "id": "PZ022",
-      "question": "Berdasarkan dokumen, apa saja persyaratan yang dibutuhkan untuk mengajukan Izin Praktik Apoteker?",
+      "question": "Apa saja persyaratan untuk mengajukan Izin Praktik Apoteker?",
       "expected_route": "perizinan",
       "difficulty": "easy",
       "query_type": "lexical_exact",
@@ -4576,6 +4272,422 @@
       "expected_answer": "",
       "expected_facts": [],
       "notes": "Pertanyaan ini tentang fisika nuklir dan teknologi energi, bukan layanan atau data pemerintah daerah."
+    },
+    {
+      "id": "HD001",
+      "question": "Perkawinan saya sudah diputuskan pengadilan dan berkekuatan hukum tetap, tapi istri saya sedang sakit keras dan tidak bisa hadir. Apa langkah untuk mencatatkan perkawinan ini dan instansi mana yang berwenang?",
+      "expected_route": "both",
+      "difficulty": "hard",
+      "query_type": "cross_store",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:153"
+        ],
+        "opd": [
+          "nomor:26"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Pak Budi dapat mengajukan permohonan pencatatan perkawinan di Dinas Dukcapil tempat ia berdomisili, yaitu Dinas Dukcapil Kabupaten Batang, meskipun istrinya tidak dapat hadir, karena sudah ada penetapan Pengadilan Negeri yang berkekuatan hukum tetap.",
+      "expected_facts": [
+        "Pencatatan perkawinan dapat dilakukan berdasarkan permohonan salah satu pasangan suami istri di Dinas Dukcapil jika sudah ada penetapan dari Pengadilan Negeri yang telah berkekuatan hukum tetap.",
+        "Pelaporan peristiwa kependudukan (termasuk pencatatan perkawinan) wajib dilaporkan oleh Penduduk di Instansi Pelaksana tempat Penduduk berdomisili.",
+        "Kecamatan Warungasem adalah bagian dari Kabupaten Batang."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk menghubungkan informasi tentang prosedur pencatatan perkawinan dengan kondisi spesifik warga dan menentukan instansi yang berwenang berdasarkan domisili, serta memahami bahwa putusan pengadilan mengizinkan pencatatan tanpa kehadiran salah satu pihak."
+    },
+    {
+      "id": "HD002",
+      "question": "Saya merasa program pembangunan di desa saya kurang memperhatikan aksesibilitas untuk ibu hamil dan lansia, padahal ada aturan Pengarusutamaan Gender. Ke instansi mana di Kecamatan Tulis sebaiknya saya sampaikan keluhan ini, dan kenapa instansi itu yang tepat?",
+      "expected_route": "both",
+      "difficulty": "hard",
+      "query_type": "cross_store",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-70-2025#pasal:22.229"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:38"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Bapak Budi sebaiknya menghubungi Kecamatan Tulis terlebih dahulu. Kecamatan Tulis merupakan OPD di wilayahnya yang dapat menjadi pintu masuk untuk menyampaikan keluhan terkait implementasi PUG, mengingat Peraturan Bupati Nomor 70 Tahun 2025 mengatur pedoman pengawasan PUG di daerah.",
+      "expected_facts": [
+        "Peraturan Bupati Nomor 70 Tahun 2025 mengatur Pedoman Pengawasan Pengarusutamaan Gender di Daerah.",
+        "Kecamatan Tulis adalah sebuah OPD yang berlokasi di Jl. Raya Kaliboyo No. 1 Tulis dengan nomor telepon (0285) 391608.",
+        "Peraturan Bupati Nomor 70 Tahun 2025 menyebutkan Peraturan Menteri Dalam Negeri Nomor 15 Tahun 2008 tentang Pedoman Umum Pelaksanaan Pengarusutamaan Gender di Daerah dan Surat Edaran Bersama terkait Percepatan Pelaksanaan PUG melalui Perencanaan dan Penganggaran yang Responsif Gender (PPRG)."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran lintas-domain untuk mengidentifikasi instansi yang relevan berdasarkan regulasi PUG di tingkat daerah dan informasi OPD lokal, serta menjelaskan relevansinya. Ini membutuhkan sintesis antara regulasi umum dan entitas spesifik."
+    },
+    {
+      "id": "HD003",
+      "question": "Anak saya lahir sebelum pernikahan saya sah secara hukum, dan saya ingin mengurus akta kelahiran yang mencantumkan kedua orang tua. Bersamaan itu, izin kerja saya sebagai tenaga sanitarian akan habis bulan depan. Apa langkah awal untuk kedua urusan ini, dan instansi mana yang menangani akta kelahiran anak saya?",
+      "expected_route": "both",
+      "difficulty": "hard",
+      "query_type": "cross_store",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:98"
+        ],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-tenaga-sanitarian"
+        ]
+      },
+      "expected_answer": "Untuk akta kelahiran Arya, Retno harus mengajukan penetapan pengadilan karena Arya lahir sebelum pernikahan orang tuanya sah, yang kemudian akan dicatat oleh Pejabat Pencatatan Sipil. Untuk perpanjangan Izin Kerja Tenaga Sanitarian, Retno harus mengajukan permohonan melalui laman website https://sipuas.batangkab.go.id.",
+      "expected_facts": [
+        "Pencatatan pengesahan anak yang dilahirkan sebelum orang tuanya melaksanakan perkawinan sah menurut hukum agama/kepercayaan terhadap Tuhan YME dilakukan berdasarkan penetapan pengadilan.",
+        "Pejabat Pencatatan Sipil membuat catatan pinggir pada register akta kelahiran maupun pada kutipan akta kelahiran setelah penetapan pengadilan.",
+        "Pemohon mengajukan permohonan Izin Kerja Tenaga Sanitarian di laman website https://sipuas.batangkab.go.id."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat dan sintesis informasi dari dua domain berbeda (Dukcapil dan Perizinan) untuk menyelesaikan dua masalah yang dihadapi warga, serta mengidentifikasi langkah awal dan instansi terkait."
+    },
+    {
+      "id": "HD004",
+      "question": "Saya penata anestesi yang baru pindah ke Kecamatan Wonotunggal dan ingin memperpanjang SIP ketiga saya, tapi SIP sebelumnya terbit di kota lain dan saya belum punya surat pernyataan tempat praktik baru. Apa langkah pertama untuk mengajukan izinnya dan ke instansi mana saya harus datang?",
+      "expected_route": "both",
+      "difficulty": "hard",
+      "query_type": "cross_store",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:27"
+        ],
+        "perizinan": [
+          "id:izin-praktik-penata-anestesi"
+        ]
+      },
+      "expected_answer": "Langkah pertama yang harus Budi lakukan adalah menyiapkan persyaratan seperti foto KTP, STR, dan SIP yang dimiliki, serta membuat Surat Pernyataan Tempat Praktik yang mencantumkan SIP ke-3, alamat, dan masa berlaku. Setelah semua persyaratan lengkap, Budi harus datang langsung ke DPMPTSP untuk mengajukan permohonan.",
+      "expected_facts": [
+        "Persyaratan untuk Izin Praktik Penata Anestesi mencakup Foto KTP Pemohon, STR & SIP yang dimiliki, dan Surat Pernyataan Tempat Praktek.",
+        "Surat Pernyataan Tempat Praktek harus mencantumkan SIP ke-1/SIP ke-2/SIP ke-3, alamat & Masa Berlaku.",
+        "Mekanisme pelayanan dimulai dengan Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan/mengisi blangko permohonan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk mengidentifikasi persyaratan spesifik dan langkah awal mekanisme perizinan berdasarkan skenario yang diberikan dan menghubungkannya dengan instansi yang relevan."
+    },
+    {
+      "id": "HD005",
+      "question": "Pengadilan sudah menyatakan pembatalan perceraian saya berkekuatan hukum tetap dan saya ingin status perkawinan tercatat sah lagi. Apa langkah pertama untuk mengurusnya, dan instansi mana yang bisa memberi dukungan soal dampak psikologis dan sosial bagi keluarga saya?",
+      "expected_route": "both",
+      "difficulty": "hard",
+      "query_type": "cross_store",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:186"
+        ],
+        "opd": [
+          "nomor:9"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Langkah pertama yang harus Ibu Rina lakukan adalah melaporkan pembatalan perceraian kepada Instansi Pelaksana paling lambat 60 hari setelah putusan pengadilan berkekuatan hukum tetap, dengan melengkapi persyaratan yang dibutuhkan. Untuk dukungan terkait dampak psikologis dan sosial, Ibu Rina dapat menghubungi Dinas Pemberdayaan Perempuan, Perlindungan Anak, Pengendalian Penduduk dan Keluarga Berencana.",
+      "expected_facts": [
+        "Pembatalan perceraian wajib dilaporkan oleh Penduduk kepada Instansi Pelaksana paling lambat 60 (enam puluh) hari setelah putusan pengadilan tentang pembatalan perceraian mempunyai kekuatan hukum tetap.",
+        "Pencatatan pembatalan perceraian dilakukan dengan memenuhi persyaratan berupa: fotokopi salinan putusan pengadilan yang telah mempunyai kekuatan hukum tetap; kutipan akta perceraian; KK; dan KTP-el.",
+        "Dinas Pemberdayaan Perempuan, Perlindungan Anak, Pengendalian Penduduk dan Keluarga Berencana adalah OPD yang relevan untuk isu perlindungan anak dan perempuan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk mengidentifikasi langkah administratif yang spesifik dan menghubungkannya dengan sumber yang tepat, serta mengidentifikasi instansi yang relevan untuk dukungan sosial berdasarkan domain OPD."
+    },
+    {
+      "id": "HD006",
+      "question": "Program Bantuan Langsung Tunai (BLT) dari dana cukai tembakau yang dulu ada ternyata sudah dicabut. Ke mana warga Kecamatan Reban sebaiknya bertanya soal aturan BLT yang berlaku sekarang, dan kenapa instansi itu yang tepat?",
+      "expected_route": "both",
+      "difficulty": "hard",
+      "query_type": "cross_store",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-34-2024#narr:2"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:30"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Warga tersebut sebaiknya menghubungi Kecamatan Reban melalui nomor telepon (0285) 4486835 atau email kec_reban@batangkab.go.id. Kecamatan Reban adalah instansi pemerintah daerah yang paling dekat dengan masyarakat dan memiliki peran dalam koordinasi serta penyaluran program bantuan di tingkat wilayahnya.",
+      "expected_facts": [
+        "Peraturan Bupati Nomor 34 Tahun 2024 tentang Perubahan Atas Peraturan Bupati Nomor 23 Tahun 2022 Tentang Teknis Pemberian Bantuan Langsung Tunai yang Bersumber Dari Dana Bagi Hasil Cukai Hasil Tembakau berstatus Tidak Berlaku.",
+        "Kecamatan Reban memiliki nomor telepon (0285) 4486835 dan email kec_reban@batangkab.go.id.",
+        "Kecamatan Reban merupakan tipe OPD Kecamatan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk menghubungkan status peraturan yang tidak berlaku dengan kebutuhan informasi warga, serta menentukan instansi yang tepat untuk dihubungi berdasarkan domain OPD dan perannya."
+    },
+    {
+      "id": "HD007",
+      "question": "Kalau saya pindah alamat antar-kelurahan dalam satu kabupaten tapi sudah terlanjur tinggal di alamat baru dan KTP-el masih alamat lama, apakah Disdukcapil bisa membantu prosesnya, dan dokumen apa saja yang akan diterbitkan serta ditarik?",
+      "expected_route": "dukcapil",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:51",
+          "page:69"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Disdukcapil Kabupaten X dapat membantu proses perpindahan domisili Budi meskipun Budi sudah tinggal di daerah tujuan dan belum memiliki SKPWNI dari daerah asal, karena Disdukcapil daerah tujuan dapat membantu komunikasi pengurusan SKP ke Disdukcapil daerah asal. Dalam prosesnya, Disdukcapil akan menarik KTP-el Budi yang lama dan menggantinya dengan KTP-el serta Kartu Keluarga (KK) baru dengan alamat Kelurahan B.",
+      "expected_facts": [
+        "Jika penduduk secara faktual telah tinggal di daerah tujuan dan belum mengurus SKPWNI karena terkendala jarak jauh dan biaya, Disdukcapil daerah tujuan dapat membantu komunikasi pengurusan SKP ke Disdukcapil daerah asal.",
+        "Untuk pindah penduduk dalam 1 kabupaten/kota, Dinas menarik KTP-el dan/atau KIA bagi penduduk yang pindah dan mengganti KTP-el dan/atau KIA dengan alamat baru.",
+        "Dinas menerbitkan KK bagi penduduk yang pindah dengan alamat baru."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat dan sintesis informasi dari dua konteks yang berbeda untuk menyelesaikan skenario kompleks. Peserta harus menghubungkan prosedur pindah domisili dalam satu kabupaten/kota dengan mekanisme bantuan Disdukcapil untuk kasus yang terkendala, serta mengidentifikasi dokumen yang relevan."
+    },
+    {
+      "id": "HD008",
+      "question": "Saya WNI yang bercerai di luar negeri awal 2023 (putusan sudah berkekuatan hukum tetap), tapi baru pulang ke Indonesia akhir tahun dan belum melapor ke Perwakilan RI. Apa langkah untuk mencatatkan perceraian ini di Indonesia, dan apa implikasinya kalau pelaporannya terlambat?",
+      "expected_route": "dukcapil",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:178",
+          "page:183",
+          "page:176"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "WNI tersebut harus melaporkan perceraiannya kepada Disdukcapil Kabupaten/Kota atau UPT Disdukcapil di tempat domisilinya paling lambat 30 hari sejak kembali ke Indonesia, yaitu pada Oktober 2023, dengan melampirkan bukti pencatatan peristiwa penting yang diterjemahkan penerjemah tersumpah atau SPTJM, karena belum dilaporkan ke Perwakilan RI. Jika putusan perceraian dari Pengadilan Negeri di Indonesia telah berkekuatan hukum tetap namun pelaporan ke Dukcapil melebihi 6 bulan, kekuatan putusan perceraian dapat hilang dan perceraian tidak dapat diajukan kembali atas dasar yang sama, sehingga memerlukan pengesahan/surat pengantar dari Pengadilan Negeri untuk pencatatan baru.",
+      "expected_facts": [
+        "Peristiwa perceraian di luar negeri setelah kembali ke Indonesia dilaporkan oleh yang bersangkutan kepada Disdukcapil Kabupaten/Kota atau UPT Disdukcapil Kabupaten/Kota di tempat Penduduk berdomisli paling lambat 30 (tiga puluh) hari sejak yang bersangkutan kembali ke Indonesia.",
+        "Dalam hal pencatatan peristiwa penting WNI di luar negeri yang telah dicatatkan pada instansi yang berwenang di Negara setempat belum dilaporkan kepada Perwakilan Rl, maka penerbitan surat keterangan pelaporan dapat dilakukan pada Disdukcapil Kabupaten/Kota atau UPT Disdukcapil Kabupaten/Kota dengan persyaratan berupa bukti pencatatan peristiwa penting yang diterjemahkan oleh penerjemah tersumpah atau surat pernyataan tanggung jawab mutlak.",
+        "Pencatatan perceraian yang telah memiliki kekuatan hukum tetap namun telah melewati batas waktu pelaporan 6 (enam) bulan setelah memperoleh kekuatan hukum tetap, berlaku ketentuan sesuai dengan Pasal 221 KUH Perdata. Jika pendaftaran tidak dilakukan dalam jangka waktu tersebut, kekuatan putusan perceraian akan hilang, dan perceraian tidak dapat diajukan kembali atas dasar dan alasan yang sama. Untuk melakukan pencatatan baru, pemohon mengajukan kembali ke Pengadilan Negeri untuk pengesahan/surat pengantar atas putusan yang telah melebihi 6 (enam) bulan tersebut."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat dan sintesis informasi dari tiga konteks berbeda mengenai pelaporan perceraian di luar negeri, pelaporan perceraian yang terlambat di Indonesia, serta implikasi hukumnya, dengan menerapkan pada skenario waktu yang spesifik."
+    },
+    {
+      "id": "HD009",
+      "question": "Saya (WNI, Kristen) menikah dengan pasangan warga negara asing (Katolik) di Eropa, dan hanya saya yang bisa hadir di upacaranya. Setelah pulang ke Indonesia, apa langkah penting agar pelaporan perkawinan ini bisa diproses Disdukcapil, dan kenapa prosedurnya berbeda dengan menikah beda agama di dalam negeri?",
+      "expected_route": "dukcapil",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:133",
+          "page:129",
+          "page:119"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk pelaporan perkawinan beda agama WNI dengan WNA yang terjadi di luar negeri, mereka harus melaporkan perkawinan tersebut kepada Perwakilan RI di negara tempat perkawinan dicatatkan, atau mencatatkan di Perwakilan RI jika negara setempat tidak mencatat perkawinan orang asing, kemudian melaporkannya ke Disdukcapil di tempat domisili mereka di Indonesia setelah kembali. Perbedaan prosedur ini muncul karena perkawinan beda agama di luar negeri diperbolehkan dicatatkan oleh instansi berwenang di negara setempat atau Perwakilan RI, sementara di Indonesia, pencatatan perkawinan beda agama memerlukan penetapan pengadilan dan Disdukcapil hanya mencatatkan apa yang sudah ditetapkan pengadilan, bukan mengesahkan perkawinan itu sendiri.",
+      "expected_facts": [
+        "Perkawinan WNI atau WNI dengan Orang Asing di luar negeri dicatatkan pada Instansi yang berwenang di negara setempat dan dilaporkan kepada Perwakilan Republik Indonesia di luar negeri.",
+        "Apabila negara setempat tidak menyelenggarakan pencatatan perkawinan bagi Orang Asing, pencatatan dilakukan pada Perwakilan Republik Indonesia di luar negeri.",
+        "Pencatatan perkawinan dimaksud (WNI di luar negeri) dilaporkan oleh yang bersangkutan kepada Instansi Pelaksana di tempat tinggalnya setelah yang bersangkutan kembali ke Indonesia, dan Disdukcapil menerbitkan surat keterangan pelaporan.",
+        "Pencatatan perkawinan beda agama di Indonesia tidak dapat dilakukan kecuali ada perintah berdasarkan penetapan pengadilan, dan Disdukcapil Kabupaten/Kota hanya mencatatkan apa yang sudah menjadi penetapan pengadilan dan tidak dalam konteks mengesahkan perkawinan.",
+        "Jika salah satu calon mempelai atau keduanya tidak dapat hadir sendiri karena alasan penting, mereka dapat diwakilkan oleh orang lain dengan persyaratan Surat Kuasa Otentik yang disahkan oleh Pejabat Pencatatan Sipil."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat, sintesis, dan perbandingan prosedur Dukcapil untuk perkawinan beda agama yang terjadi di luar negeri versus di dalam negeri, serta penerapan aturan kehadiran yang diwakilkan."
+    },
+    {
+      "id": "HD010",
+      "question": "Saya pengusaha logistik yang ingin mengangkut barang khusus yang tidak berbahaya di wilayah Batang. Apa saja langkah dan persyaratan utama agar operasional angkutan barang khusus saya sesuai aturan, terutama yang membutuhkan persetujuan atau penetapan dari pihak berwenang?",
+      "expected_route": "sosial",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-1-2016#penjelasan:110",
+          "id:sosial-perda-1-2016#pasal:111"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk mengangkut barang khusus tidak berbahaya, pengusaha harus melalui jalur yang ditetapkan oleh Bupati, memastikan mobil barang angkutan khusus sesuai peruntukannya, dan memiliki dokumen pengangkutan yang sah serta rekomendasi dari instansi berwenang. Selain itu, pengusaha juga wajib menyediakan tempat serta fasilitas memuat dan membongkar, dengan layanan yang bersifat lambat.",
+      "expected_facts": [
+        "Syarat pengangkutan barang khusus tidak berbahaya meliputi melalui jalur yang ditetapkan oleh Bupati.",
+        "Syarat pengangkutan barang khusus tidak berbahaya meliputi mempunyai dokumen pengangkutan barang khusus yang sah dan rekomendasi dari instansi yang berwenang.",
+        "Syarat pengangkutan barang khusus tidak berbahaya meliputi dilayani dengan mobil barang angkutan barang khusus sesuai dengan peruntukannya."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk menyintesis informasi dari dua pasal yang saling terkait, mengidentifikasi persyaratan yang membutuhkan persetujuan pihak berwenang, dan menerapkan pada skenario konkret meskipun Pasal 110 'cukup jelas'."
+    },
+    {
+      "id": "HD011",
+      "question": "Dalam program subsidi beras bagi masyarakat berpendapatan rendah di Batang, mengapa undang-undang tentang Pemerintahan Daerah menjadi salah satu landasan hukumnya, dan bagaimana mekanisme serah terima beras subsidi di tingkat desa/kelurahan?",
+      "expected_route": "sosial",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-7-2016#pasal:12.5",
+          "id:sosial-perbup-7-2016#pasal:12.10"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Peraturan Bupati ini memerlukan Undang-Undang Nomor 23 Tahun 2014 karena mengatur tentang Pemerintahan Daerah, yang menjadi dasar bagi Bupati untuk menerbitkan peraturan terkait program subsidi beras. Mekanisme serah terima di tingkat desa/kelurahan melibatkan penandatanganan Berita Acara Serah Terima (BAST) beras RASKIN berdasarkan SPA dari Bupati Batang/Ketua Tim Koordinasi Raskin Kabupaten antara Perum Bulog dan Pelaksana Distribusi, serta pencatatan pada DPM-1 (Daftar Penerima Manfaat) dan DPM-2 (Daftar Penjualan) RASKIN di desa/kelurahan.",
+      "expected_facts": [
+        "Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah adalah salah satu landasan hukum Peraturan Bupati Nomor 7 Tahun 2016.",
+        "BAST (Berita Acara Serah Terima Beras RASKIN) ditandatangani antara Perum Bulog dan Pelaksana Distribusi berdasarkan SPA dari Bupati Batang/Ketua Tim Koordinasi Raskin Kabupaten.",
+        "DPM-1 adalah Model Daftar Penerima Manfaat RASKIN di Desa/kelurahan.",
+        "DPM-2 adalah Model Daftar Penjualan RASKIN di Desa/kelurahan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk menghubungkan landasan hukum umum (UU Pemda) dengan kewenangan Bupati dalam program spesifik, serta mensintesis informasi tentang mekanisme serah terima dan pencatatan beras subsidi di tingkat desa/kelurahan dari definisi-definisi yang berbeda."
+    },
+    {
+      "id": "HD012",
+      "question": "Dalam program Jaminan Sosial Ketenagakerjaan bagi Pekerja Rentan di Batang, mengapa seorang pekerja yang sudah terdaftar sebagai peserta JKK dan JKM bisa kehilangan hak perlindungannya meskipun anggaran iurannya sudah dialokasikan, dan apa implikasinya terhadap tujuan program?",
+      "expected_route": "sosial",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-30-2024#pasal:3",
+          "id:sosial-perbup-30-2024#pasal:13",
+          "id:sosial-perbup-30-2024#pasal:11"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Seorang Pekerja Rentan dapat kehilangan hak perlindungan JKK dan JKM meskipun anggaran iuran telah dialokasikan karena berbagai kondisi, seperti tidak lagi menjadi warga daerah, meninggal dunia, mengalami cacat total tetap akibat kecelakaan kerja, salah satu anggota keluarga menjadi ASN/TNI/Polri/BUMN/BUMD, tidak lagi masuk prioritas penanggulangan kemiskinan Jawa Tengah, atau tidak lagi bekerja sebagai Pekerja Rentan. Implikasi utamanya adalah bahwa tujuan perlindungan Pekerja Rentan dari risiko kecelakaan kerja dan kematian tidak akan tercapai secara berkelanjutan bagi individu yang mengalami kondisi tersebut, meskipun pemerintah daerah berkomitmen pada alokasi anggaran.",
+      "expected_facts": [
+        "Peraturan Bupati Nomor 30 Tahun 2024 bertujuan melindungi Pekerja Rentan dari risiko Kecelakaan Kerja dan risiko kematian.",
+        "Pemerintah Daerah mengalokasikan anggaran Iuran JKK dan JKM bagi Pekerja Rentan setiap tahun sesuai kemampuan keuangan Daerah.",
+        "Kepesertaan JKK dan JKM dinyatakan tidak berlaku apabila terjadi: Peserta tidak lagi menjadi warga Daerah; Peserta meninggal dunia; Peserta mengalami Kecelakaan Kerja yang berakibat Cacat Total Tetap; salah satu anggota keluarga dalam satu kartu keluarga menjadi Aparatur Sipil Negara/Tentara Nasional Indonesia/Kepolisian Negara Republik Indonesia/badan usaha milik negara/badan usaha milik Daerah; Peserta tidak lagi masuk pemrioritasan (P1), (P2) dan (P3) dalam data kebutuhan intervensi penanggulangan kemiskinan Jawa Tengah; dan/atau Peserta tidak lagi bekerja sebagai Pekerja Rentan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk menyintesis informasi dari tiga pasal berbeda, membandingkan tujuan peraturan dengan kondisi pemutusan kepesertaan, dan menyimpulkan implikasinya."
+    },
+    {
+      "id": "HD013",
+      "question": "Setelah Dinas Sosial menerima tagihan iuran dari BPJS Ketenagakerjaan untuk penerima bantuan yang sudah ditetapkan, apa saja tahapan yang harus dilakukan sebelum dana bisa ditransfer, dan siapa yang bertanggung jawab melaporkan pemantauan kegiatannya?",
+      "expected_route": "sosial",
+      "difficulty": "hard",
+      "query_type": "multi_chunk",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-21-2025#pasal:26",
+          "id:sosial-perbup-21-2025#pasal:24"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Setelah menerima tagihan iuran dari BPJS Ketenagakerjaan, Dinas Sosial harus melakukan verifikasi tagihan dan mengajukan permohonan pencairan kepada Bendahara Umum Daerah, melampirkan berbagai dokumen pendukung seperti surat pengajuan pembayaran dan surat tagihan. Kepala Dinas Sosial bertanggung jawab melaporkan pemantauan dan evaluasi kegiatan BLT DBHCHT serta pemberian bantuan iuran jaminan sosial ketenagakerjaan kepada Bupati secara berkala atau sewaktu-waktu jika diperlukan.",
+      "expected_facts": [
+        "Dinas Sosial melakukan verifikasi atas tagihan iuran dari BPJS Ketenagakerjaan dan mengajukan permohonan pencairan kepada bendahara umum Daerah.",
+        "Permohonan pencairan kepada bendahara umum Daerah harus dilampiri dengan surat pengajuan pembayaran-surat perintah membayar, surat tagihan dari BPJS Ketenagakerjaan, tanda bukti pengeluaran, fotokopi dokumen penggunaan anggaran, fotokopi surat penyediaan dana, surat pernyataan tanggungjawab mutlak dari Dinas, dan surat pernyataan verifikasi pejabat penatausahaan keuangan satuan kerja Perangkat Daerah dilampiri checklist kelengkapan dokumen.",
+        "Kepala Dinas Sosial melaporkan pemantauan dan evaluasi kegiatan BLT DBHCHT dan pemberian bantuan iuran jaminan sosial ketenagakerjaan kepada Bupati secara berkala atau sewaktu-waktu jika diperlukan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat dan sintesis informasi dari dua pasal berbeda untuk mengidentifikasi urutan prosedur dan tanggung jawab pelaporan dalam skenario spesifik."
+    },
+    {
+      "id": "HD014",
+      "question": "Seorang WNA pemegang KITAS dan SKTT ingin pindah domisili antar-kota dan berencana menyewa apartemen yang dikelola badan hukum, bukan menyewa rumah dari perorangan. Mengapa syarat 'surat pernyataan tidak keberatan dari pemilik rumah' bisa jadi tidak relevan atau perlu penyesuaian di kasus ini, dan bagaimana pengaruhnya terhadap penerbitan SKTT baru di daerah tujuan?",
+      "expected_route": "dukcapil",
+      "difficulty": "hard",
+      "query_type": "analytical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:62"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Persyaratan surat pernyataan tidak keberatan dari pemilik rumah relevan jika WNA menempati rumah orang lain, kontrak, atau kost, namun mungkin tidak relevan untuk apartemen yang dikelola badan hukum karena konteksnya berbeda. Implikasinya, Dinas Dukcapil daerah tujuan perlu mempertimbangkan jenis kepemilikan/pengelolaan tempat tinggal untuk menyesuaikan persyaratan, agar WNA dapat menyerahkan SKP dan SKTT alamat lama untuk diterbitkan SKTT baru tanpa hambatan yang tidak sesuai.",
+      "expected_facts": [
+        "Orang asing yang menempati rumah orang lain, kontrak, dan kost perlu menyerahkan surat pernyataan tidak keberatan dari pemilik rumah saat mengurus pindah di daerah tujuan.",
+        "Orang asing menyerahkan SKP di Dinas Dukcapil Tujuan.",
+        "Orang asing menyerahkan SKTT alamat lama untuk diterbitkan SKTT dengan alamat baru di daerah tujuan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat, sintesis, dan penerapan konteks pada skenario baru. Peserta harus membandingkan kondisi 'rumah orang lain/kontrak/kost' dengan 'apartemen yang dikelola badan hukum' dan menyimpulkan implikasinya terhadap persyaratan serta proses penerbitan SKTT baru, berdasarkan informasi yang ada di konteks."
+    },
+    {
+      "id": "HD015",
+      "question": "Bagaimana dampak bertingkat dari integrasi sistem pendaftaran penduduk dan pencatatan sipil terhadap peningkatan akurasi data kependudukan nasional, dan mengapa hal itu penting bagi kepentingan bangsa dan negara?",
+      "expected_route": "dukcapil",
+      "difficulty": "hard",
+      "query_type": "analytical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:29"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pencapaian integrasi sistem melalui penyamaan persepsi dan regulasi akan memudahkan penduduk dalam mendapatkan dokumen kependudukan, yang secara bertingkat berkontribusi pada peningkatan cakupan kepemilikan dokumen dan akurasi data kependudukan, mendukung berbagai kepentingan bangsa dan negara.",
+      "expected_facts": [
+        "Penyamaan persepsi dan regulasi bertujuan menguatkan sistem pelaksanaan pendaftaran penduduk dan pencatatan sipil yang bisa terintegrasi.",
+        "Sistem yang terintegrasi memudahkan penduduk dalam mendapatkan dokumen kependudukan.",
+        "Peningkatan cakupan kepemilikan dokumen kependudukan dan akurasi data kependudukan diharapkan untuk berbagai kepentingan bangsa dan negara."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat mengenai implikasi dari integrasi sistem dan penyamaan regulasi terhadap akurasi data kependudukan dan dampaknya bagi kepentingan nasional."
+    },
+    {
+      "id": "HD016",
+      "question": "Sebuah perusahaan ingin memasang reklame besar di tepi jalan provinsi yang melintasi Batang, dan mengklaim cukup memenuhi syarat umum Izin Reklame tanpa rekomendasi instansi lain karena dipasang di tanah sewaan. Apakah klaim ini benar, dan apa implikasinya kalau mereka mengabaikan syarat khusus yang mungkin berlaku?",
+      "expected_route": "perizinan",
+      "difficulty": "hard",
+      "query_type": "analytical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-reklame"
+        ]
+      },
+      "expected_answer": "Klaim perusahaan tidak sepenuhnya akurat. Meskipun mereka memasang reklame di tanah sewa, karena lokasi pemasangan berada di jalan provinsi, mereka tetap wajib memiliki Rekomendasi/Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan. Mengabaikan persyaratan ini dapat mengakibatkan penolakan permohonan izin atau sanksi karena tidak memenuhi kelengkapan dokumen yang diwajibkan.",
+      "expected_facts": [
+        "Jika titik lokasi pemasangan reklame berada di jalan provinsi, Rekomendasi/Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan adalah persyaratan.",
+        "Surat Perjanjian diperlukan jika reklame dipasang/dibangun di tanah sewa.",
+        "Berkas permohonan akan diverifikasi dan divalidasi, dan DPMPTSP dapat meninjau lokasi usaha bersama Tim Teknis Perizinan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat, sintesis informasi dari berbagai bagian konteks (persyaratan dan mekanisme), serta penerapan pada skenario spesifik untuk mengidentifikasi inkonsistensi klaim dan implikasinya."
+    },
+    {
+      "id": "HD017",
+      "question": "Sebuah yayasan ingin mendirikan SD baru dan sudah menyiapkan akta pendirian serta bukti kepemilikan lahan, tapi belum punya SPPT PBB dan bukti bayar PBB dua tahun terakhir, dan baru punya konsep kurikulum tanpa jadwal final. Apa potensi hambatan dalam verifikasi berkas permohonan Izin Operasional/Pendirian SD-nya, dan kenapa hal itu bisa memperlambat atau menggagalkan penerbitan izin?",
+      "expected_route": "perizinan",
+      "difficulty": "hard",
+      "query_type": "analytical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-sd"
+        ]
+      },
+      "expected_answer": "Yayasan tersebut akan menghadapi hambatan serius dalam verifikasi dan validasi berkas permohonan karena tidak memenuhi persyaratan SPPT PBB dan bukti pembayaran 2 tahun terakhir, serta belum memiliki data guru, data siswa, dan jadwal pembelajaran/kurikulum yang lengkap. Ketidaklengkapan ini akan menyebabkan permohonan tidak dapat diproses lebih lanjut ke tahap rekomendasi teknis atau tinjauan lapangan, sehingga penerbitan izin akan tertunda atau bahkan ditolak hingga semua persyaratan terpenuhi.",
+      "expected_facts": [
+        "SPPT PBB dan Bukti Pembayaran 2 tahun terakhir adalah persyaratan wajib.",
+        "Data Siswa, Data Guru, dan Jadwal Pembelajaran / Kurikulum adalah persyaratan wajib.",
+        "Berkas permohonan akan diverifikasi dan divalidasi pada tahap awal mekanisme pelayanan."
+      ],
+      "notes": "Soal ini menguji kemampuan penalaran bertingkat untuk mengidentifikasi persyaratan yang tidak terpenuhi dari skenario, menganalisis implikasinya terhadap tahapan mekanisme pelayanan, dan menjelaskan potensi hambatan yang akan muncul."
     }
   ]
 }
