@@ -1,0 +1,190 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "description": "Reference set (BUKAN test set) untuk semantic router intent gate Enhanced RAG chatbot layanan publik Kab. Batang. 40 utterance: 20 VALID (5 per domain: OPD, Dukcapil, Perizinan, Sosial/Hukum) + 20 INVALID (5 kategori x 4). Dipakai sebagai contoh berlabel untuk keputusan VALID/INVALID, terpisah total dari eval/main_testset.json dan eval/intent_testset.json.",
+    "usage": "intent_reference_set.json -> semantic router (VALID/INVALID). Evaluasi tetap memakai eval/main_testset.json + eval/intent_testset.json.",
+    "counts": {
+      "valid": 20,
+      "invalid": 20,
+      "total": 40
+    },
+    "valid_domains": {
+      "opd": 5,
+      "dukcapil": 5,
+      "perizinan": 5,
+      "sosial": 5
+    },
+    "invalid_categories": {
+      "completely_unrelated": 6,
+      "general_knowledge": 6,
+      "non_batang_public_service": 1,
+      "out_of_scope_local_information": 1,
+      "casual_conversational": 6
+    },
+    "leakage_policy": "Tidak ada utterance yang identik atau near-duplicate dengan soal di eval/main_testset.json (115 VALID) maupun eval/intent_testset.json (25 INVALID)."
+  },
+  "valid": [
+    {
+      "id": "REF_VALID_OPD_001",
+      "question": "Saya mau menanyakan soal bantuan sosial, kantor Dinas Sosial Batang ada di jalan apa?"
+    },
+    {
+      "id": "REF_VALID_OPD_002",
+      "question": "Dinas Perhubungan Kabupaten Batang kantornya di mana ya?"
+    },
+    {
+      "id": "REF_VALID_OPD_003",
+      "question": "Ada pembuangan limbah yang mencemari sungai dekat rumah saya. Instansi mana yang menangani dan bagaimana cara menghubunginya?"
+    },
+    {
+      "id": "REF_VALID_OPD_004",
+      "question": "Kecamatan Limpung punya alamat email resmi tidak? Saya mau konsultasi berkas dulu sebelum datang."
+    },
+    {
+      "id": "REF_VALID_OPD_005",
+      "question": "Saya ada keperluan soal arsip daerah. Saya harus datang ke kantor mana dan di mana alamatnya?"
+    },
+    {
+      "id": "REF_VALID_DUK_001",
+      "question": "Anak saya baru berusia 17 tahun. Apa saja syarat untuk membuat KTP pertama kalinya?"
+    },
+    {
+      "id": "REF_VALID_DUK_002",
+      "question": "Desa kami baru dimekarkan sehingga nama wilayahnya berubah. Apakah KK dan KTP kami harus diperbarui?"
+    },
+    {
+      "id": "REF_VALID_DUK_003",
+      "question": "Saya akan menetap di luar negeri. Bagaimana cara melaporkan kepindahan saya ke Disdukcapil?"
+    },
+    {
+      "id": "REF_VALID_DUK_004",
+      "question": "Akta kelahiran saya masih format lama tanpa QR code. Apakah bisa diganti dengan format yang baru?"
+    },
+    {
+      "id": "REF_VALID_DUK_005",
+      "question": "Apakah pengurusan akta kelahiran bisa dilakukan secara daring, dan apakah tetap perlu tanda tangan pelapor?"
+    },
+    {
+      "id": "REF_VALID_PER_001",
+      "question": "Apakah pengurusan Izin Reklame di Batang dikenakan biaya?"
+    },
+    {
+      "id": "REF_VALID_PER_002",
+      "question": "Saya mau memasang papan reklame. Apakah ada ketentuan minimal ketinggian tiangnya?"
+    },
+    {
+      "id": "REF_VALID_PER_003",
+      "question": "Izin Kerja Perekam Medis harus diurus datang ke kantor atau bisa diajukan lewat website?"
+    },
+    {
+      "id": "REF_VALID_PER_004",
+      "question": "Berapa lama proses Izin Praktik Psikolog Klinis dan apakah ada biayanya?"
+    },
+    {
+      "id": "REF_VALID_PER_005",
+      "question": "Izin Penelitian Non Akademis saya hampir habis. Dokumen apa yang perlu dilampirkan untuk perpanjangannya?"
+    },
+    {
+      "id": "REF_VALID_SOS_001",
+      "question": "Ayah saya meninggal dan keluarga kami tergolong tidak mampu. Apa syarat mengajukan santunan kematian ke Pemkab Batang?"
+    },
+    {
+      "id": "REF_VALID_SOS_002",
+      "question": "Saya tidak sanggup membayar pengacara untuk perkara saya. Apakah Pemkab Batang menyediakan bantuan hukum gratis dan apa saja berkasnya?"
+    },
+    {
+      "id": "REF_VALID_SOS_003",
+      "question": "Untuk memakamkan keluarga saya di TPU, apakah perlu izin penggunaan tanah makam dan siapa yang mengajukannya?"
+    },
+    {
+      "id": "REF_VALID_SOS_004",
+      "question": "Kalau pengelola gedung membiarkan orang merokok di kawasan tanpa rokok, sanksi apa yang bisa dikenakan?"
+    },
+    {
+      "id": "REF_VALID_SOS_005",
+      "question": "Siapa yang menetapkan warga sebagai peserta jaminan kesehatan PBI APBD di Kabupaten Batang?"
+    }
+  ],
+  "invalid": [
+    {
+      "id": "REF_INVALID_001",
+      "question": "Bisa bantu buatkan caption Instagram untuk foto liburan?"
+    },
+    {
+      "id": "REF_INVALID_002",
+      "question": "Olahraga apa yang bagus untuk menurunkan berat badan dalam sebulan?"
+    },
+    {
+      "id": "REF_INVALID_003",
+      "question": "Rekomendasi film yang cocok ditonton bareng keluarga apa ya?"
+    },
+    {
+      "id": "REF_INVALID_004",
+      "question": "Kenapa kucing saya tiba-tiba nggak mau makan selama dua hari?"
+    },
+    {
+      "id": "REF_INVALID_005",
+      "question": "Bagaimana cara merawat tanaman hias agar tidak mudah layu?"
+    },
+    {
+      "id": "REF_INVALID_006",
+      "question": "Apa cara paling mudah mengatur file dan folder di laptop?"
+    },
+    {
+      "id": "REF_INVALID_007",
+      "question": "Siapa penemu lampu pijar?"
+    },
+    {
+      "id": "REF_INVALID_008",
+      "question": "Apa ibu kota negara Australia?"
+    },
+    {
+      "id": "REF_INVALID_009",
+      "question": "Jelaskan proses terjadinya hujan secara singkat."
+    },
+    {
+      "id": "REF_INVALID_010",
+      "question": "Siapa penulis novel Bumi Manusia?"
+    },
+    {
+      "id": "REF_INVALID_011",
+      "question": "Mengapa air laut terasa asin?"
+    },
+    {
+      "id": "REF_INVALID_012",
+      "question": "Apa yang menyebabkan terjadinya pergantian musim?"
+    },
+    {
+      "id": "REF_INVALID_013",
+      "question": "Kamu ini robot atau manusia sih sebenarnya?"
+    },
+    {
+      "id": "REF_INVALID_014",
+      "question": "Kalau kamu bisa liburan ke mana saja, kamu pilih ke mana?"
+    },
+    {
+      "id": "REF_INVALID_015",
+      "question": "Kamu suka makanan pedas nggak?"
+    },
+    {
+      "id": "REF_INVALID_016",
+      "question": "Terima kasih ya, kamu membantu banget hari ini."
+    },
+    {
+      "id": "REF_INVALID_017",
+      "question": "Kalau sedang libur, biasanya kamu lebih suka melakukan apa?"
+    },
+    {
+      "id": "REF_INVALID_018",
+      "question": "Menurutmu, makanan apa yang paling cocok untuk sarapan?"
+    },
+    {
+      "id": "REF_INVALID_019",
+      "question": "Berapa biaya pembuatan IMB di Kota Semarang?"
+    },
+    {
+      "id": "REF_INVALID_020",
+      "question": "Kapan jadwal pemadaman listrik bergilir di wilayah Kabupaten Batang?"
+    }
+  ]
+}

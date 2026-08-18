@@ -1,0 +1,326 @@
+{
+  "valid": [
+    {
+      "id": "VAL_VALID_001",
+      "question": "Saya mau berkonsultasi soal urusan pertanian. Di mana alamat kantor Dinas Pangan dan Pertanian Kabupaten Batang?"
+    },
+    {
+      "id": "VAL_VALID_002",
+      "question": "Saya perlu menghubungi Kantor Kecamatan Gringsing. Nomor telepon dan alamat kantornya apa ya?"
+    },
+    {
+      "id": "VAL_VALID_003",
+      "question": "Saya tinggal di wilayah Kelurahan Kauman. Kantor kelurahannya beralamat di mana?"
+    },
+    {
+      "id": "VAL_VALID_004",
+      "question": "Saya butuh informasi soal perencanaan dan penelitian pembangunan daerah. Badan mana yang mengurusnya di Pemkab Batang dan di mana kantornya?"
+    },
+    {
+      "id": "VAL_VALID_005",
+      "question": "Saya punya usaha kecil dan ingin berkonsultasi soal koperasi dan UMKM. Instansi mana yang harus saya datangi, dan bagaimana cara menghubunginya?"
+    },
+    {
+      "id": "VAL_VALID_006",
+      "question": "Saya ingin mengganti nama saya secara keseluruhan pada dokumen kependudukan. Apakah harus lewat pengadilan atau cukup mengajukan permohonan ke Disdukcapil?"
+    },
+    {
+      "id": "VAL_VALID_007",
+      "question": "Tanggal lahir saya salah ketik di akta kelahiran. Bagaimana cara memperbaikinya?"
+    },
+    {
+      "id": "VAL_VALID_008",
+      "question": "Bayi saya lahir dalam keadaan sudah meninggal. Apakah peristiwa itu tetap harus dilaporkan, dan dokumen apa yang nantinya diterbitkan?"
+    },
+    {
+      "id": "VAL_VALID_009",
+      "question": "Saya dan calon suami membuat perjanjian perkawinan di hadapan notaris. Apakah perjanjian tersebut perlu dilaporkan ke Disdukcapil?"
+    },
+    {
+      "id": "VAL_VALID_010",
+      "question": "Sudah ada penetapan pengadilan mengenai perubahan jenis kelamin saya. Langkah apa yang harus saya tempuh agar dokumen kependudukan saya ikut menyesuaikan?"
+    },
+    {
+      "id": "VAL_VALID_011",
+      "question": "Saya seorang akupunktur terapis. Surat tanda registrasi jenis apa yang harus saya lampirkan waktu mengajukan izin praktik di Batang?"
+    },
+    {
+      "id": "VAL_VALID_012",
+      "question": "Berkas permohonan Izin Praktik Elektromedis saya sudah diverifikasi staf. Setelah itu berkas saya melewati tahapan apa lagi sampai izinnya terbit?"
+    },
+    {
+      "id": "VAL_VALID_013",
+      "question": "Apa saja yang wajib dicantumkan dalam surat pernyataan tempat praktik untuk permohonan Izin Praktik Tenaga Teknis Kefarmasian?"
+    },
+    {
+      "id": "VAL_VALID_014",
+      "question": "Peraturan apa yang menjadi dasar hukum penerbitan Izin Kerja Tenaga Sanitarian di Kabupaten Batang?"
+    },
+    {
+      "id": "VAL_VALID_015",
+      "question": "Saya fisioterapis dan sudah punya SIP pertama, sekarang mau mengajukan SIP kedua. Apakah SIP yang lama tetap harus dilampirkan?"
+    },
+    {
+      "id": "VAL_VALID_016",
+      "question": "Saya ingin berjualan sebagai pedagang kaki lima. Di area mana saja PKL dilarang berdagang menurut aturan di Kabupaten Batang?"
+    },
+    {
+      "id": "VAL_VALID_017",
+      "question": "Kalau mau mendirikan toko swalayan di Batang, apakah ada ketentuan jarak minimal dengan pasar rakyat?"
+    },
+    {
+      "id": "VAL_VALID_018",
+      "question": "Siapa yang berwenang menetapkan daftar rumah tangga penerima beras bersubsidi di tingkat desa, dan berapa banyak beras yang diterima tiap bulan?"
+    },
+    {
+      "id": "VAL_VALID_019",
+      "question": "Keluarga kami ingin memakamkan jenazah secara tumpang di petak makam kerabat. Apakah hal itu diperbolehkan dan apa syaratnya?"
+    },
+    {
+      "id": "VAL_VALID_020",
+      "question": "Berapa besaran Bantuan Langsung Tunai dari dana bagi hasil cukai hasil tembakau di Kabupaten Batang dan diberikan selama berapa bulan?"
+    },
+    {
+      "id": "VAL_VALID_021",
+      "question": "Untuk urusan kepemudaan dan olahraga, dinas apa yang membidanginya di Pemkab Batang dan kantornya ada di jalan apa?"
+    },
+    {
+      "id": "VAL_VALID_022",
+      "question": "Lingkungan tempat tinggal saya termasuk permukiman kumuh. Dinas mana yang menangani urusan perumahan dan permukiman di Batang, dan bagaimana saya bisa menghubunginya?"
+    },
+    {
+      "id": "VAL_VALID_023",
+      "question": "Saya ingin berkirim surat elektronik ke Kelurahan Proyonanggan Utara. Alamat surelnya apa?"
+    },
+    {
+      "id": "VAL_VALID_024",
+      "question": "Saya ada janji temu di kantor Kecamatan Bandar. Alamat lengkapnya apa?"
+    },
+    {
+      "id": "VAL_VALID_025",
+      "question": "Perangkat desa kami butuh pendampingan program pembangunan desa. Instansi Pemkab Batang mana yang membidangi urusan itu dan apa alamat surelnya?"
+    },
+    {
+      "id": "VAL_VALID_026",
+      "question": "Anak bawaan istri saya dari pernikahan sebelumnya kini tinggal bersama kami. Bagaimana status hubungan dalam keluarganya ditulis di Kartu Keluarga?"
+    },
+    {
+      "id": "VAL_VALID_027",
+      "question": "SKPWNI sudah terbit tapi rencana pindah saya batal. Bagaimana membatalkan surat itu?"
+    },
+    {
+      "id": "VAL_VALID_028",
+      "question": "Saya ayah biologis yang baru membuat surat pengakuan anak. Paling lambat kapan hal itu harus dilaporkan ke Disdukcapil?"
+    },
+    {
+      "id": "VAL_VALID_029",
+      "question": "Calon istri saya sedang bekerja di luar kota dan tidak bisa hadir saat pencatatan perkawinan. Apakah pencatatannya boleh diwakilkan dengan surat kuasa?"
+    },
+    {
+      "id": "VAL_VALID_030",
+      "question": "Pada akta kelahiran, kolom tempat lahir itu diisi nama desa tempat bayi lahir atau nama kabupaten/kotanya?"
+    },
+    {
+      "id": "VAL_VALID_031",
+      "question": "Yayasan kami menyusun proposal untuk Izin Operasional PAUD. Apakah proposalnya harus lengkap sampai bab akhir?"
+    },
+    {
+      "id": "VAL_VALID_032",
+      "question": "Reklame saya akan dipasang di tanah sewa, bukan tanah milik sendiri. Dokumen apa yang menggantikan sertifikat tanah dalam berkas permohonan?"
+    },
+    {
+      "id": "VAL_VALID_033",
+      "question": "Lembaga kami akan mengurus Izin Penelitian Non Akademis di Batang. Apakah kami wajib menunjuk penanggung jawab lokal dan koordinator area?"
+    },
+    {
+      "id": "VAL_VALID_034",
+      "question": "Kami sedang menyiapkan berkas Izin Pusat Kegiatan Belajar Masyarakat. Apakah NPWP dan rekening bank harus atas nama lembaga, bukan atas nama pengurus?"
+    },
+    {
+      "id": "VAL_VALID_035",
+      "question": "Saya tenaga gizi yang berpraktik di Batang. Setiap berapa tahun izin praktik saya harus diperbarui?"
+    },
+    {
+      "id": "VAL_VALID_036",
+      "question": "Permohonan bantuan hukum saya ditolak begitu saja. Apakah lembaga pemberi bantuan hukum wajib menyampaikan alasan penolakannya?"
+    },
+    {
+      "id": "VAL_VALID_037",
+      "question": "Truk pemasok toko saya sering berhenti di bahu jalan untuk bongkar muat barang. Apakah kegiatan seperti itu perlu izin?"
+    },
+    {
+      "id": "VAL_VALID_038",
+      "question": "Di gedung pertemuan yang saya kelola belum ada tanda dilarang merokok. Siapa yang bertanggung jawab memasangnya dan di bagian mana seharusnya dipasang?"
+    },
+    {
+      "id": "VAL_VALID_039",
+      "question": "Organisasi kemasyarakatan kami hendak mengajukan hibah dari APBD Batang. Isi minimal proposalnya apa saja?"
+    },
+    {
+      "id": "VAL_VALID_040",
+      "question": "Saya bekerja serabutan tanpa penghasilan tetap. Apakah saya termasuk pekerja rentan yang bisa mendapat jaminan sosial ketenagakerjaan dari Pemkab Batang?"
+    }
+  ],
+  "invalid": [
+    {
+      "id": "VAL_INVALID_001",
+      "question": "Bagaimana cara menghilangkan noda minyak di baju putih?"
+    },
+    {
+      "id": "VAL_INVALID_002",
+      "question": "Kenapa AC di kamar saya mengeluarkan bau tidak sedap?"
+    },
+    {
+      "id": "VAL_INVALID_003",
+      "question": "Bagaimana cara memilih ukuran sepatu lari yang pas?"
+    },
+    {
+      "id": "VAL_INVALID_004",
+      "question": "Bagaimana cara menyimpan bawang merah agar tidak cepat busuk?"
+    },
+    {
+      "id": "VAL_INVALID_005",
+      "question": "Siapa presiden pertama Amerika Serikat?"
+    },
+    {
+      "id": "VAL_INVALID_006",
+      "question": "Mengapa langit terlihat berwarna biru pada siang hari?"
+    },
+    {
+      "id": "VAL_INVALID_007",
+      "question": "Apa fungsi utama sel darah merah dalam tubuh manusia?"
+    },
+    {
+      "id": "VAL_INVALID_008",
+      "question": "Kapan Indonesia pertama kali ikut serta dalam Olimpiade?"
+    },
+    {
+      "id": "VAL_INVALID_009",
+      "question": "Bagaimana cara melipat baju supaya muat banyak di koper?"
+    },
+    {
+      "id": "VAL_INVALID_010",
+      "question": "Apa mata uang resmi negara Jepang?"
+    },
+    {
+      "id": "VAL_INVALID_011",
+      "question": "Apa syarat mengurus izin praktik bidan di Kabupaten Banjarnegara?"
+    },
+    {
+      "id": "VAL_INVALID_012",
+      "question": "Bagaimana prosedur mengurus surat pindah dari Kota Semarang ke luar kota?"
+    },
+    {
+      "id": "VAL_INVALID_013",
+      "question": "Kapan pendaftaran CPNS dan PPPK Pemkab Batang dibuka tahun ini?"
+    },
+    {
+      "id": "VAL_INVALID_014",
+      "question": "Aku baru saja lulus kuliah, ucapin selamat dong!"
+    },
+    {
+      "id": "VAL_INVALID_015",
+      "question": "Apakah ada kegiatan car free day di Alun-alun Batang setiap minggu?"
+    },
+    {
+      "id": "VAL_INVALID_016",
+      "question": "Berapa besaran Upah Minimum Kabupaten Batang tahun ini?"
+    },
+    {
+      "id": "VAL_INVALID_017",
+      "question": "Selamat pagi, semoga harimu menyenangkan ya."
+    },
+    {
+      "id": "VAL_INVALID_018",
+      "question": "Kamu bisa nyanyi nggak?"
+    },
+    {
+      "id": "VAL_INVALID_019",
+      "question": "Aku bingung mau makan apa siang ini, ada ide?"
+    },
+    {
+      "id": "VAL_INVALID_020",
+      "question": "Menurutmu lebih baik menabung dulu atau langsung investasi?"
+    },
+    {
+      "id": "VAL_INVALID_021",
+      "question": "Berapa lama air galon sebaiknya dihabiskan setelah tutupnya dibuka?"
+    },
+    {
+      "id": "VAL_INVALID_022",
+      "question": "Bagaimana cara menghilangkan bau apek pada handuk?"
+    },
+    {
+      "id": "VAL_INVALID_023",
+      "question": "Kenapa nasi di rice cooker cepat menguning?"
+    },
+    {
+      "id": "VAL_INVALID_024",
+      "question": "Adakah cara mengusir semut dari dapur tanpa memakai bahan kimia?"
+    },
+    {
+      "id": "VAL_INVALID_025",
+      "question": "Bagaimana cara merapikan kabel-kabel yang berantakan di meja kerja?"
+    },
+    {
+      "id": "VAL_INVALID_026",
+      "question": "Apa yang dimaksud dengan fotosintesis pada tumbuhan?"
+    },
+    {
+      "id": "VAL_INVALID_027",
+      "question": "Siapa yang membacakan teks proklamasi kemerdekaan Indonesia?"
+    },
+    {
+      "id": "VAL_INVALID_028",
+      "question": "Berapa jumlah pemain dalam satu tim sepak bola?"
+    },
+    {
+      "id": "VAL_INVALID_029",
+      "question": "Mengapa bulan terlihat berubah bentuk setiap malam?"
+    },
+    {
+      "id": "VAL_INVALID_030",
+      "question": "Bahasa apa yang paling banyak dipakai di dunia?"
+    },
+    {
+      "id": "VAL_INVALID_031",
+      "question": "Berapa tarif retribusi sampah di Kota Pekalongan?"
+    },
+    {
+      "id": "VAL_INVALID_032",
+      "question": "Bagaimana cara mendapatkan Kartu Indonesia Pintar di Kabupaten Pemalang?"
+    },
+    {
+      "id": "VAL_INVALID_033",
+      "question": "Bagaimana alur pengaduan layanan publik di Pemerintah Kota Salatiga?"
+    },
+    {
+      "id": "VAL_INVALID_034",
+      "question": "Apa saja syarat pendaftaran nikah di KUA Kecamatan Comal, Pemalang?"
+    },
+    {
+      "id": "VAL_INVALID_035",
+      "question": "Kapan biasanya panen raya kopi di daerah Blado, Batang?"
+    },
+    {
+      "id": "VAL_INVALID_036",
+      "question": "Di mana saja titik lokasi SPBU di Kabupaten Batang?"
+    },
+    {
+      "id": "VAL_INVALID_037",
+      "question": "Kuliner khas apa yang terkenal di Kabupaten Batang?"
+    },
+    {
+      "id": "VAL_INVALID_038",
+      "question": "Kamu punya nama panggilan nggak?"
+    },
+    {
+      "id": "VAL_INVALID_039",
+      "question": "Hari ini aku lagi senang banget, boleh cerita sebentar?"
+    },
+    {
+      "id": "VAL_INVALID_040",
+      "question": "Coba tebak, aku lagi ngapain sekarang."
+    }
+  ]
+}

@@ -1,0 +1,310 @@
+{
+  "_meta": {
+    "purpose": "Reference examples VALID/in-scope untuk semantic router Enhanced RAG. Kandidat 10 per domain; pilih 5 terbaik per domain.",
+    "total": 40,
+    "leakage_policy": "Tidak ada pertanyaan yang disalin atau diparafrase dari eval/main_testset.json; semua di-cek manual + Jaccard vs 115 soal main_testset.",
+    "generated": "2026-08-17"
+  },
+  "domains": [
+    {
+      "domain": "OPD",
+      "candidates": [
+        {
+          "id": "REF_VALID_OPD_001",
+          "question": "Saya mau menanyakan soal bantuan sosial, kantor Dinas Sosial Batang ada di jalan apa?",
+          "source": "corpus",
+          "source_reference": "opd nomor:23 (Dinas Sosial, Jl. Letjen Suprapto No. 4 Batang)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_002",
+          "question": "Dinas Perhubungan Kabupaten Batang kantornya di mana ya?",
+          "source": "corpus",
+          "source_reference": "opd nomor:20 (Dinas Perhubungan, Jl. Raya Kandeman Km 5)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_003",
+          "question": "Saya ingin mengirim berkas ke DPMPTSP lewat email, alamat emailnya apa ya?",
+          "source": "corpus",
+          "source_reference": "opd nomor:13 (DPMPTSP dan Tenaga Kerja, dpmptspnaker@batangkab.go.id)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_004",
+          "question": "Ada pembuangan limbah yang mencemari sungai dekat rumah saya. Instansi mana yang menangani dan bagaimana cara menghubunginya?",
+          "source": "corpus",
+          "source_reference": "opd nomor:11 (Dinas Lingkungan Hidup, dlh@batangkab.go.id, (0285) 392885)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_005",
+          "question": "Saya perlu berkoordinasi dengan Dispermades Batang soal kegiatan desa. Kontak apa saja yang bisa saya pakai?",
+          "source": "corpus",
+          "source_reference": "opd nomor:19 (Dinas Pemberdayaan Masyarakat dan Desa)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_006",
+          "question": "Kecamatan Limpung punya alamat email resmi tidak? Saya mau konsultasi berkas dulu sebelum datang.",
+          "source": "corpus",
+          "source_reference": "opd nomor:34 (Kecamatan Limpung, kec_limpung@batangkab.go.id)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_007",
+          "question": "Kantor Kelurahan Kauman letaknya di sebelah mana?",
+          "source": "corpus",
+          "source_reference": "opd nomor:25.b (Kelurahan Kauman, Jl. Dr. Wahidin No. 2 Batang)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_008",
+          "question": "Nomor telepon RSUD Limpung yang bisa saya hubungi berapa?",
+          "source": "corpus",
+          "source_reference": "opd nomor:43 (RSUD Limpung, (0285) 4468362)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_009",
+          "question": "Bagian Organisasi di Sekretariat Daerah Batang bisa dihubungi lewat apa saja?",
+          "source": "corpus",
+          "source_reference": "opd nomor:1.g (Bagian Organisasi)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_OPD_010",
+          "question": "Saya ada keperluan soal arsip daerah. Saya harus datang ke kantor mana dan di mana alamatnya?",
+          "source": "corpus",
+          "source_reference": "opd nomor:24 (Dinas Perpustakaan dan Kearsipan, Jl. Dr. Wahidin No. 54 Batang)",
+          "leakage_check": "passed"
+        }
+      ]
+    },
+    {
+      "domain": "Dukcapil",
+      "candidates": [
+        {
+          "id": "REF_VALID_DUK_001",
+          "question": "Anak saya baru berusia 17 tahun. Apa saja syarat untuk membuat KTP pertama kalinya?",
+          "source": "corpus",
+          "source_reference": "Buku Saku Dafduk-Capil hal. 40 (penerbitan KTP-el pertama kali bagi WNI, Pasal 15 Perpres 96/2018)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_002",
+          "question": "Suami saya warga negara asing dan sudah punya izin tinggal tetap. Apakah dia juga bisa memiliki KTP-el?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 40-41 (Pasal 16 Perpres 96/2018)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_003",
+          "question": "Desa kami baru dimekarkan sehingga nama wilayahnya berubah. Apakah KK dan KTP kami harus diperbarui?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 41-42 (Pasal 64 ayat 8 UU 24/2013)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_004",
+          "question": "Bayi saya lahir dalam keadaan tidak bernyawa. Apakah peristiwa ini tetap harus dilaporkan, dan surat apa yang diterbitkan?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 101 (pencatatan lahir mati, Pasal 33 UU 23/2006, Pasal 36 Perpres 96/2018)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_005",
+          "question": "Tetangga saya meninggal dan tidak punya keluarga di sini. Apakah ketua RT boleh melaporkan kematiannya?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 106 (siapa yang melaporkan pencatatan kematian, Pasal 44 UU 24/2013)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_006",
+          "question": "Saya akan menetap di luar negeri. Bagaimana cara melaporkan kepindahan saya ke Disdukcapil?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 64 (pindah WNI ke luar negeri, Pasal 28 ayat (2) Perpres 96/2018)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_007",
+          "question": "Keponakan saya yang masih 15 tahun mau ikut pindah ke KK saya tanpa orang tuanya. Dokumen tambahan apa yang dibutuhkan?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 74 (pindah penduduk usia di bawah 17 tahun, Pasal 12 Permendagri 108/2019)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_008",
+          "question": "Akta kelahiran saya masih format lama tanpa QR code. Apakah bisa diganti dengan format yang baru?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 93 (kutipan akta format lama ke format QR Code dan TTE)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_009",
+          "question": "Saya tinggal di Batang tapi KTP masih beralamat luar kota. Bisakah saya minta surat keterangan domisili ke Disdukcapil?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 80 (Disdukcapil tidak menerbitkan SK Domisili; opsi pendaftaran penduduk nonpermanen, Permendagri 74/2022)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_DUK_010",
+          "question": "Apakah pengurusan akta kelahiran bisa dilakukan secara daring, dan apakah tetap perlu tanda tangan pelapor?",
+          "source": "corpus",
+          "source_reference": "Buku Saku hal. 88 (pencatatan kelahiran daring/online, Permendagri 109/2019)",
+          "leakage_check": "passed"
+        }
+      ]
+    },
+    {
+      "domain": "Perizinan",
+      "candidates": [
+        {
+          "id": "REF_VALID_PER_001",
+          "question": "Apakah pengurusan Izin Reklame di Batang dikenakan biaya?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-reklame (Keterangan: Biaya: Dikenakan biaya)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_002",
+          "question": "Saya mau memasang papan reklame. Apakah ada ketentuan minimal ketinggian tiangnya?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-reklame (Persyaratan: gambar konstruksi, tiang minimal 5 m di atas permukaan tanah)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_003",
+          "question": "Izin Kerja Perekam Medis harus diurus datang ke kantor atau bisa diajukan lewat website?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-kerja-perekam-medis (Mekanisme: permohonan via https://sipuas.batangkab.go.id)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_004",
+          "question": "Untuk mengurus Izin Praktik Akupuntur Terapis, surat tanda register apa yang harus saya lampirkan?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-praktik-akupuntur-terapis (STRAT & SIP lama)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_005",
+          "question": "Berapa lama proses Izin Praktik Psikolog Klinis dan apakah ada biayanya?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-praktik-psikolog-klinis (7 hari kerja, tidak dikenakan biaya)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_006",
+          "question": "Saya tenaga sanitarian dan ingin mengurus izin kerja. Berkas apa saja yang harus saya siapkan?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-kerja-tenaga-sanitarian (persyaratan)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_007",
+          "question": "Bagaimana tahapan pengajuan Izin Praktik Elektromedis di Kabupaten Batang?",
+          "source": "candidate_testset",
+          "source_reference": "PZ023 candidate_testset + perizinan id:izin-praktik-elektromedis (mekanisme pelayanan)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_008",
+          "question": "Izin Praktik Tenaga Teknis Kefarmasian berlaku sampai kapan?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-praktik-tenaga-teknis-kefarmasian (Masa Berlaku: 5 tahun)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_009",
+          "question": "Izin Penelitian Non Akademis saya hampir habis. Dokumen apa yang perlu dilampirkan untuk perpanjangannya?",
+          "source": "corpus",
+          "source_reference": "perizinan id:izin-penelitian-non-akademis (Surat Penelitian Sebelumnya untuk perpanjangan)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_PER_010",
+          "question": "Izin praktik tenaga kesehatan di Batang diurus lewat instansi mana?",
+          "source": "corpus",
+          "source_reference": "perizinan (mekanisme pelayanan: pemohon datang langsung ke DPMPTSP) + opd nomor:13",
+          "leakage_check": "passed"
+        }
+      ]
+    },
+    {
+      "domain": "Sosial/Hukum",
+      "candidates": [
+        {
+          "id": "REF_VALID_SOS_001",
+          "question": "Ayah saya meninggal dan keluarga kami tergolong tidak mampu. Apa syarat mengajukan santunan kematian ke Pemkab Batang?",
+          "source": "corpus",
+          "source_reference": "sosial-perbup-41-2021 Pasal 3 (santunan kematian bagi keluarga miskin)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_002",
+          "question": "Saya tidak sanggup membayar pengacara untuk perkara saya. Apakah Pemkab Batang menyediakan bantuan hukum gratis dan apa saja berkasnya?",
+          "source": "corpus",
+          "source_reference": "sosial-perbup-43-2019 Pasal 3 ayat (2)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_003",
+          "question": "Saya tidak punya surat keterangan miskin. Dokumen apa lagi yang bisa dipakai untuk mengajukan bantuan hukum?",
+          "source": "corpus",
+          "source_reference": "sosial-perbup-43-2019 Pasal 3 ayat (3)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_004",
+          "question": "Untuk memakamkan keluarga saya di TPU, apakah perlu izin penggunaan tanah makam dan siapa yang mengajukannya?",
+          "source": "corpus",
+          "source_reference": "sosial-perda-2-2016 Pasal 29",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_005",
+          "question": "Keluarga kami masih menunggu anak yang di luar kota. Berapa lama pemakaman boleh ditunda dan siapa yang memberi izinnya?",
+          "source": "corpus",
+          "source_reference": "sosial-perda-2-2016 Pasal 23",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_006",
+          "question": "Mobil angkutan barang saya harus menjalani uji berkala setiap berapa bulan?",
+          "source": "corpus",
+          "source_reference": "sosial-perda-1-2016 Pasal 42",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_007",
+          "question": "Apakah boleh memasang spanduk di pohon pinggir jalan atau tiang listrik di Batang?",
+          "source": "corpus",
+          "source_reference": "sosial-perda-7-2019 Pasal 11 huruf p",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_008",
+          "question": "Berapa harga tebus beras subsidi per kilogram dan berapa jatah yang diterima tiap keluarga penerima?",
+          "source": "corpus",
+          "source_reference": "sosial-perbup-7-2016 Lampiran (15 Kg/RTS/bulan, Rp1.600/Kg netto di Titik Distribusi)",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_009",
+          "question": "Kalau pengelola gedung membiarkan orang merokok di kawasan tanpa rokok, sanksi apa yang bisa dikenakan?",
+          "source": "corpus",
+          "source_reference": "sosial-perda-6-2018 Pasal 26",
+          "leakage_check": "passed"
+        },
+        {
+          "id": "REF_VALID_SOS_010",
+          "question": "Siapa yang menetapkan warga sebagai peserta jaminan kesehatan PBI APBD di Kabupaten Batang?",
+          "source": "corpus",
+          "source_reference": "sosial-perda-2-2023 Pasal 5",
+          "leakage_check": "passed"
+        }
+      ]
+    }
+  ]
+}

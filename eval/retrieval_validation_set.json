@@ -1,0 +1,430 @@
+{
+  "_meta": {
+    "version": "1.1",
+    "purpose": "retrieval_ablation_validation",
+    "description": "Validation set KHUSUS untuk retrieval ablation study (Dense vs Hybrid; tanpa vs dengan Reranker; tanpa vs dengan Query Rewriting). BUKAN test set final — evaluasi akhir tetap memakai eval/main_testset.json. Dipakai hanya untuk configuration selection. 25 soal: 5 OPD, 5 Dukcapil, 5 Perizinan, 5 Sosial/Hukum, 5 cross-domain. Tidak ada expected_answer/expected_facts karena dataset ini hanya mengukur retrieval (Recall@5, Precision@5, Hit@5, MRR), bukan generation.",
+    "source": "VAL_VALID_*: pertanyaan verbatim dari intent_validation_set.json > valid[]. VAL_CROSS_*: ditulis dari corpus, tidak menduplikasi CR001-CR015 main_testset.json. Isi pertanyaan tidak diubah.",
+    "gold_chunk_verification": "Seluruh gold chunk diresolusi lewat eval/generation/chunks.py (loader + gold_id yang sama dipakai build_vectorstore), lalu isi chunk dibaca manual untuk memastikan benar-benar memuat evidence yang dibutuhkan.",
+    "counts": {
+      "total": 25,
+      "opd": 5,
+      "dukcapil": 5,
+      "perizinan": 5,
+      "sosial": 5,
+      "cross_domain": 5,
+      "query_type": {
+        "lexical": 9,
+        "semantic": 11,
+        "complex": 5
+      },
+      "chunk_scope": {
+        "single": 19,
+        "multi": 1,
+        "cross_store": 5
+      }
+    },
+    "gold_id_format": {
+      "dukcapil": "page:<page_start>",
+      "opd": "nomor:<nomor>",
+      "perizinan": "id:<perizinan_id>",
+      "sosial": "id:<id>#pasal:<n> | #penjelasan:<n> | #preamble[.part] | #penjelasan-preamble | #narr:<k>"
+    },
+    "fields": {
+      "id": "string, unik & berurutan per domain: VOP=OPD, VDK=Dukcapil, VPZ=Perizinan, VSO=Sosial/Hukum, VCR=cross-domain",
+      "question": "pertanyaan user (Bahasa Indonesia), tidak diubah dari sumber",
+      "expected_route": "sosial | dukcapil | opd | perizinan | both",
+      "query_type": "lexical | semantic | complex",
+      "chunk_scope": "single | multi | cross_store",
+      "gold_chunks": "dict per source, list gold ID TANPA prefix domain"
+    },
+    "id_scheme": "VOP001-VOP005 (OPD), VDK001-VDK005 (Dukcapil), VPZ001-VPZ005 (Perizinan), VSO001-VSO005 (Sosial/Hukum), VCR001-VCR005 (cross-domain). Prefix V dipakai agar tidak bentrok dengan ID main_testset.json (OP/DK/PZ/SO/CR)."
+  },
+  "questions": [
+    {
+      "id": "VOP001",
+      "question": "Saya perlu menghubungi Kantor Kecamatan Gringsing. Nomor telepon dan alamat kantornya apa ya?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:33"
+        ],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VOP002",
+      "question": "Saya punya usaha kecil dan ingin berkonsultasi soal koperasi dan UMKM. Instansi mana yang harus saya datangi, dan bagaimana cara menghubunginya?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:14"
+        ],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VOP003",
+      "question": "Lingkungan tempat tinggal saya termasuk permukiman kumuh. Dinas mana yang menangani urusan perumahan dan permukiman di Batang, dan bagaimana saya bisa menghubunginya?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:17"
+        ],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VOP004",
+      "question": "Saya ingin berkirim surat elektronik ke Kelurahan Proyonanggan Utara. Alamat surelnya apa?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25.f"
+        ],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VOP005",
+      "question": "Perangkat desa kami butuh pendampingan program pembangunan desa. Instansi Pemkab Batang mana yang membidangi urusan itu dan apa alamat surelnya?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:19"
+        ],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VDK001",
+      "question": "Saya ingin mengganti nama saya secara keseluruhan pada dokumen kependudukan. Apakah harus lewat pengadilan atau cukup mengajukan permohonan ke Disdukcapil?",
+      "expected_route": "dukcapil",
+      "query_type": "semantic",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:219",
+          "page:225"
+        ],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VDK002",
+      "question": "Saya dan calon suami membuat perjanjian perkawinan di hadapan notaris. Apakah perjanjian tersebut perlu dilaporkan ke Disdukcapil?",
+      "expected_route": "dukcapil",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:166"
+        ],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VDK003",
+      "question": "Anak bawaan istri saya dari pernikahan sebelumnya kini tinggal bersama kami. Bagaimana status hubungan dalam keluarganya ditulis di Kartu Keluarga?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:37"
+        ],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VDK004",
+      "question": "Calon istri saya sedang bekerja di luar kota dan tidak bisa hadir saat pencatatan perkawinan. Apakah pencatatannya boleh diwakilkan dengan surat kuasa?",
+      "expected_route": "dukcapil",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:133"
+        ],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VDK005",
+      "question": "Pada akta kelahiran, kolom tempat lahir itu diisi nama desa tempat bayi lahir atau nama kabupaten/kotanya?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:237"
+        ],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VPZ001",
+      "question": "Saya seorang akupunktur terapis. Surat tanda registrasi jenis apa yang harus saya lampirkan waktu mengajukan izin praktik di Batang?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-akupuntur-terapis"
+        ]
+      }
+    },
+    {
+      "id": "VPZ002",
+      "question": "Apa saja yang wajib dicantumkan dalam surat pernyataan tempat praktik untuk permohonan Izin Praktik Tenaga Teknis Kefarmasian?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-tenaga-teknis-kefarmasian"
+        ]
+      }
+    },
+    {
+      "id": "VPZ003",
+      "question": "Peraturan apa yang menjadi dasar hukum penerbitan Izin Kerja Tenaga Sanitarian di Kabupaten Batang?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-tenaga-sanitarian"
+        ]
+      }
+    },
+    {
+      "id": "VPZ004",
+      "question": "Reklame saya akan dipasang di tanah sewa, bukan tanah milik sendiri. Dokumen apa yang menggantikan sertifikat tanah dalam berkas permohonan?",
+      "expected_route": "perizinan",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-reklame"
+        ]
+      }
+    },
+    {
+      "id": "VPZ005",
+      "question": "Kami sedang menyiapkan berkas Izin Pusat Kegiatan Belajar Masyarakat. Apakah NPWP dan rekening bank harus atas nama lembaga, bukan atas nama pengurus?",
+      "expected_route": "perizinan",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-pusat-kegiatan-belajar-masyarakat-pkbm"
+        ]
+      }
+    },
+    {
+      "id": "VSO001",
+      "question": "Saya ingin berjualan sebagai pedagang kaki lima. Di area mana saja PKL dilarang berdagang menurut aturan di Kabupaten Batang?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-7-2019#pasal:66"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VSO002",
+      "question": "Keluarga kami ingin memakamkan jenazah secara tumpang di petak makam kerabat. Apakah hal itu diperbolehkan dan apa syaratnya?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-2-2016#pasal:11.3"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VSO003",
+      "question": "Berapa besaran Bantuan Langsung Tunai dari dana bagi hasil cukai hasil tembakau di Kabupaten Batang dan diberikan selama berapa bulan?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-21-2025#pasal:6"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VSO004",
+      "question": "Truk pemasok toko saya sering berhenti di bahu jalan untuk bongkar muat barang. Apakah kegiatan seperti itu perlu izin?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-1-2016#pasal:17"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VSO005",
+      "question": "Di gedung pertemuan yang saya kelola belum ada tanda dilarang merokok. Siapa yang bertanggung jawab memasangnya dan di bagian mana seharusnya dipasang?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-6-2018#pasal:11"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VCR001",
+      "question": "Tetangga saya meninggal tanpa ahli waris yang mengurus, dan ketua RT ingin mengurus santunan kematian untuk keluarga miskin. Apakah Kepala Desa boleh menerbitkan surat keterangan kematian atas permohonan ketua RT, dan berapa lama batas pelaporan kematiannya ke Disdukcapil?",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-41-2021#pasal:7"
+        ],
+        "dukcapil": [
+          "page:108"
+        ],
+        "opd": [],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VCR002",
+      "question": "Berkas Izin Operasional/Pendirian SMP kami sudah sampai tahap DPMPTSP mengajukan rekomendasi pemenuhan komitmen ke perangkat daerah teknis. Perangkat daerah teknis yang dimaksud itu kantor mana dan bagaimana kontaknya?",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:7"
+        ],
+        "perizinan": [
+          "id:izin-operasionalpendirian-smp"
+        ]
+      }
+    },
+    {
+      "id": "VCR003",
+      "question": "Saya psikolog klinis dan ingin ikut membantu layanan rehabilitasi anak korban kekerasan di Batang lewat lembaga swasta. Apakah Pemerintah Daerah boleh bekerja sama dengan pihak swasta untuk layanan itu, dan izin praktik apa yang harus saya urus dulu beserta berapa lama prosesnya?",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-11-2019#pasal:14"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-psikolog-klinis"
+        ]
+      }
+    },
+    {
+      "id": "VCR004",
+      "question": "Saya pindah rumah dari Kelurahan Watesalit ke kelurahan lain yang masih di Kabupaten Batang, dan saya cuma numpang KK di rumah saudara. Apakah saya perlu mengurus SKPWNI, dan bagaimana saya menghubungi kantor Kelurahan Watesalit?",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:51"
+        ],
+        "opd": [
+          "nomor:25.a"
+        ],
+        "perizinan": []
+      }
+    },
+    {
+      "id": "VCR005",
+      "question": "Perusahaan angkutan saya baru dapat izin trayek. Berapa lama izin itu berlaku, apakah kartu pengawasannya ikut berlaku selama itu juga, dan ke kantor mana saya harus melaporkan operasional kendaraan tiap tahun?",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-1-2016#pasal:83"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:20"
+        ],
+        "perizinan": []
+      }
+    }
+  ]
+}
