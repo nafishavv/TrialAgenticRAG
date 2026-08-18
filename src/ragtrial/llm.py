@@ -19,11 +19,15 @@ LLM_MODEL: str = "gemini-2.5-flash"
 EMBEDDING_MODEL: str = "models/gemini-embedding-2"
 EMBEDDING_DIM: int = 768
 
-# Transient Gemini failures (server overload / per-minute quota) surface as these
-# substrings. They are NOT bugs — a short backoff usually clears them. Over a full
-# eval (198 Q x 3 tiers x several calls) such blips are near-certain, so retrying
-# keeps a momentary 503 from turning into a permanently-errored question.
-_RETRYABLE = ("429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE")
+# Transient Gemini/network failures surface as these substrings. They are NOT
+# bugs — a short backoff usually clears them. Over a full eval (198 Q x 3 tiers x
+# several calls) such blips are near-certain, so retrying keeps a momentary 503
+# or a dropped connection from turning into a permanently-errored question.
+_RETRYABLE = (
+    "429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE",
+    "RemoteProtocolError", "Server disconnected", "ConnectionError",
+    "Connection reset", "Connection aborted", "timed out",
+)
 
 
 def _with_retry(fn, *args, max_retries: int = 5, initial_wait: int = 30, **kwargs):
@@ -70,7 +74,7 @@ class _RetryingEmbeddings(Embeddings):
 
 llm = ChatGoogleGenerativeAI(
     model=LLM_MODEL,
-    temperature=0.1,
+    temperature=0.0,
     max_tokens=4096,
 )
 

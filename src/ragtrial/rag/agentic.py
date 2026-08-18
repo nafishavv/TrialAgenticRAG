@@ -12,6 +12,16 @@ multi-domain / skip) is fully inspectable from the trace, without extra tools.
 
 Graph:  agent ──tool_calls?──> tools ──> agent ... ──no tool_calls / max_iter──> END
 
+Self-correction is controlled by AgenticConfig (three independent switches, see
+PRESETS for the ablation cells):
+  - allow_rewrite:    let the LLM choose the tool-call query text, vs force it to
+                       the literal original question (no rewriting at all).
+  - sufficiency_check: inject [LOW RELEVANCE SIGNAL] when top rerank score is
+                       below RERANK_SUFFICIENCY, nudging the agent to re-search.
+  - allow_reretrieve: allow a SECOND round of tool calls at all. When False, the
+                       agent answers from whatever the first round returned, no
+                       matter how weak — this is the "iterative retrieval" switch.
+
 Future tools (SQL, web search) register as Capabilities -> become agent tools
 automatically. Multi-agent would add more agent nodes to this graph.
 """
@@ -19,7 +29,8 @@ automatically. Multi-agent would add more agent nodes to this graph.
 from __future__ import annotations
 
 import time
-from typing import Any, Dict, List
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 
 from langchain_core.documents import Document
 from langchain_core.messages import (
@@ -44,8 +55,29 @@ from ragtrial.vectorstore.store import unified_store
 MAX_ITERATIONS = 5
 K_PER_TOOL = 10          # candidate pool per tool call (into rerank)
 RERANK_TOP_N = 5         # docs kept per tool call after rerank (matches enhanced top_n)
-RERANK_SUFFICIENCY = 0.30  # top rerank score below this -> inject [LOW RELEVANCE SIGNAL] so the agent may re-search
+RERANK_SUFFICIENCY = 0.30  # top rerank score below this -> "weak" (logged always; injected as a
+                            # nudge into the tool result only when sufficiency_check=True)
 _TOOL_PREFIX = "search_"
+
+
+# ============ Config / presets (self-correction + retrieval-stack ablation) ============
+@dataclass(frozen=True)
+class AgenticConfig:
+    allow_rewrite: bool = True       # False -> tool query is forced to the literal question
+    sufficiency_check: bool = True   # False -> no [LOW RELEVANCE SIGNAL] nudge injected
+    allow_reretrieve: bool = True    # False -> at most ONE round of tool calls, ever
+    retrieval: str = "hybrid"        # "dense" | "hybrid" — passed to unified_store.search
+    reranker: str = "cross_encoder"  # "none" | "cross_encoder" — per-tool-call rerank
+
+
+PRESETS: dict[str, AgenticConfig] = {
+    "default": AgenticConfig(),                                                  # full self-correction
+    "single_shot": AgenticConfig(sufficiency_check=False, allow_reretrieve=False),  # rewrite kept, no re-search
+    "no_rewrite": AgenticConfig(allow_rewrite=False),                            # rewrite off, re-search kept
+    "no_self_correction": AgenticConfig(
+        allow_rewrite=False, sufficiency_check=False, allow_reretrieve=False
+    ),                                                                            # everything off
+}
 
 
 # ============ Tools (schema only — executed manually to capture Documents) ============
@@ -73,11 +105,11 @@ _TOOLS: list | None = None
 _llm_with_tools = None
 
 
-def _system_prompt(capabilities) -> str:
+def _system_prompt(capabilities, cfg: AgenticConfig) -> str:
     tool_lines = "\n".join(
         f"- {_TOOL_PREFIX}{name}: {cap.description}" for name, cap in capabilities.items()
     )
-    return (
+    header = (
         "You are a public-service assistant for Kabupaten Batang. You can help with:\n"
         f"{service_categories_block()}\n\n"
         "You have per-domain search tools:\n"
@@ -96,21 +128,39 @@ def _system_prompt(capabilities) -> str:
         "4. When calling search_opd for a specific agency, ALWAYS use the full official name, not an\n"
         "   abbreviation. E.g. 'Dukcapil' → 'Dinas Kependudukan dan Pencatatan Sipil', 'Dinkes' → 'Dinas\n"
         "   Kesehatan', 'BPKAD' → 'Badan Pengelolaan Keuangan dan Aset Daerah', etc.\n\n"
-        "SUFFICIENCY CHECK — after each tool call, BEFORE answering, judge the results:\n"
-        "1. If the tool results ALREADY contain enough relevant information to answer → ANSWER NOW. Do NOT\n"
-        "   search again. (Re-searching when the evidence is already there wastes time — prefer a fast\n"
-        "   answer.)\n"
-        "2. If the results are irrelevant / do not answer the question / carry a [LOW RELEVANCE SIGNAL]\n"
-        "   → SEARCH AGAIN ONCE, diagnosing WHY it failed:\n"
-        "     - wrong domain?         → call a different, more appropriate domain tool\n"
-        "     - query too narrow/broad/informal? → rewrite the query (more specific / official terms)\n"
-        "     - unsure of the domain?  → search across several domains\n"
-        "   Limit: AT MOST 1-2 retries.\n"
-        "3. If after retrying the results are STILL inadequate → do NOT keep forcing it. Answer with what\n"
-        "   you have, or say honestly: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
-        "   Principle: re-search ONLY to fix a clearly failed retrieval — never 'just in case'.\n\n"
-        "Respond in polite, clear, concise Bahasa Indonesia. Cite the source when relevant."
     )
+
+    if cfg.allow_reretrieve:
+        signal_line = (
+            "irrelevant / do not answer the question / carry a [LOW RELEVANCE SIGNAL]"
+            if cfg.sufficiency_check
+            else "irrelevant / do not answer the question"
+        )
+        sufficiency = (
+            "SUFFICIENCY CHECK — after each tool call, BEFORE answering, judge the results:\n"
+            "1. If the tool results ALREADY contain enough relevant information to answer → ANSWER NOW. Do NOT\n"
+            "   search again. (Re-searching when the evidence is already there wastes time — prefer a fast\n"
+            "   answer.)\n"
+            f"2. If the results are {signal_line}\n"
+            "   → SEARCH AGAIN ONCE, diagnosing WHY it failed:\n"
+            "     - wrong domain?         → call a different, more appropriate domain tool\n"
+            "     - query too narrow/broad/informal? → rewrite the query (more specific / official terms)\n"
+            "     - unsure of the domain?  → search across several domains\n"
+            "   Limit: AT MOST 1-2 retries.\n"
+            "3. If after retrying the results are STILL inadequate → do NOT keep forcing it. Answer with what\n"
+            "   you have, or say honestly: \"Maaf, informasi tidak ditemukan dalam sumber yang tersedia.\"\n"
+            "   Principle: re-search ONLY to fix a clearly failed retrieval — never 'just in case'.\n\n"
+        )
+    else:
+        sufficiency = (
+            "SUFFICIENCY CHECK — after the tool call(s), answer directly from whatever the tools returned.\n"
+            "Do NOT call a tool again for this question, even if the results seem weak or incomplete.\n"
+            "Answer with what you have, or say honestly: \"Maaf, informasi tidak ditemukan dalam sumber yang\n"
+            "tersedia.\" if it is truly unusable.\n\n"
+        )
+
+    footer = "Respond in polite, clear, concise Bahasa Indonesia. Cite the source when relevant."
+    return header + sufficiency + footer
 
 
 # ============ State ============
@@ -119,6 +169,7 @@ class AgentState(TypedDict):
     documents: List[Document]
     steps: List[Dict[str, Any]]
     iterations: int
+    tool_rounds: int             # number of times the tools node has executed
     t_agent: float
     t_agent_steps: List[float]   # per-invocation LLM latency; last = final answer synth
     t_tools: float
@@ -130,7 +181,7 @@ class AgentState(TypedDict):
     t_fuse: float
 
 
-# ============ Nodes ============
+# ============ Nodes (factory-built per AgenticConfig, so each switch is a closure) ============
 def _node_agent(state: AgentState) -> AgentState:
     t0 = time.perf_counter()
     ai = invoke_with_retry(_llm_with_tools, state["messages"])
@@ -144,82 +195,115 @@ def _node_agent(state: AgentState) -> AgentState:
     }
 
 
-def _node_tools(state: AgentState) -> AgentState:
-    last: AIMessage = state["messages"][-1]
-    new_msgs: List[Any] = []
-    docs: List[Document] = list(state["documents"])
-    steps: List[Dict[str, Any]] = list(state["steps"])
-    t_tools = state["t_tools"]
-    t_rerank = state["t_rerank"]
-    sub_acc = {k: state[k] for k in ("t_embed_query", "t_search", "t_bm25", "t_fuse")}
+def _original_question(state: AgentState) -> str:
+    for m in state["messages"]:
+        if isinstance(m, HumanMessage):
+            return str(m.content)
+    return ""
 
-    for call in last.tool_calls:
-        name = call["name"]
-        query = (call.get("args") or {}).get("query", "")
-        domain = name[len(_TOOL_PREFIX):] if name.startswith(_TOOL_PREFIX) else name
 
-        if domain not in SEARCHABLE_CAPABILITIES:
-            content = f"Unknown tool {name}."
-            steps.append({"tool": name, "query": query, "n_docs": 0, "error": "unknown_tool"})
-        else:
-            # Routing = domain FILTER on the unified index (hybrid), then rerank.
-            t0 = time.perf_counter()
-            sub: dict = {}
-            found = unified_store.search(
-                query, k=K_PER_TOOL, strategy="hybrid", domain=domain, timings=sub
-            )
-            t_tools += time.perf_counter() - t0
-            for key in ("t_embed_query", "t_search", "t_bm25", "t_fuse"):
-                sub_acc[key] += sub.get(key, 0.0)
-            t0 = time.perf_counter()
-            found, scores = rerank_documents(query, found, top_n=RERANK_TOP_N)
-            t_rerank += time.perf_counter() - t0
-            top = scores[0] if scores else 0.0
-            weak = top < RERANK_SUFFICIENCY
-            docs.extend(found)
-            content = format_context(found, CAPABILITIES) if found else "No results found."
-            if weak:
-                # Self-correction signal: low relevance -> the agent may re-search
-                # (different domain / reformulated query / no filter). See system prompt.
-                content += (
-                    f"\n\n[LOW RELEVANCE SIGNAL: top score {top:.2f} < {RERANK_SUFFICIENCY}. "
-                    "These results may be inadequate. If this is not the answer being sought, "
-                    "SEARCH AGAIN: try a different domain, reformulated keywords, or drop the domain filter.]"
+def _make_node_tools(cfg: AgenticConfig):
+    def node_tools(state: AgentState) -> AgentState:
+        last: AIMessage = state["messages"][-1]
+        new_msgs: List[Any] = []
+        docs: List[Document] = list(state["documents"])
+        steps: List[Dict[str, Any]] = list(state["steps"])
+        t_tools = state["t_tools"]
+        t_rerank = state["t_rerank"]
+        sub_acc = {k: state[k] for k in ("t_embed_query", "t_search", "t_bm25", "t_fuse")}
+        original_q = _original_question(state) if not cfg.allow_rewrite else None
+
+        for call in last.tool_calls:
+            name = call["name"]
+            query = (call.get("args") or {}).get("query", "")
+            if not cfg.allow_rewrite:
+                query = original_q  # force literal original question, ignore LLM's rewrite
+            domain = name[len(_TOOL_PREFIX):] if name.startswith(_TOOL_PREFIX) else name
+
+            if domain not in SEARCHABLE_CAPABILITIES:
+                content = f"Unknown tool {name}."
+                steps.append({"tool": name, "query": query, "n_docs": 0, "error": "unknown_tool"})
+            else:
+                # Routing = domain FILTER on the unified index (dense|hybrid per cfg), then rerank.
+                t0 = time.perf_counter()
+                sub: dict = {}
+                found = unified_store.search(
+                    query, k=K_PER_TOOL, strategy=cfg.retrieval, domain=domain, timings=sub
                 )
-            steps.append({"tool": name, "query": query, "n_docs": len(found),
-                          "top_score": round(top, 3), "weak": weak})
+                t_tools += time.perf_counter() - t0
+                for key in ("t_embed_query", "t_search", "t_bm25", "t_fuse"):
+                    sub_acc[key] += sub.get(key, 0.0)
+                if cfg.reranker == "cross_encoder":
+                    t0 = time.perf_counter()
+                    found, scores = rerank_documents(query, found, top_n=RERANK_TOP_N)
+                    t_rerank += time.perf_counter() - t0
+                    top = scores[0] if scores else 0.0
+                    weak = top < RERANK_SUFFICIENCY   # always computed/logged, regardless of cfg
+                else:
+                    found = found[:RERANK_TOP_N]      # no rerank -> keep dense/hybrid fetch order
+                    top = 0.0
+                    weak = False                       # no rerank score to judge sufficiency on
+                docs.extend(found)
+                content = format_context(found, CAPABILITIES) if found else "No results found."
+                if weak and cfg.sufficiency_check:
+                    # Self-correction signal: low relevance -> the agent may re-search
+                    # (different domain / reformulated query / no filter). See system prompt.
+                    content += (
+                        f"\n\n[LOW RELEVANCE SIGNAL: top score {top:.2f} < {RERANK_SUFFICIENCY}. "
+                        "These results may be inadequate. If this is not the answer being sought, "
+                        "SEARCH AGAIN: try a different domain, reformulated keywords, or drop the domain filter.]"
+                    )
+                steps.append({"tool": name, "query": query, "n_docs": len(found),
+                              "top_score": round(top, 3), "weak": weak})
 
-        new_msgs.append(ToolMessage(content=content, tool_call_id=call["id"]))
+            new_msgs.append(ToolMessage(content=content, tool_call_id=call["id"]))
 
-    return {**state, "messages": state["messages"] + new_msgs, "documents": docs,
-            "steps": steps, "t_tools": t_tools, "t_rerank": t_rerank, **sub_acc}
+        return {**state, "messages": state["messages"] + new_msgs, "documents": docs,
+                "steps": steps, "t_tools": t_tools, "t_rerank": t_rerank,
+                "tool_rounds": state["tool_rounds"] + 1, **sub_acc}
+
+    return node_tools
 
 
-def _should_continue(state: AgentState) -> str:
-    last = state["messages"][-1]
-    has_calls = isinstance(last, AIMessage) and bool(last.tool_calls)
-    if has_calls and state["iterations"] < MAX_ITERATIONS:
+def _make_should_continue(cfg: AgenticConfig):
+    def should_continue(state: AgentState) -> str:
+        last = state["messages"][-1]
+        has_calls = isinstance(last, AIMessage) and bool(last.tool_calls)
+        if not has_calls:
+            return END
+        if state["iterations"] >= MAX_ITERATIONS:
+            return END
+        if not cfg.allow_reretrieve and state["tool_rounds"] >= 1:
+            return END
         return "tools"
-    return END
+
+    return should_continue
 
 
-# ============ Graph (lazy) ============
-agentic_app = None
+# ============ Graph (lazy, cached per config) ============
+_APPS: Dict[AgenticConfig, Any] = {}
 
 
-def _ensure_app() -> None:
-    global _TOOLS, _llm_with_tools, agentic_app
-    if agentic_app is not None:
-        return
-    _TOOLS = _build_tools(SEARCHABLE_CAPABILITIES)
-    _llm_with_tools = llm.bind_tools(_TOOLS)
-    _workflow = StateGraph(AgentState)
-    _workflow.add_node("agent", _node_agent)
-    _workflow.add_node("tools", _node_tools)
-    _workflow.set_entry_point("agent")
-    _workflow.add_conditional_edges("agent", _should_continue, {"tools": "tools", END: END})
-    _workflow.add_edge("tools", "agent")
-    agentic_app = _workflow.compile()
+def _ensure_tools() -> None:
+    global _TOOLS, _llm_with_tools
+    if _TOOLS is None:
+        _TOOLS = _build_tools(SEARCHABLE_CAPABILITIES)
+        _llm_with_tools = llm.bind_tools(_TOOLS)
+
+
+def _ensure_app(cfg: AgenticConfig):
+    _ensure_tools()
+    if cfg not in _APPS:
+        workflow = StateGraph(AgentState)
+        workflow.add_node("agent", _node_agent)
+        workflow.add_node("tools", _make_node_tools(cfg))
+        workflow.set_entry_point("agent")
+        workflow.add_conditional_edges(
+            "agent", _make_should_continue(cfg), {"tools": "tools", END: END}
+        )
+        workflow.add_edge("tools", "agent")
+        _APPS[cfg] = workflow.compile()
+    return _APPS[cfg]
 
 
 def _text(msg: AIMessage) -> str:
@@ -262,14 +346,74 @@ def _domains_used(steps: List[Dict[str, Any]]) -> List[str]:
     return domains
 
 
-def ask_agentic(question: str, verbose: bool = True) -> RagResult:
-    _ensure_app()
-    init: AgentState = {
-        "messages": [SystemMessage(_system_prompt(SEARCHABLE_CAPABILITIES)),
+def route_and_retrieve(question: str, config: Optional[AgenticConfig] = None) -> Dict[str, Any]:
+    """Retrieval-only agentic run: ONE LLM call to pick domain tool(s) + execute them.
+
+    For retrieval-quality ablations that don't need generation: no second LLM
+    call, no answer synthesis, no self-correction — we stop right after the
+    first tool round regardless of `config` (there IS no second round to gate).
+    Returns a plain dict (not RagResult, since there is no `answer`).
+    """
+    cfg = config or AgenticConfig()
+    _ensure_tools()
+    node_tools = _make_node_tools(cfg)
+
+    t0 = time.perf_counter()
+    state: AgentState = {
+        "messages": [SystemMessage(_system_prompt(SEARCHABLE_CAPABILITIES, cfg)),
                      HumanMessage(question)],
         "documents": [],
         "steps": [],
         "iterations": 0,
+        "tool_rounds": 0,
+        "t_agent": 0.0,
+        "t_agent_steps": [],
+        "t_tools": 0.0,
+        "t_rerank": 0.0,
+        "t_embed_query": 0.0,
+        "t_search": 0.0,
+        "t_bm25": 0.0,
+        "t_fuse": 0.0,
+    }
+    state = _node_agent(state)   # the ONE LLM call: decide domain(s) + query
+    last = state["messages"][-1]
+    if isinstance(last, AIMessage) and last.tool_calls:
+        state = node_tools(state)  # execute chosen tool(s): retrieve (+ optional rerank), no LLM
+    total = time.perf_counter() - t0
+
+    docs = _dedup(state["documents"])
+    routed = _domains_used(state["steps"])
+    return {
+        "documents": docs,
+        "route": "none" if not routed else (routed[0] if len(routed) == 1 else routed),
+        "source_used": collapse_sources(routed),
+        "steps": state["steps"],
+        "n_llm_calls": 1,
+        "timings": {
+            "t_embed_query": state["t_embed_query"],
+            "t_search": state["t_search"],
+            "t_bm25": state["t_bm25"],
+            "t_fuse": state["t_fuse"],
+            "retrieve": state["t_tools"],
+            "rerank": state["t_rerank"],
+            "t_orchestrate": state["t_agent"],
+            "total": total,
+        },
+    }
+
+
+def ask_agentic(
+    question: str, verbose: bool = True, config: Optional[AgenticConfig] = None
+) -> RagResult:
+    cfg = config or AgenticConfig()
+    app = _ensure_app(cfg)
+    init: AgentState = {
+        "messages": [SystemMessage(_system_prompt(SEARCHABLE_CAPABILITIES, cfg)),
+                     HumanMessage(question)],
+        "documents": [],
+        "steps": [],
+        "iterations": 0,
+        "tool_rounds": 0,
         "t_agent": 0.0,
         "t_agent_steps": [],
         "t_tools": 0.0,
@@ -280,7 +424,7 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         "t_fuse": 0.0,
     }
     t0 = time.perf_counter()
-    final = agentic_app.invoke(init)
+    final = app.invoke(init)
     total = time.perf_counter() - t0
 
     answer = ""
@@ -335,8 +479,10 @@ def ask_agentic(question: str, verbose: bool = True) -> RagResult:
         meta={
             "steps": final["steps"],
             "iterations": final["iterations"],
+            "tool_rounds": final["tool_rounds"],
             # Agent's implicit intent decision: called a tool = needed retrieval.
             "intent": "valid" if final["steps"] else "invalid",
+            "config": cfg.__dict__,
         },
         decisions=make_decisions(
             intent="retrieve" if final["steps"] else "direct",
