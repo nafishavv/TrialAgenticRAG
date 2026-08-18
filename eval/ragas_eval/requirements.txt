@@ -1,0 +1,38 @@
+# Dependency evaluator RAGAS — DIPASANG DI VIRTUALENV TERPISAH (.venv-ragas),
+# bukan di .venv utama. Alasannya: ragas menarik langchain-core 1.5.5 +
+# langchain-openai + datasets + instructor, yang akan mengubah dependency tree
+# pipeline RAG produksi di tengah pengerjaan skripsi.
+#
+# Setup:
+#   uv venv .venv-ragas --python 3.12
+#   uv pip install --python .venv-ragas/Scripts/python.exe -r eval/ragas_eval/requirements.txt
+#
+# Jalankan:
+#   .venv-ragas/Scripts/python.exe eval/run_ragas.py --dry-run
+
+ragas==0.4.3
+
+# PIN WAJIB — jangan dinaikkan.
+# ragas 0.4.3 melakukan import top-level `from langchain_community.chat_models.vertexai
+# import ChatVertexAI` (ragas/llms/base.py:12). Modul itu DIHAPUS di
+# langchain-community 0.4.2, sehingga `import ragas` langsung gagal dengan
+# ModuleNotFoundError. 0.4.1 adalah versi terakhir yang masih menyediakannya.
+langchain-community==0.4.1
+
+# Client embedding fallback (--embedding-provider google, gemini-embedding-001)
+# dan client fallback evaluator LLM (--judge-provider google). Tidak dipakai di
+# jalur default, tapi tetap dibutuhkan supaya kedua fallback itu jalan tanpa
+# instalasi tambahan.
+google-genai>=1.66.0
+
+# Client evaluator LLM DAN embedding. Default untuk keduanya: OpenAI asli
+# (gpt-4o-mini untuk Faithfulness, text-embedding-3-small untuk Semantic
+# Similarity) — sengaja vendor beda dari generator produksi (Gemini) supaya
+# evaluator tidak menilai jawaban dari model/vendor yang sama. Butuh
+# OPENAI_API_KEY sendiri (lihat .env.example), satu key dipakai untuk keduanya.
+# Client yang sama juga dipakai untuk rute fallback --judge-provider google
+# (Gemini lewat endpoint OpenAI-compatible-nya, pakai GEMINI_API_KEY) — lihat
+# eval/ragas_eval/config.py.
+openai>=2.0.0
+
+python-dotenv>=1.0.0
