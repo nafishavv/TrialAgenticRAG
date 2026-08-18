@@ -1,4 +1,15 @@
-"""JUDGE phase — score already-generated answers OFFLINE, decoupled + cached.
+"""ARSIP — JUDGE phase custom, sudah TIDAK DIPAKAI (pensiun 18 Agustus 2026).
+
+Digantikan oleh eval/run_ragas.py (RAGAS Faithfulness + Semantic Similarity).
+Lihat custom_judge.py di folder ini untuk alasan lengkapnya. Disimpan supaya
+angka lama di docs/EVAL_REPORT.md §6 masih bisa ditelusuri/direproduksi.
+
+CATATAN MENJALANKAN ULANG: implementasi judge-nya sekarang ada di
+`archive/eval_judge/custom_judge.py` (dulu di eval/eval_core.py §4), dan skrip ini
+mengimpornya dari sana. Jalankan dari root project dengan .venv utama, mis.:
+    python archive/eval_judge/run_judge.py --results-dir <dir>
+
+--- dokumentasi asli di bawah ini ---
 
 The generate phase (`eval.run_eval --no-judge`) persists answer + retrieved_context
 + ids + decisions + timings per query. This script reads those per_query files and
@@ -29,13 +40,16 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Tuple
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from eval.eval_core import (
+# Dulu: `from eval.eval_core import ...`. Judge-nya sudah dipindah ke arsip.
+from custom_judge import (  # noqa: E402
     judge_answer_relevance,
     judge_faithfulness,
     judge_refusal,
