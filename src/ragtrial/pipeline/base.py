@@ -5,8 +5,11 @@ reads + mutates a RagState threaded through the pipeline. The Pipeline runs them
 in order and times each.
 
 Stage order for the canonical enhanced pipeline:
-    route -> rewrite -> retrieve -> rerank -> generate
-(route runs first so it classifies the original question, not a HyDE passage)
+    intent -> rewrite -> retrieve -> rerank -> generate
+(intent runs first so it classifies the original question, not a HyDE passage)
+
+Retrieval is always GLOBAL — there is no domain routing. Domain selection exists
+only in the agentic tier, where the LLM picks a `search_<domain>` tool.
 
 Adding a capability to a stage (e.g. a new reranker) = implement a Stage
 subclass + register it in that stage module's factory dict. `build_enhanced`
@@ -31,8 +34,6 @@ class RagState:
     """Original user question."""
     query: str = ""
     """Effective query (rewriter sets this; defaults to question)."""
-    route: Optional[str] = None
-    """Router decision: capability name, 'both', 'none', or None (= use all)."""
     intent: Optional[str] = None
     """Intent gate decision: 'valid' (retrieve) | 'invalid' (answer directly) | None (no gate)."""
     documents: List[Document] = field(default_factory=list)

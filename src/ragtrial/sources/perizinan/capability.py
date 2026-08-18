@@ -36,12 +36,6 @@ perizinan_capability = VectorSourceCapability(
     ),
     collection_name="perizinan",
     persist_directory=PERIZINAN_VECTOR_STORE,
-    router_examples=[
-        "Apa syarat izin reklame?",
-        "Berapa biaya izin kerja fisioterapis?",
-        "Bagaimana prosedur mengurus izin kerja radiografer?",
-        "Dasar hukum izin kerja tenaga gizi apa?",
-    ],
     strategy="hybrid",
     header_formatter=_header,
     gold_id_fn=_gold_id,

@@ -38,10 +38,6 @@ opd_capability = VectorSourceCapability(
     ),
     collection_name="opd_directory",
     persist_directory=OPD_VECTOR_STORE,
-    router_examples=[
-        "Alamat Dinas Pariwisata Batang?",
-        "Nomor telepon Sekretariat Daerah?",
-    ],
     strategy="hybrid",
     header_formatter=_header,
     gold_id_fn=_gold_id,

@@ -25,10 +25,7 @@ class Capability(ABC):
     """Registry key + value used as `metadata._source` tag on returned Documents."""
 
     description: str
-    """One-line description shown to the router LLM for classification."""
-
-    router_examples: List[str]
-    """Few-shot example queries that route to this capability."""
+    """One-line description; shown to the agentic LLM as its search tool's docstring."""
 
     searchable: bool = True
     """If True, naive-combined RAG includes this in the union-retrieve fan-out."""

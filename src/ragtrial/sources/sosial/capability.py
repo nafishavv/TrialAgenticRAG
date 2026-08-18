@@ -49,13 +49,6 @@ sosial_capability = VectorSourceCapability(
     ),
     collection_name="sosial",
     persist_directory=SOSIAL_VECTOR_STORE,
-    router_examples=[
-        "Bagaimana aturan perlindungan anak di Kabupaten Batang?",
-        "Apa dasar hukum bantuan sosial bagi warga miskin?",
-        "Peraturan tentang jaminan sosial ketenagakerjaan pekerja rentan?",
-        "Aturan penyelenggaraan cadangan pangan daerah?",
-        "Perda tentang kesejahteraan sosial nomor berapa?",
-    ],
     strategy="hybrid",
     header_formatter=_header,
     gold_id_fn=_gold_id,

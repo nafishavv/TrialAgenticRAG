@@ -43,23 +43,7 @@ QUESTION: {question}
 ANSWER:"""
 
 
-PROMPT_SINGLE = """You are a public-service assistant for Kabupaten Batang.
-Source used: {source_description}
-
-RULES:
-1. Answer ONLY from the context. Do not add information from general knowledge.
-2. If the answer is not in the context, reply: "Maaf, informasi tidak ditemukan di sumber yang tersedia."
-3. Respond in clear, concise Bahasa Indonesia.
-
-CONTEXT:
-{context}
-
-QUESTION: {question}
-
-ANSWER:"""
-
-
-PROMPT_HYDE = """Write ONE paragraph of a hypothetical answer to the following question, as if quoted from an official public-service document of Kabupaten Batang (a regulation, SOP, or guideline).
+PROMPT_HYDE ="""Write ONE paragraph of a hypothetical answer to the following question, as if quoted from an official public-service document of Kabupaten Batang (a regulation, SOP, or guideline).
 
 RULES:
 - Write like formal document content: direct, fact-dense, in the style of government regulations/guidelines.
@@ -138,26 +122,6 @@ QUESTION: {question}
 ANSWER:"""
 
 
-ROUTER_PROMPT = """You are a router for the Kabupaten Batang public-service chatbot.
-Your task: classify the user's question into ONE of the categories below.
-
-CATEGORIES:
-{categories_block}
-- "both"      → a question that needs BOTH / a combination of sources (e.g. procedure + agency contact).
-- "none"      → outside the scope of all sources above (recipes, sports, entertainment, etc.).
-
-EXAMPLES:
-{examples_block}
-Q: "Resep nasi goreng?"  → {{"route":"none","reason":"off-topic"}}
-
-OUTPUT RULES:
-- Reply with ONLY one line of valid JSON: {{"route":"<category>","reason":"<short reason>"}}
-- No other text, no markdown, no code fence.
-
-Question: {question}
-JSON:"""
-
-
 def build_sources_brief(capabilities: dict) -> str:
     """Render bullet list of source name + description for PROMPT_COMBINED."""
     return "\n".join(
@@ -176,21 +140,3 @@ def build_citation_rules(capabilities: dict) -> str:
         if cap.citation_hint()
     ]
     return "\n".join(lines) if lines else "- (no special citation format)"
-
-
-def build_router_prompt(question: str, capabilities: dict) -> str:
-    """Build ROUTER_PROMPT with categories and few-shot examples derived from registry."""
-    cats = "\n".join(
-        f'- "{cap.name}"  → {cap.description}' for cap in capabilities.values()
-    )
-    examples = []
-    for cap in capabilities.values():
-        for ex in cap.router_examples:
-            examples.append(
-                f'Q: "{ex}"  → {{"route":"{cap.name}","reason":"example {cap.name}"}}'
-            )
-    return ROUTER_PROMPT.format(
-        categories_block=cats,
-        examples_block="\n".join(examples) + "\n" if examples else "",
-        question=question,
-    )

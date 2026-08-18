@@ -83,7 +83,7 @@ class RagResult:
     """'naive' | 'enhanced' | 'agentic'."""
     timings: Dict[str, float] = field(default_factory=dict)
     meta: Dict[str, Any] = field(default_factory=dict)
-    """Mode-specific extras: route_reason, rewritten_query, steps (agent trace), ..."""
+    """Mode-specific extras: rewritten_query, steps (agent trace), ..."""
     decisions: Dict[str, Any] = field(default_factory=dict)
     """Normalized execution log — SAME keys across all 3 modes for uniform
     visualization/debugging. Schema: intent ('retrieve'|'direct'), rewrite (bool),
@@ -114,7 +114,7 @@ class RagResult:
             "decisions": self.decisions,
         }
         # Surface common meta keys at top level for back-compat.
-        for k in ("route_reason", "rewritten_query", "original_query", "steps"):
+        for k in ("rewritten_query", "original_query", "steps"):
             if k in self.meta:
                 d[k] = self.meta[k]
         return d

@@ -30,7 +30,6 @@ class VectorSourceCapability(Capability):
     description: str
     collection_name: str
     persist_directory: Path
-    router_examples: List[str] = field(default_factory=list)
     strategy: Strategy = "hybrid"
     fetch_k: int = 10
     weights: tuple[float, float] = (0.5, 0.5)

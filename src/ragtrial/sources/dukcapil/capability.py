@@ -40,10 +40,6 @@ dukcapil_capability = VectorSourceCapability(
     ),
     collection_name="dukcapil_qa",
     persist_directory=DUKCAPIL_VECTOR_STORE,
-    router_examples=[
-        "Apa syarat penerbitan KTP elektronik?",
-        "Bagaimana cara pindah domisili?",
-    ],
     strategy="hybrid",
     header_formatter=_header,
     gold_id_fn=_gold_id,

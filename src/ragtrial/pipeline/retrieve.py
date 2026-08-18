@@ -1,12 +1,12 @@
 """Retrieval stage — fetch a candidate pool from the unified store.
 
-Enhanced retrieves GLOBALLY (no domain routing) by default: the router is 'none',
-so `state.route` is None and we search the whole unified index. If a router IS
-plugged in (ablation), `state.route` maps to a domain filter:
+Enhanced always retrieves GLOBALLY: the whole unified index, no domain filter.
+Same search scope as naive; the difference is `strategy` (hybrid vs naive's
+dense) plus the cross-encoder rerank that follows. Domain filtering exists only
+in the agentic tier, where the LLM picks a `search_<domain>` tool.
 
-  - None / 'all' / 'both'  -> global (no filter)
-  - 'none'                 -> retrieve nothing (out-of-scope; generator refuses)
-  - '<domain>'             -> filter to that domain
+The only way this stage retrieves nothing is an 'invalid' intent — the gate
+already decided no retrieval is needed, and the generator answers directly.
 
 `k` is the CANDIDATE POOL size (into rerank); the reranker trims to the final
 top_n. `strategy` (dense|hybrid) is passed through to the unified store.
@@ -14,12 +14,8 @@ top_n. `strategy` (dense|hybrid) is passed through to the unified store.
 
 from __future__ import annotations
 
-from typing import Optional
-
 from ragtrial.pipeline.base import RagState, Stage
 from ragtrial.vectorstore.store import unified_store
-
-_GLOBAL_ROUTES = {None, "all", "both"}
 
 
 class RetrieveStage(Stage):
@@ -31,23 +27,15 @@ class RetrieveStage(Stage):
         self.k = k
         """Candidate pool size retrieved (before rerank trims to top_n)."""
 
-    def _domain(self, route: Optional[str]) -> Optional[str]:
-        return None if route in _GLOBAL_ROUTES else route
-
     def run(self, state: RagState) -> RagState:
         if state.intent == "invalid":
-            state.documents = []
-            return state
-        route = state.route
-        if route == "none":
             state.documents = []
             return state
         # Capture per-stage sub-timings (embed/search/bm25/fuse) alongside the
         # coarse `retrieve` stage timing the Pipeline records around this call.
         sub: dict = {}
         state.documents = unified_store.search(
-            state.query, k=self.k, strategy=self.strategy,
-            domain=self._domain(route), timings=sub,
+            state.query, k=self.k, strategy=self.strategy, timings=sub,
         )
         for key, val in sub.items():
             state.timings[key] = state.timings.get(key, 0.0) + val

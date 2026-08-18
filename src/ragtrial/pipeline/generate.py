@@ -1,10 +1,12 @@
 """Generation stage — the single LLM call at the end of the enhanced pipeline.
 
-Prompt is chosen from the route + retrieved docs (mirrors the old agentic
-generate node, now de-hardcoded via the registry):
-  - no docs / route 'none' -> PROMPT_NONE (polite out-of-scope)
-  - single capability route -> PROMPT_SINGLE
-  - fan-out / 'both'        -> PROMPT_COMBINED (with registry-derived citation rules)
+Prompt is chosen from the intent decision + retrieved docs:
+  - intent 'invalid' -> PROMPT_INVALID (chit-chat/identity vs out-of-scope)
+  - no docs          -> PROMPT_NONE (polite "not found")
+  - docs found       -> PROMPT_COMBINED (with registry-derived citation rules)
+
+Retrieval is global, so the context is always a fan-out across domains — there
+is no single-domain prompt variant.
 """
 
 from __future__ import annotations
@@ -20,7 +22,6 @@ from ragtrial.rag.prompts import (
     PROMPT_COMBINED,
     PROMPT_INVALID,
     PROMPT_NONE,
-    PROMPT_SINGLE,
     build_citation_rules,
     build_sources_brief,
     service_categories_block,
@@ -41,7 +42,6 @@ class GenerateStage(Stage):
     def run(self, state: RagState) -> RagState:
         q = state.question
         docs = state.documents or []
-        route = state.route
 
         if state.intent == "invalid":
             # Intent gate skipped retrieval — one smart prompt handles chit-chat
@@ -49,15 +49,9 @@ class GenerateStage(Stage):
             prompt = PROMPT_INVALID.format(
                 categories=service_categories_block(), question=q
             )
-        elif not docs or route == "none":
+        elif not docs:
             prompt = PROMPT_NONE.format(question=q)
-        elif route in self.caps:
-            prompt = PROMPT_SINGLE.format(
-                source_description=self.caps[route].description,
-                context=format_context(docs, CAPABILITIES),
-                question=q,
-            )
-        else:  # fan-out / both
+        else:  # global fan-out across domains
             prompt = PROMPT_COMBINED.format(
                 sources_brief=build_sources_brief(self.caps),
                 citation_rules=build_citation_rules(self.caps),
