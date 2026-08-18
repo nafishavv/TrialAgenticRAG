@@ -1,0 +1,2510 @@
+{
+  "_meta": {
+    "version": "2.0",
+    "description": "Final manually-verified test set untuk evaluasi retrieval RAG (naive/enhanced/agentic) chatbot layanan publik Kab. Batang. 115 soal: 25 per domain (OPD, Dukcapil, Perizinan, Sosial) + 15 cross-domain. Semua soal sudah diverifikasi manual ke chunk sumber. query_type: lexical | semantic | complex, ditentukan empiris lewat rank BM25 vs embedding pada k=5 (k yang dipakai eval). ID berurutan per domain (mis. OP001-OP025, CR001-CR015).",
+    "gold_id_format": {
+      "dukcapil": "page:<page_start>",
+      "opd": "nomor:<nomor>",
+      "perizinan": "id:<perizinan_id>",
+      "sosial": "id:<id>#pasal:<n> | #penjelasan:<n> | #preamble[.part] | #penjelasan-preamble | #narr:<k>"
+    },
+    "fields": {
+      "id": "string, unik, berurutan per domain",
+      "question": "pertanyaan user (Bahasa Indonesia)",
+      "expected_route": "sosial | dukcapil | opd | perizinan | both",
+      "query_type": "lexical | semantic | complex",
+      "chunk_scope": "single | multi | cross_store",
+      "gold_chunks": "dict per source, list gold ID TANPA prefix domain",
+      "expected_answer": "canonical jawaban ringkas",
+      "expected_facts": "list fakta atomik untuk LLM-judge fact_recall"
+    }
+  },
+  "questions": [
+    {
+      "id": "OP001",
+      "question": "Berapa nomor telepon Inspektorat Kabupaten Batang?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:3"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Inspektorat Kabupaten Batang adalah (0285) 391980.",
+      "expected_facts": [
+        "Nomor telepon Inspektorat adalah (0285) 391980."
+      ]
+    },
+    {
+      "id": "OP002",
+      "question": "Bagaimana cara menghubungi kantor yang mendukung fungsi legislatif di Kabupaten Batang?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:2"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor yang mendukung fungsi legislatif adalah Sekretariat DPRD Kabupaten Batang, beralamat di Jl. Jenderal Sudirman No. 262 Batang. Bisa dihubungi lewat email sdprd@batangkab.go.id atau telepon (0285) 391146.",
+      "expected_facts": [
+        "Kantor yang mendukung fungsi legislatif di Kabupaten Batang adalah Sekretariat DPRD.",
+        "Alamat Sekretariat DPRD adalah Jl. Jenderal Sudirman No. 262 Batang.",
+        "Email Sekretariat DPRD adalah sdprd@batangkab.go.id.",
+        "Nomor telepon Sekretariat DPRD adalah (0285) 391146."
+      ]
+    },
+    {
+      "id": "OP003",
+      "question": "Saya mau telepon Kecamatan Pecalungan, nomor teleponnya berapa ya?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:36"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Kecamatan Pecalungan tidak tercantum dalam data yang tersedia. Anda dapat menghubungi Kecamatan Pecalungan melalui email kec_pecalungan@batangkab.go.id.",
+      "expected_facts": [
+        "Nomor telepon Kecamatan Pecalungan tidak tersedia atau tidak tercantum dalam data.",
+        "Kecamatan Pecalungan dapat dihubungi melalui email kec_pecalungan@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP004",
+      "question": "Berapa nomor telepon Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Batang?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:16"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Batang adalah (0285) 391014.",
+      "expected_facts": [
+        "Nomor telepon Dinas Pekerjaan Umum dan Penataan Ruang adalah (0285) 391014."
+      ]
+    },
+    {
+      "id": "OP005",
+      "question": "Kalau saya mau menghubungi Badan Kepegawaian Daerah Kabupaten Batang lewat surat elektronik, alamat mana yang harus saya pakai?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:6"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Alamat email yang bisa dipakai untuk menghubungi Badan Kepegawaian Daerah Kabupaten Batang adalah bkd@batangkab.go.id.",
+      "expected_facts": [
+        "Email Badan Kepegawaian Daerah adalah bkd@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP006",
+      "question": "Jika saya ingin menghubungi kantor pemerintahan tingkat kelurahan di Karangasem Selatan untuk keperluan administratif, informasi kontak apa yang bisa saya gunakan?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25.h"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor Kelurahan Karangasem Selatan beralamat di Jl. Lapangan Sekalong No. 1 Batang. Kontaknya adalah email kel_karangasemselatan@batangkab.go.id dan telepon (0285) 7929677.",
+      "expected_facts": [
+        "Kantor pemerintahan tingkat kelurahan di Karangasem Selatan adalah Kelurahan Karangasem Selatan.",
+        "Alamat Kelurahan Karangasem Selatan adalah Jl. Lapangan Sekalong No. 1 Batang.",
+        "Email Kelurahan Karangasem Selatan adalah kel_karangasemselatan@batangkab.go.id.",
+        "Nomor telepon Kelurahan Karangasem Selatan adalah (0285) 7929677."
+      ]
+    },
+    {
+      "id": "OP007",
+      "question": "Berapa nomor telepon Dinas DP3AP2KB?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:9"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Dinas Pemberdayaan Perempuan, Perlindungan Anak, Pengendalian Penduduk dan Keluarga Berencana (DP3AP2KB) adalah (0285) 391271.",
+      "expected_facts": [
+        "DP3AP2KB adalah singkatan dari Dinas Pemberdayaan Perempuan, Perlindungan Anak, Pengendalian Penduduk dan Keluarga Berencana.",
+        "Nomor telepon Dinas Pemberdayaan Perempuan, Perlindungan Anak, Pengendalian Penduduk dan Keluarga Berencana adalah (0285) 391271."
+      ]
+    },
+    {
+      "id": "OP008",
+      "question": "Kalau saya mau menghubungi Bagian Pengendalian Pembangunan di Kabupaten Batang lewat surat elektronik, alamat mana yang sebaiknya saya pakai?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:1.d"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Alamat email Bagian Pengendalian Pembangunan adalah bag_dalbang@batangkab.go.id.",
+      "expected_facts": [
+        "Email Bagian Pengendalian Pembangunan adalah bag_dalbang@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP009",
+      "question": "Berapa nomor telepon Kelurahan Sambong?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25.i"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Kelurahan Sambong adalah (0285) 392126.",
+      "expected_facts": [
+        "Nomor telepon Kelurahan Sambong adalah (0285) 392126."
+      ]
+    },
+    {
+      "id": "OP010",
+      "question": "Saya ada keperluan soal layanan digital Pemkab Batang. Saya harus menghubungi siapa ya?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:21"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk urusan layanan digital, instansi yang menangani adalah Dinas Komunikasi dan Informatika (Diskominfo) Kabupaten Batang, beralamat di Jl. RA Kartini No. 1 Batang. Kontaknya adalah email diskominfo@batangkab.go.id dan telepon (0285) 392219.",
+      "expected_facts": [
+        "Instansi yang menangani layanan digital adalah Dinas Komunikasi dan Informatika (Diskominfo).",
+        "Alamat Dinas Komunikasi dan Informatika adalah Jl. RA Kartini No. 1 Batang.",
+        "Email Dinas Komunikasi dan Informatika adalah diskominfo@batangkab.go.id.",
+        "Nomor telepon Dinas Komunikasi dan Informatika adalah (0285) 392219."
+      ]
+    },
+    {
+      "id": "OP011",
+      "question": "Di mana kantor pusat Satuan Polisi Pamong Praja Kabupaten Batang, dan bagaimana cara menghubunginya lewat surat elektronik?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:8"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor Satuan Polisi Pamong Praja (Satpol PP) Kabupaten Batang beralamat di Jl. Veteran No. 10 Batang, dan bisa dihubungi lewat email satpolpp@batangkab.go.id.",
+      "expected_facts": [
+        "Alamat Satpol PP adalah Jl. Veteran No. 10 Batang.",
+        "Email Satpol PP adalah satpolpp@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP012",
+      "question": "Di mana letak kantor Kelurahan Kasepuhan dan bagaimana cara menghubunginya lewat surat elektronik?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25.c"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor Kelurahan Kasepuhan beralamat di Jl. Lapangan Kanoman No. 7 Batang, dan bisa dihubungi lewat email kel_kasepuhan@batangkab.go.id.",
+      "expected_facts": [
+        "Alamat Kelurahan Kasepuhan adalah Jl. Lapangan Kanoman No. 7 Batang.",
+        "Email Kelurahan Kasepuhan adalah kel_kasepuhan@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP013",
+      "question": "Bagaimana cara menghubungi Kantor Kesbangpol Kabupaten Batang?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:40"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor Kesatuan Bangsa dan Politik (Kesbangpol) Kabupaten Batang beralamat di Jl. RA Kartini No. 1 Batang. Bisa dihubungi lewat telepon (0285) 392344 atau email kesbangpol@batangkab.go.id.",
+      "expected_facts": [
+        "Kesbangpol adalah singkatan dari Kantor Kesatuan Bangsa dan Politik.",
+        "Alamat Kantor Kesatuan Bangsa dan Politik adalah Jl. RA Kartini No. 1 Batang.",
+        "Nomor telepon Kantor Kesatuan Bangsa dan Politik adalah (0285) 392344.",
+        "Email Kantor Kesatuan Bangsa dan Politik adalah kesbangpol@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP014",
+      "question": "Bagaimana cara menghubungi Bagian Hubungan Masyarakat Pemerintah Kabupaten Batang lewat surat elektronik atau telepon?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:1.h"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Bagian Hubungan Masyarakat bisa dihubungi lewat email bag_humas@batangkab.go.id atau telepon (0285) 391304 dan (0285) 391571.",
+      "expected_facts": [
+        "Email Bagian Hubungan Masyarakat adalah bag_humas@batangkab.go.id.",
+        "Nomor telepon Bagian Hubungan Masyarakat adalah (0285) 391304 dan (0285) 391571."
+      ]
+    },
+    {
+      "id": "OP015",
+      "question": "Saya mau kirim surat elektronik ke Sekretariat Daerah Kabupaten Batang. Alamat emailnya apa ya?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:1"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Alamat email Sekretariat Daerah Kabupaten Batang tidak tercantum dalam data yang tersedia. Anda dapat menghubungi Sekretariat Daerah melalui nomor telepon (0285) 391571 atau datang ke Jl. RA Kartini No. 1 Batang.",
+      "expected_facts": [
+        "Alamat email Sekretariat Daerah tidak tersedia atau tidak tercantum dalam data.",
+        "Nomor telepon Sekretariat Daerah adalah (0285) 391571.",
+        "Alamat Sekretariat Daerah adalah Jl. RA Kartini No. 1 Batang."
+      ]
+    },
+    {
+      "id": "OP016",
+      "question": "Di mana kantor Badan Penanggulangan Bencana Daerah Kabupaten Batang dan berapa nomor teleponnya?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:41"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor Badan Penanggulangan Bencana Daerah Kabupaten Batang beralamat di Jl. Gajah Mada Batang No. 74 Batang, dengan nomor telepon (0285) 391011.",
+      "expected_facts": [
+        "Alamat Badan Penanggulangan Bencana Daerah adalah Jl. Gajah Mada Batang No. 74 Batang.",
+        "Nomor telepon Badan Penanggulangan Bencana Daerah adalah (0285) 391011."
+      ]
+    },
+    {
+      "id": "OP017",
+      "question": "Berapa nomor telepon Kelurahan Proyonanggan Selatan?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25.d"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Kelurahan Proyonanggan Selatan adalah (0285) 4496078.",
+      "expected_facts": [
+        "Nomor telepon Kelurahan Proyonanggan Selatan adalah (0285) 4496078."
+      ]
+    },
+    {
+      "id": "OP018",
+      "question": "Bagaimana cara menghubungi kantor Kecamatan Tulis lewat surat elektronik atau telepon?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:38"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kantor Kecamatan Tulis bisa dihubungi lewat email kec_tulis@batangkab.go.id atau telepon (0285) 391608.",
+      "expected_facts": [
+        "Email Kecamatan Tulis adalah kec_tulis@batangkab.go.id.",
+        "Nomor telepon Kecamatan Tulis adalah (0285) 391608."
+      ]
+    },
+    {
+      "id": "OP019",
+      "question": "Di mana alamat Dinas Pendidikan dan Kebudayaan Kabupaten Batang?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:7"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Dinas Pendidikan dan Kebudayaan Kabupaten Batang beralamat di Jl. Slamet Riyadi No. 29 Batang.",
+      "expected_facts": [
+        "Alamat Dinas Pendidikan dan Kebudayaan adalah Jl. Slamet Riyadi No. 29 Batang."
+      ]
+    },
+    {
+      "id": "OP020",
+      "question": "Berapa nomor telepon Kecamatan Batang?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Nomor telepon Kecamatan Batang adalah (0285) 391049.",
+      "expected_facts": [
+        "Nomor telepon Kecamatan Batang adalah (0285) 391049."
+      ]
+    },
+    {
+      "id": "OP021",
+      "question": "Apa alamat email Dinas Kelautan, Perikanan dan Peternakan Kabupaten Batang?",
+      "expected_route": "opd",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:22"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Alamat email Dinas Kelautan, Perikanan dan Peternakan Kabupaten Batang adalah dislutkannak@batangkab.go.id.",
+      "expected_facts": [
+        "Email Dinas Kelautan, Perikanan dan Peternakan adalah dislutkannak@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP022",
+      "question": "Saya sedang mencari kantor Sekda yang berkaitan dengan urusan hukum. Kantornya di mana dan bagaimana cara menghubunginya?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:1.c"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Bagian Hukum, yang merupakan bagian dari Sekretariat Daerah, beralamat di Jl. RA Kartini No. 1 Batang. Bisa dihubungi lewat telepon (0285) 391810 atau (0285) 391571, dan email bag_hukum@batangkab.go.id.",
+      "expected_facts": [
+        "Kantor Sekda yang menangani urusan hukum adalah Bagian Hukum, bagian dari Sekretariat Daerah.",
+        "Alamat Bagian Hukum adalah Jl. RA Kartini No. 1 Batang.",
+        "Nomor telepon Bagian Hukum adalah (0285) 391810 dan (0285) 391571.",
+        "Email Bagian Hukum adalah bag_hukum@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP023",
+      "question": "Saya mencari rumah sakit daerah di sini. Di mana ya alamatnya? Apakah ada kontak yang bisa dihubungi?",
+      "expected_route": "opd",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:42",
+          "nomor:43"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Di Kabupaten Batang ada dua RSUD. RSUD Batang beralamat di Jl. Dr. Soetomo No. 42, dengan telepon (0285) 391033 dan email rsudbatang@batangkab.go.id. RSUD Limpung beralamat di Jl. Dr. Sutomo No. 17 Limpung, dengan telepon (0285) 4468362 dan email rsudlimpung@batangkab.go.id.",
+      "expected_facts": [
+        "RSUD Batang beralamat di Jl. Dr. Soetomo No. 42.",
+        "Kontak RSUD Batang adalah telepon (0285) 391033 dan email rsudbatang@batangkab.go.id.",
+        "RSUD Limpung beralamat di Jl. Dr. Sutomo No. 17 Limpung.",
+        "Kontak RSUD Limpung adalah telepon (0285) 4468362 dan email rsudlimpung@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "OP024",
+      "question": "Ada berapa kecamatan ya di Batang ini?",
+      "expected_route": "opd",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:25",
+          "nomor:26",
+          "nomor:27",
+          "nomor:28",
+          "nomor:29",
+          "nomor:30",
+          "nomor:31",
+          "nomor:32",
+          "nomor:33",
+          "nomor:34",
+          "nomor:35",
+          "nomor:36",
+          "nomor:37",
+          "nomor:38",
+          "nomor:39"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kabupaten Batang memiliki 15 kecamatan: Batang, Warungasem, Wonotunggal, Bandar, Blado, Reban, Bawang, Tersono, Gringsing, Limpung, Banyuputih, Pecalungan, Subah, Tulis, dan Kandeman.",
+      "expected_facts": [
+        "Kabupaten Batang memiliki 15 kecamatan.",
+        "Nama-nama kecamatannya adalah Batang, Warungasem, Wonotunggal, Bandar, Blado, Reban, Bawang, Tersono, Gringsing, Limpung, Banyuputih, Pecalungan, Subah, Tulis, dan Kandeman."
+      ]
+    },
+    {
+      "id": "OP025",
+      "question": "Saya ada urusan soal keuangan daerah, harus ke instansi mana ya? Alamat kantornya di mana?",
+      "expected_route": "opd",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:5"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk urusan keuangan daerah, instansi yang menangani adalah Badan Pengelolaan Keuangan, Pendapatan dan Aset Daerah (BPKPAD), yang beralamat di Jl. Urip Sumoharjo No. 18 Batang. Kontaknya adalah telepon (0285) 391430 dan email bpkpad@batangkab.go.id.",
+      "expected_facts": [
+        "Instansi yang menangani urusan keuangan daerah adalah Badan Pengelolaan Keuangan, Pendapatan dan Aset Daerah (BPKPAD).",
+        "Alamat BPKPAD adalah Jl. Urip Sumoharjo No. 18 Batang.",
+        "Kontak BPKPAD adalah telepon (0285) 391430 dan email bpkpad@batangkab.go.id."
+      ]
+    },
+    {
+      "id": "DK001",
+      "question": "Secara umum, bagaimana tahapan pelayanan pendaftaran penduduk dan pencatatan sipil dilakukan dari pelaporan hingga dokumen diterbitkan?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:30"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Tahapannya ada empat dan berurutan: (1) pelaporan, yaitu pemohon mengisi formulir pelaporan dan melampirkan persyaratan; (2) verifikasi dan validasi data oleh petugas; (3) perekaman data ke dalam database kependudukan oleh petugas; dan (4) pencatatan dan/atau penerbitan dokumen.",
+      "expected_facts": [
+        "Tahap pertama adalah pelaporan, yaitu pemohon mengisi formulir pelaporan dan melampirkan persyaratan.",
+        "Tahap kedua adalah verifikasi dan validasi data oleh petugas.",
+        "Tahap ketiga adalah perekaman data dalam database kependudukan oleh petugas.",
+        "Tahap keempat adalah pencatatan dan/atau penerbitan dokumen."
+      ]
+    },
+    {
+      "id": "DK002",
+      "question": "Kalau NIK yang tercantum di KTP berbeda dengan NIK pada dokumen lainnya, NIK mana yang harus dipakai?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:34"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Apabila NIK pada KTP-el berbeda dengan NIK yang tercantum pada dokumen kependudukan dan/atau dokumen identitas lainnya yang diterbitkan oleh kementerian/lembaga atau badan hukum Indonesia, maka NIK yang berlaku adalah NIK yang tercantum pada KTP-el. Ketentuan ini diatur dalam Pasal 33 PP Nomor 40 Tahun 2019.",
+      "expected_facts": [
+        "NIK yang berlaku adalah NIK yang tercantum pada KTP-el.",
+        "Ketentuan ini berlaku apabila NIK pada KTP-el berbeda dengan NIK pada dokumen kependudukan dan/atau dokumen identitas lainnya yang diterbitkan oleh kementerian/lembaga atau badan hukum Indonesia.",
+        "Ketentuan ini diatur dalam Pasal 33 Peraturan Pemerintah Nomor 40 Tahun 2019."
+      ]
+    },
+    {
+      "id": "DK003",
+      "question": "Kalau data penyandang disabilitas sudah tercatat dalam database SIAK, gimana cara mendapatkan biodata penduduk yang memuat informasi mengenai status dan ragam disabilitas?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:47"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Apabila datanya sudah masuk dalam database, biodata penduduk dapat dicetak oleh Dinas Kependudukan dan Pencatatan Sipil. Informasi status dan ragam disabilitas itu berasal dari Formulir Biodata Keluarga (F-1.01) yang diisi saat pengurusan NIK, yaitu pada nomor 28 (status penyandang disabilitas atau bukan) dan nomor 29 (ragam disabilitasnya).",
+      "expected_facts": [
+        "Apabila sudah masuk dalam database, biodata dapat dicetak oleh Dinas Kependudukan dan Pencatatan Sipil.",
+        "Data status disabilitas berasal dari Formulir Biodata Keluarga (F-1.01) nomor 28, yang menanyakan apakah sebagai penyandang disabilitas atau bukan.",
+        "Ragam penyandang disabilitas ditanyakan pada nomor 29 formulir tersebut."
+      ]
+    },
+    {
+      "id": "DK004",
+      "question": "Apa saja syarat atau kondisi yang memungkinkan penerbitan kembali kutipan akta pencatatan sipil?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:266"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Berdasarkan Pasal 92 Permendagri Nomor 108 Tahun 2019, penerbitan kembali kutipan akta pencatatan sipil dapat dilakukan karena tiga kondisi: (a) rusak, dengan melampirkan kutipan akta yang rusak; (b) hilang, dengan melampirkan surat keterangan hilang dari kepolisian; dan (c) berada dalam penguasaan salah satu pihak yang bersengketa, dengan melampirkan surat pernyataan tanggung jawab mutlak. Penerbitan kembali ini juga dapat dilakukan terhadap subjek yang telah meninggal dunia, sepanjang register aktanya tercatat pada Disdukcapil tempat akta diterbitkan.",
+      "expected_facts": [
+        "Penerbitan kembali dapat dilakukan karena kutipan akta rusak, dengan melampirkan kutipan akta pencatatan sipil yang rusak.",
+        "Penerbitan kembali dapat dilakukan karena hilang, dengan melampirkan surat keterangan hilang dari kepolisian.",
+        "Penerbitan kembali dapat dilakukan karena akta berada dalam penguasaan salah satu pihak yang bersengketa, dengan melampirkan surat pernyataan tanggung jawab mutlak.",
+        "Penerbitan kembali juga dapat dilakukan terhadap subjek/orang yang telah meninggal dunia, sepanjang register akta tercatat pada Disdukcapil tempat akta diterbitkan."
+      ]
+    },
+    {
+      "id": "DK005",
+      "question": "Apabila seseorang telah menetap di lokasi baru namun belum memiliki surat keterangan pindah dari tempat tinggal sebelumnya karena kendala jarak dan biaya, bagaimana prosedur untuk mengurus surat keterangan pindah tersebut?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:69"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Jika penduduk sudah tinggal di daerah tujuan dan kesulitan mengurus SKPWNI dari daerah asal karena jarak atau biaya, Disdukcapil daerah tujuan dapat membantu pengurusannya. Bantuan ini dilakukan dengan berkomunikasi melalui surat elektronik atau media lainnya dengan Disdukcapil daerah asal untuk mendapatkan SKP, sesuai Pasal 31 Permendagri 108 Tahun 2019.",
+      "expected_facts": [
+        "Pengurusan SKPWNI dapat dibantu oleh Disdukcapil daerah tujuan jika penduduk secara faktual telah tinggal di daerah tujuan dan belum memiliki SKP dari daerah asal karena kendala jarak dan biaya.",
+        "Disdukcapil daerah tujuan membantu komunikasi pengurusan SKP melalui surat elektronik atau media elektronik lainnya ke Disdukcapil daerah asal.",
+        "Prosedur ini sesuai amanat Pasal 31 Peraturan Menteri Dalam Negeri Nomor 108 Tahun 2019."
+      ]
+    },
+    {
+      "id": "DK006",
+      "question": "Orang asing pemegang izin tinggal terbatas yang ingin pindah alamat antar-kecamatan dalam Kabupaten Batang, dokumen apa saja yang perlu dilampirkan?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:61"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Dokumen yang perlu dilampirkan adalah fotokopi surat keterangan tempat tinggal, fotokopi Dokumen Perjalanan, dan fotokopi kartu izin tinggal terbatas.",
+      "expected_facts": [
+        "Fotokopi surat keterangan tempat tinggal",
+        "Fotokopi Dokumen Perjalanan",
+        "Fotokopi kartu izin tinggal terbatas"
+      ]
+    },
+    {
+      "id": "DK007",
+      "question": "Saya sudah pindah ke kelurahan lain di Kabupaten Batang dan sudah tinggal di alamat baru, tetapi belum mengurus SKPWNI dari daerah asal. Bagaimana proses pengurusan perpindahan saya dan dokumen kependudukan apa yang akan diterbitkan?",
+      "expected_route": "dukcapil",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:51",
+          "page:69"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Meskipun Anda sudah terlanjur tinggal di alamat baru dan belum mengurus surat keterangan pindah, Disdukcapil daerah tujuan dapat membantu pengurusannya dengan berkomunikasi melalui surat elektronik atau media elektronik lainnya ke Disdukcapil daerah asal, sesuai Pasal 31 Permendagri Nomor 108 Tahun 2019. Untuk perpindahan antar kelurahan/kecamatan dalam satu kabupaten, syaratnya fotokopi Kartu Keluarga dan mengisi Formulir Pendaftaran Perpindahan Penduduk (F-1.03). Dinas kemudian menerbitkan Kartu Keluarga dengan alamat baru, serta menarik KTP-el dan/atau KIA lama untuk diganti dengan yang beralamat baru.",
+      "expected_facts": [
+        "Jika penduduk secara faktual telah tinggal di daerah tujuan dan belum mengurus surat keterangan pindah, Disdukcapil daerah tujuan membantu komunikasi pengurusan SKP ke Disdukcapil daerah asal melalui surat elektronik atau media elektronik lainnya.",
+        "Bantuan tersebut sesuai amanat Pasal 31 Peraturan Menteri Dalam Negeri Nomor 108 Tahun 2019.",
+        "Syarat pengurusan pindah penduduk adalah fotokopi Kartu Keluarga dan mengisi Formulir Pendaftaran Perpindahan Penduduk (F-1.03).",
+        "Dinas menerbitkan Kartu Keluarga dengan alamat baru, serta menarik dan mengganti KTP-el dan/atau KIA dengan alamat baru."
+      ]
+    },
+    {
+      "id": "DK008",
+      "question": "Saya WNI dan telah bercerai di luar negeri. Setelah kembali ke Indonesia, saya belum melaporkan perceraian tersebut kepada Perwakilan RI. Bagaimana prosedur pelaporannya di Indonesia?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:176"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Perceraian di luar negeri wajib dilaporkan kepada Disdukcapil Kabupaten/Kota atau UPT Disdukcapil di tempat Anda berdomisili, paling lambat 30 hari sejak kembali ke Indonesia. Karena perceraian tersebut belum dilaporkan kepada Perwakilan RI, penerbitan surat keterangan pelaporan tetap dapat dilakukan di Disdukcapil Kabupaten/Kota, dengan persyaratan berupa bukti pencatatan peristiwa penting yang diterjemahkan oleh penerjemah tersumpah, atau surat pernyataan tanggung jawab mutlak.",
+      "expected_facts": [
+        "Perceraian di luar negeri dilaporkan kepada Disdukcapil Kabupaten/Kota atau UPT Disdukcapil Kabupaten/Kota di tempat penduduk berdomisili paling lambat 30 (tiga puluh) hari sejak yang bersangkutan kembali ke Indonesia.",
+        "Dalam hal peristiwa penting tersebut belum dilaporkan kepada Perwakilan RI, penerbitan surat keterangan pelaporan dapat dilakukan pada Disdukcapil Kabupaten/Kota atau UPT Disdukcapil Kabupaten/Kota.",
+        "Persyaratannya berupa bukti pencatatan peristiwa penting yang diterjemahkan oleh penerjemah tersumpah atau surat pernyataan tanggung jawab mutlak."
+      ]
+    },
+    {
+      "id": "DK009",
+      "question": "Saya WNI dan menikah dengan WNA yang berbeda agama di luar negeri. Setelah kembali ke Indonesia, apa yang perlu dilakukan agar perkawinan tersebut dapat dilaporkan kepada Disdukcapil, dan bagaimana prosedurnya berbeda dengan pencatatan perkawinan beda agama di Indonesia?",
+      "expected_route": "dukcapil",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:119",
+          "page:129"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Perkawinan WNI dengan orang asing di luar negeri dicatatkan pada instansi yang berwenang di negara setempat dan dilaporkan kepada Perwakilan RI di luar negeri; bila negara setempat tidak menyelenggarakan pencatatan perkawinan bagi orang asing, pencatatannya dilakukan pada Perwakilan RI. Setelah kembali ke Indonesia, hasil pencatatan itu dilaporkan kepada Disdukcapil di tempat tinggal, dan Disdukcapil menerbitkan surat keterangan pelaporan. Prosedurnya berbeda dengan perkawinan beda agama yang berlangsung di Indonesia, karena yang di dalam negeri baru dapat dicatatkan apabila ada penetapan pengadilan — Disdukcapil hanya mencatatkan apa yang sudah ditetapkan pengadilan, bukan mengesahkan perkawinannya.",
+      "expected_facts": [
+        "Perkawinan WNI dengan Orang Asing di luar negeri dicatatkan pada instansi yang berwenang di negara setempat dan dilaporkan kepada Perwakilan Republik Indonesia di luar negeri.",
+        "Apabila negara setempat tidak menyelenggarakan pencatatan perkawinan bagi Orang Asing, pencatatan dilakukan pada Perwakilan Republik Indonesia di luar negeri.",
+        "Hasil pencatatan tersebut dilaporkan kepada instansi pelaksana di tempat tinggalnya setelah yang bersangkutan kembali ke Indonesia, dan diterbitkan surat keterangan pelaporan.",
+        "Pencatatan perkawinan beda agama di Indonesia tidak dapat dilakukan kecuali ada penetapan pengadilan, dan Disdukcapil hanya mencatatkan apa yang sudah menjadi penetapan pengadilan, bukan mengesahkan perkawinan."
+      ]
+    },
+    {
+      "id": "DK010",
+      "question": "Kalau kepala keluarga pindah sendiri tanpa membawa anggota keluarga lainnya, apakah nomor Kartu Keluarga anggota keluarga yang ditinggalkan ikut berubah?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:53"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Ya, berubah. Dalam hal kepala keluarga pindah namun anggota keluarga tidak ikut pindah, Dinas menerbitkan Kartu Keluarga dengan nomor KK baru bagi anggota keluarga yang ditinggalkan. Ini berbeda dengan kondisi sebaliknya: apabila kepala keluarga tidak pindah, KK diterbitkan dengan nomor KK tetap.",
+      "expected_facts": [
+        "Dalam hal kepala keluarga pindah namun anggota keluarga tidak pindah, Dinas menerbitkan Kartu Keluarga dengan nomor KK baru.",
+        "Apabila kepala keluarga tidak pindah, Dinas menerbitkan Kartu Keluarga dengan nomor KK tetap."
+      ]
+    },
+    {
+      "id": "DK011",
+      "question": "Apakah saya bisa mencetak KTP di Disdukcapil kabupaten lain meskipun alamat pada KK saya masih berada di daerah asal?",
+      "expected_route": "dukcapil",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:42"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Bisa, tetapi terbatas pada kondisi tertentu. Berdasarkan Permendagri Nomor 8 Tahun 2016, penerbitan KTP-el bagi penduduk di luar domisili dapat dilakukan apabila yang bersangkutan telah melakukan perekaman data, KTP-el hilang di luar domisili, atau KTP-el rusak di luar domisili. Ketentuan ini hanya berlaku sepanjang tidak terdapat perubahan elemen data kependudukan.",
+      "expected_facts": [
+        "Penerbitan KTP-el bagi penduduk di luar domisili dapat dilakukan dengan ketentuan telah melakukan perekaman data.",
+        "Penerbitan KTP-el di luar domisili dapat dilakukan dalam hal KTP-el hilang di luar domisili.",
+        "Penerbitan KTP-el di luar domisili dapat dilakukan dalam hal KTP-el rusak di luar domisili.",
+        "Hal tersebut hanya dapat dilakukan apabila tidak terdapat perubahan elemen data kependudukan."
+      ]
+    },
+    {
+      "id": "DK012",
+      "question": "Apa saja dokumen yang perlu disiapkan untuk mencatatkan perkawinan bagi pasangan non-Muslim di Indonesia?",
+      "expected_route": "dukcapil",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:115"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Persyaratan dasarnya adalah surat keterangan telah terjadinya perkawinan dari pemuka agama atau Penghayat Kepercayaan Terhadap Tuhan Yang Maha Esa, pas foto berwarna suami dan istri, Kartu Keluarga, dan KTP-el. Selain itu ada persyaratan tambahan sesuai kondisi, misalnya akta kematian pasangan bagi janda/duda cerai mati, akta perceraian bagi janda/duda cerai hidup, salinan penetapan pengadilan tentang dispensasi kawin bagi yang menikah sebelum usia 19 tahun, atau salinan penetapan pengadilan bagi perkawinan antar umat berbeda agama.",
+      "expected_facts": [
+        "Persyaratannya meliputi surat keterangan telah terjadinya perkawinan dari pemuka agama atau Penghayat Kepercayaan Terhadap Tuhan Yang Maha Esa.",
+        "Persyaratannya meliputi pas foto berwarna suami dan istri.",
+        "Persyaratannya meliputi Kartu Keluarga (KK) dan KTP-el.",
+        "Bagi janda atau duda karena cerai mati melampirkan akta kematian pasangannya, dan bagi janda atau duda karena cerai hidup melampirkan akta perceraian."
+      ]
+    },
+    {
+      "id": "DK013",
+      "question": "Apabila sebuah pernikahan dibatalkan secara hukum, bagaimana kedudukan status anak-anak yang lahir dari ikatan tersebut menurut peraturan perundang-undangan?",
+      "expected_route": "dukcapil",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:165"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Menurut Undang-Undang Nomor 1 Tahun 1974, keputusan pengadilan mengenai pembatalan perkawinan tidak berlaku surut terhadap anak-anak yang dilahirkan dari perkawinan tersebut. Pembatalan akta pencatatan sipil juga dilakukan berdasarkan putusan pengadilan yang telah mempunyai kekuatan hukum tetap, sesuai Undang-Undang Nomor 23 Tahun 2006.",
+      "expected_facts": [
+        "Status hukum anak bagi yang perkawinannya dibatalkan tidak berlaku surut terhadap anak-anak yang dilahirkan dari perkawinan tersebut.",
+        "Pasal 28 ayat (2) huruf a Undang-Undang Nomor 1 Tahun 1974 mengatur bahwa keputusan pengadilan mengenai pembatalan perkawinan tidak berlaku surut terhadap anak-anak yang dilahirkan dari perkawinan tersebut.",
+        "Pembatalan akta pencatatan sipil dilakukan berdasarkan putusan pengadilan yang telah mempunyai kekuatan hukum tetap, sesuai Pasal 72 Undang-Undang Nomor 23 Tahun 2006."
+      ]
+    },
+    {
+      "id": "DK014",
+      "question": "Jika salah satu orang tua anak telah wafat, dan pernikahan orang tua tersebut telah disahkan oleh pengadilan, dokumen apa saja yang diperlukan untuk pendaftaran pengesahan anak?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:217"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk pendaftaran pengesahan anak dalam kondisi tersebut, diperlukan kutipan akta kelahiran, fotokopi salinan penetapan pengadilan, fotokopi kutipan akta perkawinan, fotokopi Kartu Keluarga, fotokopi kutipan akta kematian orang tua, serta SPTJM kebenaran data sebagai anak sah dengan dua orang saksi.",
+      "expected_facts": [
+        "Diperlukan kutipan akta kelahiran.",
+        "Diperlukan fotokopi salinan penetapan pengadilan.",
+        "Diperlukan fotokopi kutipan akta perkawinan.",
+        "Diperlukan fotokopi Kartu Keluarga.",
+        "Diperlukan fotokopi kutipan akta kematian orang tua.",
+        "Diperlukan SPTJM kebenaran data sebagai anak sah dengan 2 (dua) orang saksi."
+      ]
+    },
+    {
+      "id": "DK015",
+      "question": "Bagaimana pencatatan pengangkatan anak dilakukan, dan apa yang terjadi dengan nama orang tua kandung di akta kelahiran?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:196"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pencatatan pengangkatan anak dilaksanakan dengan mencantumkan nama orang tua angkat hanya dalam bentuk catatan pinggir pada register akta kelahiran dan kutipan akta kelahiran anak angkat. Dengan demikian, nama orang tua kandung tidak diganti dan harus tetap dicantumkan pada akta kelahiran.",
+      "expected_facts": [
+        "Pencatatan pengangkatan anak dilaksanakan dengan mencantumkan nama orang tua angkat hanya dalam bentuk catatan pinggir pada register akta kelahiran dan kutipan akta kelahiran anak angkat.",
+        "Nama orang tua kandung tidak diganti dan harus tetap dicantumkan pada akta kelahiran."
+      ]
+    },
+    {
+      "id": "DK016",
+      "question": "Kalau saya sebelumnya terdaftar sebagai penduduk nonpermanen lalu mau pindah alamat tinggal nonpermanen, apa yang harus saya lakukan dengan status kependudukan saya?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:79"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Seseorang tersebut harus mengajukan pembatalan status penduduk nonpermanen di tempat pendaftaran sebelumnya, sebelum mendaftar kembali sebagai penduduk nonpermanen di lokasi yang baru. Hal ini sesuai dengan Pasal 3 ayat (3) dan Pasal 4 ayat (2) Peraturan Menteri Dalam Negeri Nomor 74 Tahun 2022.",
+      "expected_facts": [
+        "Jika melakukan perpindahan domisili nonpermanen, harus memohon pembatalan penduduk nonpermanen di tempat terdaftar sebelumnya.",
+        "Pembatalan dilakukan sebelum melakukan pendaftaran penduduk nonpermanen di tempat yang baru.",
+        "Prosedur ini merujuk pada Pasal 3 ayat (3) dan Pasal 4 ayat (2) Peraturan Menteri Dalam Negeri Nomor 74 Tahun 2022 tentang Pendaftaran Penduduk Non Permanen."
+      ]
+    },
+    {
+      "id": "DK017",
+      "question": "Bagaimana prosedur pembatalan akta kelahiran yang dapat dilakukan tanpa harus melalui penetapan dari lembaga peradilan?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:261"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pembatalan akta kelahiran dapat dilakukan tanpa penetapan pengadilan dengan berlandaskan asas Contarius Actus, jika terdapat kesalahan atau kekeliruan, serta mengacu pada Pasal 66 UU Nomor 30 Tahun 2014 tentang Administrasi Pemerintahan.",
+      "expected_facts": [
+        "Pembatalan akta dapat dilakukan tanpa penetapan pengadilan.",
+        "Pembatalan akta tanpa penetapan pengadilan berdasarkan asas Contarius Actus.",
+        "Pembatalan akta tanpa penetapan pengadilan karena benar-benar terdapat kesalahan/kekeliruan.",
+        "Pembatalan akta tanpa penetapan pengadilan menggunakan Pasal 66 UU Nomor 30 Tahun 2014 tentang Administrasi Pemerintahan."
+      ]
+    },
+    {
+      "id": "DK018",
+      "question": "Apabila seorang anak yang lahir dari perkawinan campuran di luar negeri belum didaftarkan ke Perwakilan Republik Indonesia, dokumen apa yang dapat dikeluarkan oleh Dinas Dukcapil untuk pencatatannya, dan apa saja persyaratan utama yang dibutuhkan?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:227"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Dinas Dukcapil dapat mengeluarkan surat keterangan pelaporan. Persyaratan utamanya adalah bukti pencatatan Peristiwa Penting yang diterjemahkan oleh penerjemah tersumpah jika berbahasa asing, atau surat pernyataan tanggung jawab mutlak.",
+      "expected_facts": [
+        "Dinas Dukcapil dapat menerbitkan surat keterangan pelaporan jika kelahiran anak belum dilaporkan kepada Perwakilan RI.",
+        "Salah satu persyaratan adalah bukti pencatatan Peristiwa Penting yang diterjemahkan oleh penerjemah tersumpah bila menggunakan bahasa asing.",
+        "Persyaratan lain adalah surat pernyataan tanggung jawab mutlak."
+      ]
+    },
+    {
+      "id": "DK019",
+      "question": "Bagi pasangan Penghayat Kepercayaan Terhadap Tuhan Yang Maha Esa, apa bedanya prosedur pengesahan anak kalau organisasi dan pemuka penghayatnya sudah terdaftar dibandingkan kalau belum terdaftar?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:214"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Jika organisasi dan pemuka penghayat sudah terdaftar, pengesahan anak dapat dilakukan pencatatan tanpa penetapan pengadilan, asalkan anak lahir setelah perkawinan sah menurut penghayat kepercayaan. Namun, jika belum terdaftar, status anak pada akta kelahiran adalah anak seorang ibu, atau nama ayah dapat dicantumkan dengan frasa 'perkawinannya belum tercatat', dan pengesahan anak dapat dilakukan berdasarkan penetapan pengadilan.",
+      "expected_facts": [
+        "Pengesahan anak dari pasangan suami isteri penghayat kepercayaan dapat dilakukan pencatatan tanpa penetapan pengadilan jika organisasi dan pemuka penghayat sudah terdaftar dan anak lahir setelah perkawinan sah.",
+        "Jika organisasi dan penghayat kepercayaan belum terdaftar, status anak pada akta kelahiran adalah anak seorang ibu, atau nama ayah dapat dicantumkan dengan frasa 'perkawinannya belum tercatat'.",
+        "Terhadap anak yang dilahirkan sebelum organisasi dan pemuka penghayat kepercayaan terdaftar, pengesahan anak dapat dilakukan berdasarkan penetapan pengadilan."
+      ]
+    },
+    {
+      "id": "DK020",
+      "question": "Setelah kembali ke Indonesia, apa saja persyaratan untuk melaporkan perkawinan WNI yang terjadi di luar negeri ke Disdukcapil?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:125"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Persyaratan yang harus dipenuhi adalah bukti pelaporan perkawinan dari Perwakilan RI dan kutipan akta perkawinan. Selain itu, pelaporan hasil pencatatan peristiwa penting tersebut juga memerlukan bukti pencatatan peristiwa penting yang diterjemahkan oleh penerjemah tersumpah atau surat pernyataan tanggung jawab mutlak.",
+      "expected_facts": [
+        "bukti pelaporan perkawinan dari Perwakilan RI",
+        "kutipan akta perkawinan",
+        "bukti pencatatan peristiwa penting yang diterjemahkan oleh penerjemah tersumpah atau surat pernyataan tanggung jawab mutlak"
+      ]
+    },
+    {
+      "id": "DK021",
+      "question": "Bagaimana cara menentukan tanggal pernikahan yang dicantumkan pada Kartu Keluarga, dan apa konsekuensi hukumnya terhadap status anak yang lahir dari perkawinan yang belum terdaftar?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:144"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Tanggal pernikahan diisi sesuai tanggal pelaksanaan pernikahan menurut hukum agama atau kepercayaan, seperti yang tertera pada Akta Perkawinan atau SPTJM Perkawinan/Perceraian Belum Tercatat. Implikasi hukumnya adalah status anak sebagai anak seorang ibu, atau anak dengan nama ayah dan ibu namun disertai frasa \"yang perkawinannya belum tercatat sesuai dengan peraturan perundang-undangan\".",
+      "expected_facts": [
+        "Tanggal perkawinan diisi sesuai tanggal pelaksanaan perkawinan menurut hukum agama atau kepercayaannya.",
+        "Tanggal perkawinan tertera pada Akta Perkawinan atau pada SPTJM Perkawinan/Perceraian Belum Tercatat.",
+        "Status anak dari perkawinan belum tercatat adalah anak seorang ibu.",
+        "Status anak dari perkawinan belum tercatat bisa mencantumkan nama ayah dan ibu dengan frasa \"yang perkawinannya belum tercatat sesuai dengan peraturan perundang-undangan\"."
+      ]
+    },
+    {
+      "id": "DK022",
+      "question": "Saya warga negara asing pemegang izin tinggal tetap dan mau pindah domisili antar kabupaten/kota. Dokumen apa saja yang wajib saya lampirkan saat mengajukan Surat Keterangan Pindah di Disdukcapil daerah asal?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:58"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Dokumen yang wajib dilampirkan adalah fotokopi Kartu Keluarga, fotokopi KTP-el, fotokopi Dokumen Perjalanan, dan fotokopi kartu izin tinggal tetap.",
+      "expected_facts": [
+        "Fotokopi Kartu Keluarga",
+        "Fotokopi KTP-el",
+        "Fotokopi Dokumen Perjalanan",
+        "Fotokopi kartu izin tinggal tetap"
+      ]
+    },
+    {
+      "id": "DK023",
+      "question": "Dalam situasi apa masyarakat dapat menggunakan Surat Pernyataan Tanggung Jawab Mutlak (SPTJM) Kebenaran sebagai suami istri untuk pencatatan sipil, dan apa konsekuensi pencatatannya?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:91"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Masyarakat dapat menggunakan SPTJM Kebenaran sebagai suami istri jika tidak memiliki buku nikah/kutipan akta perkawinan atau bukti sah lainnya, namun status hubungan dalam KK menunjukkan sebagai suami istri. Pencatatan ini akan menghasilkan akta kelahiran yang mencantumkan anak sebagai anak ayah dan ibu dengan frasa tambahan bahwa perkawinan mereka belum tercatat.",
+      "expected_facts": [
+        "SPTJM Kebenaran sebagai suami istri dapat digunakan apabila tidak memiliki buku nikah/kutipan akta perkawinan atau bukti lain yang sah.",
+        "Penggunaan SPTJM ini berlaku jika status hubungan dalam KK menunjukan sebagai suami istri.",
+        "Hasil pencatatan dengan SPTJM ini akan menghasilkan akta kelahiran dengan tambahan frasa 'yang perkawinannya belum tercatat sesuai dengan ketentuan peraturan perundang-undangan'."
+      ]
+    },
+    {
+      "id": "DK024",
+      "question": "Bagaimana cara mencatatkan anak hasil perkawinan campuran sebagai anak berkewarganegaraan ganda?",
+      "expected_route": "dukcapil",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:228"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk dicatatkan sebagai Anak Berkewarganegaraan Ganda, sesuai Pasal 55 ayat (2) Peraturan Presiden Nomor 96 Tahun 2018, anak tersebut harus memiliki sertifikat bukti pendaftaran anak berkewarganegaraan ganda dari kantor imigrasi atau Perwakilan Republik Indonesia. Selanjutnya, Disdukcapil Kabupaten/Kota atau Perwakilan Republik Indonesia membuat catatan pinggir pada akta kelahiran yang menyatakan status WNI dan WNA anak tersebut.",
+      "expected_facts": [
+        "Anak dicatatkan sebagai Anak Berkewarganegaraan Ganda berdasarkan Pasal 55 ayat (2) Peraturan Presiden Nomor 96 Tahun 2018.",
+        "Anak tersebut harus memiliki sertifikat bukti pendaftaran anak berkewarganegaraan ganda dari kantor imigrasi atau Perwakilan Republik Indonesia.",
+        "Disdukcapil Kabupaten/Kota atau Perwakilan Republik Indonesia membuat catatan pinggir pada akta kelahiran yang menyatakan status WNI dan WNA anak tersebut."
+      ]
+    },
+    {
+      "id": "DK025",
+      "question": "Berapa lama SKPWNI berlaku, dan apakah saya perlu surat pengantar RT/RW untuk mengurusnya?",
+      "expected_route": "dukcapil",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:70",
+          "page:73"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Masa berlaku Surat Keterangan Pindah Warga Negara Indonesia (SKPWNI) adalah 100 hari, sesuai Pasal 30 ayat (2) Permendagri Nomor 108 Tahun 2019. Anda tidak perlu surat pengantar RT/RW maupun kelurahan untuk mengurus SKPWNI -- ketentuan ini sudah dihapus sesuai Pasal 25 ayat (3) Perpres Nomor 96 Tahun 2018 dan Pasal 28 ayat (1) Permendagri Nomor 108 Tahun 2019.",
+      "expected_facts": [
+        "Masa berlaku SKPWNI adalah 100 hari, sesuai Pasal 30 ayat (2) Permendagri Nomor 108 Tahun 2019.",
+        "Pengurusan SKPWNI sudah tidak memerlukan lagi pengantar RT/RW maupun kelurahan, sesuai Pasal 25 ayat (3) Perpres Nomor 96 Tahun 2018 dan Pasal 28 ayat (1) Permendagri Nomor 108 Tahun 2019."
+      ]
+    },
+    {
+      "id": "PZ001",
+      "question": "Jika sebuah lembaga ingin mengajukan izin untuk operasional atau pendirian PAUD di Kabupaten Batang, dokumen apa saja yang perlu disiapkan terkait dengan kepemilikan aset dan keuangan lembaga?",
+      "expected_route": "perizinan",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-paud"
+        ]
+      },
+      "expected_answer": "Lembaga perlu menyiapkan bukti kepemilikan lahan atau sertifikat, SPPT PBB beserta bukti pembayaran dua tahun terakhir, serta buku rekening lembaga.",
+      "expected_facts": [
+        "Bukti kepemilikan lahan/ sertifikat",
+        "SPPT PBB dan bukti pembayaran 2 tahun terakhir",
+        "Buku rekening lembaga"
+      ]
+    },
+    {
+      "id": "PZ002",
+      "question": "Berapa lama perkiraan waktu yang dibutuhkan untuk menyelesaikan proses permohonan Izin Operasional/Pendirian Kelompok Bermain, dan apakah ada biaya yang perlu dibayarkan?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-kb-kelompok-bermain"
+        ]
+      },
+      "expected_answer": "Estimasi waktu penyelesaian untuk permohonan Izin Operasional/Pendirian KB adalah 7 hari kerja, dan tidak ada biaya yang dikenakan untuk perizinan ini.",
+      "expected_facts": [
+        "Estimasi Selesai: 7 Hari Kerja",
+        "Biaya: Tidak dikenakan biaya"
+      ]
+    },
+    {
+      "id": "PZ003",
+      "question": "Jika seorang dokter ingin mengajukan Izin Praktik Dokter di Kabupaten Batang, apa saja dokumen utama yang harus dipersiapkan dan bagaimana alur umum proses pengajuannya?",
+      "expected_route": "perizinan",
+      "query_type": "complex",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-dokter"
+        ]
+      },
+      "expected_answer": "Untuk mengajukan Izin Praktik Dokter, dokter perlu menyiapkan KTP, STR asli, SIP yang dimiliki, surat pernyataan tempat praktik, dan ceklis izin praktik mandiri jika permohonan mandiri. Prosesnya dimulai dengan datang ke DPMPTSP Naker Kabupaten Batang, menyerahkan permohonan dan persyaratan di loket, berkas diteliti, dan jika lengkap, izin akan diproses lalu diserahkan kepada pemohon.",
+      "expected_facts": [
+        "Persyaratan Izin Praktik Dokter meliputi Foto KTP Pemohon, STR asli & SIP yang dimiliki, Surat Pernyataan Tempat Praktek, dan Ceklist Ijin Praktek Mandiri Dokter (khusus permohonan mandiri).",
+        "Mekanisme pelayanan dimulai dengan pemohon datang ke Dinas Penanaman Modal Pelayanan Terpadu Satu Pintu dan Tenaga Kerja Kabupaten Batang.",
+        "Berkas permohonan akan diteliti, dan jika lengkap serta benar, izin akan diproses sebelum diserahkan kepada pemohon."
+      ]
+    },
+    {
+      "id": "PZ004",
+      "question": "Jika seorang pemohon ingin mengajukan Izin Reklame di Kabupaten Batang, bagaimana alur prosesnya dari awal hingga izin tersebut dapat diambil, serta apa saja dokumen yang perlu disiapkan jika reklame akan dipasang di tanah milik sendiri dan berlokasi di jalan provinsi?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-reklame"
+        ]
+      },
+      "expected_answer": "Proses pengajuan dimulai dengan pemohon datang ke DPMPTSP membawa persyaratan dan surat permohonan. Berkas akan diverifikasi, lalu DPMPTSP mengajukan rekomendasi teknis atau meninjau lokasi. Setelah rekomendasi teknis atau BA hasil tinjauan lapangan diterima, permohonan diproses hingga Kepala DPMPTSP menandatangani keputusan izin, yang kemudian dapat diambil oleh pemohon. Dokumen yang perlu disiapkan meliputi Foto KTP Pemohon, Sertifikat Tanah, Denah Lokasi, Foto Lingkungan, Gambar Konstruksi Reklame, NIB, Surat Pernyataan keabsahan Dokumen, Surat Permohonan dan Surat Pernyataan Tanggung Jawab, serta Rekomendasi/Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan.",
+      "expected_facts": [
+        "Mekanisme pelayanan Izin Reklame dimulai dengan pemohon datang ke DPMPTSP membawa persyaratan dan surat permohonan.",
+        "Berkas permohonan di verifikasi dan divalidasi, dilanjutkan dengan DPMPTSP mengajukan rekomendasi teknis atau meninjau lokasi.",
+        "Berdasarkan rekomendasi teknis/BA hasil tinjauan, permohonan diproses, ditandatangani Kepala DPMPTSP, dan pemohon dapat mengambil izin.",
+        "Persyaratan untuk reklame di tanah milik sendiri meliputi Foto KTP Pemohon, Sertifikat Tanah, Denah Lokasi, Foto Lingkungan, Gambar Konstruksi Reklame, NIB, Surat Pernyataan keabsahan Dokumen, dan Surat Permohonan serta Surat Pernyataan Tanggung Jawab.",
+        "Jika reklame berlokasi di jalan provinsi, diperlukan Rekomendasi/Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan."
+      ]
+    },
+    {
+      "id": "PZ005",
+      "question": "Bagaimana mekanisme pelayanan Izin Praktik Dokter Gigi?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-dokter-gigi"
+        ]
+      },
+      "expected_answer": "Informasi mengenai mekanisme pelayanan Izin Praktik Dokter Gigi tidak tersedia dalam data yang digunakan.",
+      "expected_facts": [
+        "Data yang tersedia tidak mencantumkan informasi mekanisme pelayanan untuk Izin Praktik Dokter Gigi."
+      ]
+    },
+    {
+      "id": "PZ006",
+      "question": "Gimana cara ngajuin izin buat Penata Anestesi?",
+      "expected_route": "perizinan",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-penata-anestesi",
+          "id:izin-praktik-penata-anestesi"
+        ]
+      },
+      "expected_answer": "Ada dua jenis izin terkait Penata Anestesi dengan mekanisme pengajuan yang berbeda. Untuk Izin Kerja Penata Anestesi, pemohon mengajukan permohonan secara online lewat laman sipuas.batangkab.go.id, lalu berkas diverifikasi staf dan dilanjutkan ke rekomendasi teknis hingga keputusan izin bisa diunduh online. Untuk Izin Praktik Penata Anestesi, pemohon datang langsung ke DPMPTSP membawa persyaratan dan surat permohonan, berkas diverifikasi, DPMPTSP mengajukan rekomendasi teknis ke Perangkat Daerah Teknis, sampai izin ditandatangani Kepala DPMPTSP dan bisa diambil langsung.",
+      "expected_facts": [
+        "Ada dua jenis izin terkait Penata Anestesi: Izin Kerja Penata Anestesi dan Izin Praktik Penata Anestesi.",
+        "Izin Kerja Penata Anestesi diajukan secara online melalui laman sipuas.batangkab.go.id.",
+        "Izin Praktik Penata Anestesi diajukan dengan pemohon datang langsung ke DPMPTSP membawa persyaratan dan surat permohonan."
+      ]
+    },
+    {
+      "id": "PZ007",
+      "question": "Kalau yayasan ingin mendirikan SD baru dan sudah menyiapkan akta pendirian serta bukti kepemilikan lahan, persyaratan apa saja lagi yang masih belum terpenuhi?",
+      "expected_route": "perizinan",
+      "query_type": "complex",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-sd"
+        ]
+      },
+      "expected_answer": "Selain Akta Pendirian dan Bukti Kepemilikan Lahan yang sudah disiapkan, yayasan masih perlu melengkapi: Surat Permohonan, Surat Keabsahan Dokumen, Foto KTP Penanggung Jawab, Foto NPWP Lembaga, Buku Rekening Lembaga, SPPT PBB dan Bukti Pembayaran 2 tahun terakhir, Data Siswa, Data Guru, Struktur Organisasi, Jadwal Pembelajaran/Kurikulum, Foto Gedung dan Sarana Prasarana, Foto Kegiatan, serta Proposal (khusus bab 1, 2, dan 3).",
+      "expected_facts": [
+        "Masih diperlukan Surat Permohonan, Surat Keabsahan Dokumen, Foto KTP Penanggung Jawab, dan Foto NPWP Lembaga.",
+        "Masih diperlukan Buku Rekening Lembaga.",
+        "Masih diperlukan SPPT PBB dan Bukti Pembayaran 2 tahun terakhir.",
+        "Masih diperlukan Data Siswa, Data Guru, dan Struktur Organisasi.",
+        "Masih diperlukan Jadwal Pembelajaran/Kurikulum, Foto Gedung dan Sarana Prasarana, Foto Kegiatan, dan Proposal (bab 1, 2, dan 3)."
+      ]
+    },
+    {
+      "id": "PZ008",
+      "question": "Apa saja dokumen persyaratan yang termasuk dalam 'Dokumen Pernyataan Pemenuhan Komitmen' untuk Izin Pusat Kegiatan Belajar Masyarakat (PKBM)?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-pusat-kegiatan-belajar-masyarakat-pkbm"
+        ]
+      },
+      "expected_answer": "Dokumen Pernyataan Pemenuhan Komitmen untuk Izin Pusat Kegiatan Belajar Masyarakat (PKBM) meliputi Izin Lokasi, Izin Lingkungan, dan Izin Mendirikan Bangunan.",
+      "expected_facts": [
+        "Dokumen Pernyataan Pemenuhan Komitmen meliputi Izin Lokasi.",
+        "Dokumen Pernyataan Pemenuhan Komitmen meliputi Izin Lingkungan.",
+        "Dokumen Pernyataan Pemenuhan Komitmen meliputi Izin Mendirikan Bangunan."
+      ]
+    },
+    {
+      "id": "PZ009",
+      "question": "Dokumen apa saja yang diperlukan untuk mengajukan izin kerja radiografer, dan berapa lama perkiraan waktu penyelesaiannya?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-radiografer"
+        ]
+      },
+      "expected_answer": "Untuk mengajukan izin kerja radiografer, pemohon memerlukan foto KTP, STR dan SIP yang dimiliki, serta surat pernyataan tempat praktik. Estimasi waktu penyelesaiannya adalah 7 hari kerja.",
+      "expected_facts": [
+        "Persyaratan izin kerja radiografer meliputi Foto KTP Pemohon, STR & SIP yang dimiliki, dan Surat Pernyataan Tempat Praktek.",
+        "Estimasi Selesai untuk izin kerja radiografer adalah 7 Hari Kerja."
+      ]
+    },
+    {
+      "id": "PZ010",
+      "question": "Untuk mendapatkan persetujuan melakukan studi non-akademis di Kabupaten Batang, dokumen apa saja yang wajib disertakan jika ini adalah pengajuan baru dan bukan perpanjangan?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-penelitian-non-akademis"
+        ]
+      },
+      "expected_answer": "Pemohon harus menyertakan Surat Permohonan, Proposal Penelitian, Surat Pernyataan Tidak Melanggar Hukum, Surat Keabsahan Dokumen, Foto KTP Pemohon, Pas Foto Berwarna 4x6, Pengesahan Badan Hukum, Penunjukan Penanggungjawab Lokal & Pimpinan beserta Foto KTP-nya, Surat Kesanggupan, Foto KTP Koordinator Area, dan Surat Kuasa Penunjukan Koordinator Area.",
+      "expected_facts": [
+        "Surat Permohonan",
+        "Proposal Penelitian",
+        "Surat Pernyataan Tidak Melanggar Hukum",
+        "Surat Keabsahan Dokumen",
+        "Foto KTP Pemohon",
+        "Pas Foto Berwarna 4X6",
+        "Pengesahan Badan Hukum",
+        "Penunjukan Penanggungjawab Lokal & Pimpinan",
+        "Foto KTP Penunjukan Penanggungjawab Lokal & Pimpinan",
+        "Surat Kesanggupan (Baru)",
+        "Foto KTP Koordinator Area",
+        "Surat Kuasa Penunjukan Koordinator Area"
+      ]
+    },
+    {
+      "id": "PZ011",
+      "question": "Bagaimana alur pengajuan Izin Operasional/Pendirian TK yang melibatkan sistem OSS dan peran DPMPTSP?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-tk-taman-kanak-kanak"
+        ]
+      },
+      "expected_answer": "Proses pengajuan Izin Operasional/Pendirian TK dimulai dengan pendaftaran dan pemrosesan melalui sistem OSS untuk mendapatkan NIB dan Izin Usaha yang belum efektif. Selanjutnya, pemohon datang ke DPMPTSP untuk memenuhi komitmen, yang kemudian akan diajukan DPMPTSP untuk rekomendasi ke Perangkat Daerah Teknis, hingga akhirnya DPMPTSP memberikan notifikasi bahwa izin sudah berlaku efektif.",
+      "expected_facts": [
+        "Pemohon melakukan pendaftaran dan pemrosesan izin melalui sistem OSS.",
+        "Pemohon mendapatkan Nomor Induk Berusaha (NIB) dan Izin Usaha yang belum efektif.",
+        "Pemohon datang ke DPMPTSP untuk melakukan pemenuhan komitmen.",
+        "DPMPTSP mengajukan rekomendasi pemenuhan komitmen ke Perangkat Daerah Teknis.",
+        "Perangkat Daerah teknis mengeluarkan surat rekomendasi pemenuhan komitmen.",
+        "DPMPTSP melakukan notifikasi webform terhadap pemenuhan komitmen.",
+        "DPMPTSP memberikan informasi kepada pemohon izin sudah berlaku efektif."
+      ]
+    },
+    {
+      "id": "PZ012",
+      "question": "Seandainya saya ingin mendirikan dan menjalankan sebuah Sekolah Menengah Pertama (SMP) di Kabupaten Batang, dokumen apa sajakah yang wajib saya siapkan terkait kepemilikan lahan dan perpajakan properti?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-smp"
+        ]
+      },
+      "expected_answer": "Untuk mendirikan dan menjalankan SMP, Anda perlu menyiapkan bukti kepemilikan lahan atau sertifikat yang sesuai peruntukannya, serta SPPT PBB dan bukti pembayaran PBB untuk dua tahun terakhir.",
+      "expected_facts": [
+        "Bukti Kepemilikan Lahan / Sertifikat (sesuai keperuntukannya)",
+        "SPPT PBB dan Bukti Pembayaran 2 tahun terakhir"
+      ]
+    },
+    {
+      "id": "PZ013",
+      "question": "Apa saja dokumen yang dibutuhkan pemohon untuk mengajukan Izin Kerja Okupasi Terapis?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-okupasi-terapis"
+        ]
+      },
+      "expected_answer": "Pemohon membutuhkan Foto KTP Pemohon, STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan SIP ke-1/SIP ke-2/SIP ke-3), serta Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3, alamat & Masa Berlaku).",
+      "expected_facts": [
+        "Foto KTP Pemohon",
+        "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan SIP ke-1/SIP ke-2/SIP ke-3)",
+        "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+      ]
+    },
+    {
+      "id": "PZ014",
+      "question": "Seorang pemohon ingin mengajukan permohonan untuk Izin Kerja Tenaga Gizi di Pemkab Batang. Selain Kartu Tanda Penduduk (KTP), dokumen penting apa lagi yang wajib dilampirkan terkait dengan registrasi dan surat izin praktik yang dimilikinya?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-tenaga-gizi"
+        ]
+      },
+      "expected_answer": "Pemohon wajib melampirkan Surat Tanda Register (STR) dan Surat Izin Praktik (SIP) yang dimiliki, baik itu perpanjangan maupun SIP ke-1, SIP ke-2, atau SIP ke-3.",
+      "expected_facts": [
+        "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3) adalah persyaratan untuk Izin Kerja Tenaga Gizi.",
+        "Foto KTP Pemohon adalah persyaratan untuk Izin Kerja Tenaga Gizi."
+      ]
+    },
+    {
+      "id": "PZ015",
+      "question": "Jika seorang fisioterapis ingin memperpanjang Izin Kerja Fisioterapisnya di Pemkab Batang, apa saja dokumen utama yang harus disiapkan dan bagaimana proses verifikasi awal permohonannya?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-fisioterapis"
+        ]
+      },
+      "expected_answer": "Untuk perpanjangan Izin Kerja Fisioterapis, pemohon perlu menyiapkan Foto KTP, STR & SIP yang dimiliki (sesuai perpanjangan ke berapa), serta Surat Pernyataan Tempat Praktek yang mencantumkan SIP, alamat, dan masa berlaku. Proses verifikasi awal melibatkan staf yang akan memverifikasi dan memvalidasi berkas permohonan setelah diajukan secara online.",
+      "expected_facts": [
+        "Persyaratan untuk perpanjangan Izin Kerja Fisioterapis meliputi Foto KTP, STR & SIP yang dimiliki, dan Surat Pernyataan Tempat Praktek.",
+        "Surat Pernyataan Tempat Praktek harus mencantumkan SIP ke-1/SIP ke-2/SIP ke-3, alamat, dan masa berlaku.",
+        "Tahap awal mekanisme pelayanan adalah verifikasi dan validasi berkas permohonan oleh staf setelah diajukan pemohon.",
+        "Permohonan diajukan di laman https://sipuas.batangkab.go.id."
+      ]
+    },
+    {
+      "id": "PZ016",
+      "question": "Berapa lama estimasi waktu yang dibutuhkan untuk menyelesaikan Izin Praktik Dokter Internsip setelah mendapatkan rekomendasi dari Dinas Kesehatan, dan berapa masa berlaku izin tersebut?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-dokter-internsip"
+        ]
+      },
+      "expected_answer": "Estimasi waktu penyelesaian Izin Praktik Dokter Internsip adalah 7 Hari Kerja setelah rekomendasi dari Dinas Kesehatan, dengan masa berlaku izin selama 5 tahun.",
+      "expected_facts": [
+        "Estimasi Selesai: 7 Hari Kerja (Setelah Rekom Dari Dinas Kesehatan)",
+        "Masa Berlaku: 5 tahun"
+      ]
+    },
+    {
+      "id": "PZ017",
+      "question": "Apa saja persyaratan untuk mengajukan Izin Praktik Apoteker?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-apoteker"
+        ]
+      },
+      "expected_answer": "Persyaratan yang dibutuhkan untuk mengajukan Izin Praktik Apoteker meliputi Foto KTP Pemohon, STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3), serta Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku).",
+      "expected_facts": [
+        "Persyaratan Izin Praktik Apoteker adalah Foto KTP Pemohon.",
+        "Persyaratan Izin Praktik Apoteker adalah STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3).",
+        "Persyaratan Izin Praktik Apoteker adalah Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)."
+      ]
+    },
+    {
+      "id": "PZ018",
+      "question": "Seorang terapis wicara yang ingin memperpanjang atau mengajukan izin praktik pertamanya di Kabupaten Batang, apa saja dokumen krusial yang wajib disertakan dalam pengajuannya?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-kerja-terapis-wicara"
+        ]
+      },
+      "expected_answer": "Untuk pengajuan Izin Kerja Terapis Wicara, dokumen krusial yang wajib disertakan adalah foto KTP Pemohon, Surat Tanda Register (STR) dan SIP yang dimiliki (baik perpanjangan maupun SIP ke-1/ke-2/ke-3), serta Surat Pernyataan Tempat Praktik yang mencantumkan SIP, alamat, dan masa berlaku.",
+      "expected_facts": [
+        "Foto KTP Pemohon",
+        "STR (Surat Tanda Register) & SIP yang dimiliki (Perpanjangan maupun SIP ke-1/SIP ke-2/SIP ke-3)",
+        "Surat Pernyataan Tempat Praktek (Mencantumkan SIP ke-1/SIP ke-2/SIP ke-3 , alamat & Masa Berlaku)"
+      ]
+    },
+    {
+      "id": "PZ019",
+      "question": "Seandainya seorang terapis gigi dan mulut ingin mengajukan izin praktik di Kabupaten Batang, dokumen apa saja yang wajib disertakan untuk permohonan tersebut?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-terapis-gigi-dan-mulut"
+        ]
+      },
+      "expected_answer": "Untuk mengajukan izin praktik terapis gigi dan mulut, pemohon harus melampirkan foto KTP, STR dan SIP yang dimiliki, surat pernyataan tempat praktik, serta ceklist izin praktik mandiri terapis gigi dan mulut jika permohonan bersifat mandiri.",
+      "expected_facts": [
+        "Foto KTP Pemohon",
+        "STR (Surat Tanda Register) & SIP yang dimiliki",
+        "Surat Pernyataan Tempat Praktek",
+        "Ceklist Ijin Praktek Mandiri Terapis Gigi dan Mulut (Khusus Permohonan Mandiri)"
+      ]
+    },
+    {
+      "id": "PZ020",
+      "question": "Sebutkan dua jenis perizinan kesehatan yang memiliki kesamaan dalam mekanisme pelayanan, persyaratan, dan biaya, namun berbeda pada dasar hukum dan jenis surat tanda register yang dibutuhkan?",
+      "expected_route": "perizinan",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-akupuntur-terapis",
+          "id:izin-kerja-perekam-medis"
+        ]
+      },
+      "expected_answer": "Izin Praktik Akupuntur Terapis dan Izin Kerja Perekam Medis sama-sama memerlukan Foto KTP Pemohon, Surat Pernyataan Tempat Praktek, dan melalui 8 tahapan mekanisme pelayanan yang sama, serta tidak dikenakan biaya. Namun, Izin Praktik Akupuntur Terapis memerlukan STRAT berdasarkan Permenkes No 34 Tahun 2018, sedangkan Izin Kerja Perekam Medis memerlukan STR berdasarkan Permenkes Nomor 55 Tahun 2013.",
+      "expected_facts": [
+        "Izin Praktik Akupuntur Terapis dan Izin Kerja Perekam Medis sama-sama memerlukan Foto KTP Pemohon.",
+        "Izin Praktik Akupuntur Terapis dan Izin Kerja Perekam Medis sama-sama memerlukan Surat Pernyataan Tempat Praktek.",
+        "Mekanisme pelayanan Izin Praktik Akupuntur Terapis dan Izin Kerja Perekam Medis memiliki 8 tahapan yang identik.",
+        "Biaya untuk Izin Praktik Akupuntur Terapis dan Izin Kerja Perekam Medis adalah tidak dikenakan biaya.",
+        "Izin Praktik Akupuntur Terapis memerlukan STRAT (Surat Tanda Register Akupuntur Terapis) dan didasarkan pada Peraturan Menteri Kesehatan Republik Indonesia No 34 Tahun 2018.",
+        "Izin Kerja Perekam Medis memerlukan STR (Surat Tanda Register) dan didasarkan pada Peraturan Menteri Kesehatan Republik Indonesia Nomor 55 Tahun 2013."
+      ]
+    },
+    {
+      "id": "PZ021",
+      "question": "Kalau saya mengajukan Izin Praktik Perawat untuk membuka praktik mandiri, apakah ada dokumen tambahan yang harus saya siapkan selain persyaratan umum?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-perawat"
+        ]
+      },
+      "expected_answer": "Ya. Selain persyaratan umum (Foto KTP Pemohon, STR & SIP yang dimiliki, dan Surat Pernyataan Tempat Praktek), untuk permohonan praktik mandiri Anda juga wajib melampirkan Ceklist Izin Praktik Mandiri Perawat.",
+      "expected_facts": [
+        "Persyaratan umum Izin Praktik Perawat meliputi Foto KTP Pemohon, STR & SIP yang dimiliki, dan Surat Pernyataan Tempat Praktek.",
+        "Khusus permohonan mandiri, pemohon wajib melampirkan Ceklist Izin Praktik Mandiri Perawat."
+      ]
+    },
+    {
+      "id": "PZ022",
+      "question": "Saya ingin mendirikan sekolah di Kabupaten Batang. Apakah proses pengajuan Izin Operasional/Pendirian SD dilakukan melalui OSS?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-operasionalpendirian-sd"
+        ]
+      },
+      "expected_answer": "Tidak, berdasarkan data yang tersedia proses pengajuan Izin Operasional/Pendirian SD tidak disebutkan melalui OSS. Prosesnya dilakukan dengan pemohon datang langsung ke DPMPTSP membawa persyaratan dan surat permohonan, lalu berkas diverifikasi dan divalidasi, dilanjutkan rekomendasi teknis dari Perangkat Daerah Teknis, sebelum izin diterbitkan oleh Kepala DPMPTSP.",
+      "expected_facts": [
+        "Data yang tersedia tidak menyebutkan bahwa proses pengajuan Izin Operasional/Pendirian SD dilakukan melalui OSS.",
+        "Pemohon datang langsung ke DPMPTSP dengan membawa persyaratan dan surat permohonan.",
+        "Perangkat Daerah Teknis mengeluarkan surat rekomendasi teknis sebelum izin diproses dan diterbitkan oleh Kepala DPMPTSP."
+      ]
+    },
+    {
+      "id": "PZ023",
+      "question": "Saya menemukan bahwa beberapa izin praktik tenaga kesehatan memiliki masa berlaku yang berbeda. Berapa lama masa berlaku Izin Praktik Ahli Teknologi Laboratorium Medik dan Izin Praktik Dokter di Kabupaten Batang?",
+      "expected_route": "perizinan",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-ahli-teknologi-laboratorium-medik",
+          "id:izin-praktik-dokter"
+        ]
+      },
+      "expected_answer": "Masa berlaku keduanya berbeda: Izin Praktik Ahli Teknologi Laboratorium Medik berlaku selama 1 tahun, sedangkan Izin Praktik Dokter berlaku selama 5 tahun.",
+      "expected_facts": [
+        "Masa berlaku Izin Praktik Ahli Teknologi Laboratorium Medik adalah 1 tahun.",
+        "Masa berlaku Izin Praktik Dokter adalah 5 tahun."
+      ]
+    },
+    {
+      "id": "PZ024",
+      "question": "Saya ingin memasang reklame di tanah milik sendiri. Apakah saya tetap perlu melampirkan dokumen tambahan jika lokasi reklame berada di jalan provinsi?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-reklame"
+        ]
+      },
+      "expected_answer": "Ya, tetap perlu. Meskipun reklame dipasang di tanah milik sendiri (sehingga Anda cukup melampirkan Sertifikat Tanah, bukan Surat Perjanjian sewa), syarat Rekomendasi/Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan tetap wajib dilampirkan karena syarat ini ditentukan oleh lokasi jalan (jalan provinsi), bukan oleh status kepemilikan tanah.",
+      "expected_facts": [
+        "Reklame yang dipasang di tanah milik sendiri cukup melampirkan Sertifikat Tanah, bukan Surat Perjanjian.",
+        "Jika lokasi pemasangan reklame berada di jalan provinsi, tetap wajib melampirkan Rekomendasi/Bukti Pembayaran dari DPU Bina Marga Cipta Karya Jateng Balai Pengelolaan Jalan Wilayah Pekalongan, terlepas dari status kepemilikan tanah."
+      ]
+    },
+    {
+      "id": "PZ025",
+      "question": "Apakah Izin Praktik Refraksionis Optisien/Optometris memiliki masa berlaku tertentu?",
+      "expected_route": "perizinan",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-refraksionis-optisien-optometris"
+        ]
+      },
+      "expected_answer": "Tidak, Izin Praktik Refraksionis Optisien/Optometris tidak memiliki masa berlaku tertentu -- data yang tersedia mencantumkan kolom Masa Berlaku sebagai '-'.",
+      "expected_facts": [
+        "Izin Praktik Refraksionis Optisien/Optometris tidak memiliki masa berlaku tertentu (kolom Masa Berlaku berisi tanda '-')."
+      ]
+    },
+    {
+      "id": "SO001",
+      "question": "Dalam program Jaminan Sosial Ketenagakerjaan bagi Pekerja Rentan di Batang, mengapa seorang pekerja yang sudah terdaftar sebagai peserta JKK dan JKM bisa kehilangan hak perlindungannya meskipun anggaran iurannya sudah dialokasikan, dan apa implikasinya terhadap tujuan program?",
+      "expected_route": "sosial",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-30-2024#pasal:3",
+          "id:sosial-perbup-30-2024#pasal:13",
+          "id:sosial-perbup-30-2024#pasal:11"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Seorang Pekerja Rentan dapat kehilangan hak perlindungan JKK dan JKM meskipun anggaran iuran telah dialokasikan karena berbagai kondisi, seperti tidak lagi menjadi warga daerah, meninggal dunia, mengalami cacat total tetap akibat kecelakaan kerja, salah satu anggota keluarga menjadi ASN/TNI/Polri/BUMN/BUMD, tidak lagi masuk prioritas penanggulangan kemiskinan Jawa Tengah, atau tidak lagi bekerja sebagai Pekerja Rentan. Implikasi utamanya adalah bahwa tujuan perlindungan Pekerja Rentan dari risiko kecelakaan kerja dan kematian tidak akan tercapai secara berkelanjutan bagi individu yang mengalami kondisi tersebut, meskipun pemerintah daerah berkomitmen pada alokasi anggaran.",
+      "expected_facts": [
+        "Peraturan Bupati Nomor 30 Tahun 2024 bertujuan melindungi Pekerja Rentan dari risiko Kecelakaan Kerja dan risiko kematian.",
+        "Pemerintah Daerah mengalokasikan anggaran Iuran JKK dan JKM bagi Pekerja Rentan setiap tahun sesuai kemampuan keuangan Daerah.",
+        "Kepesertaan JKK dan JKM dinyatakan tidak berlaku apabila terjadi: Peserta tidak lagi menjadi warga Daerah; Peserta meninggal dunia; Peserta mengalami Kecelakaan Kerja yang berakibat Cacat Total Tetap; salah satu anggota keluarga dalam satu kartu keluarga menjadi Aparatur Sipil Negara/Tentara Nasional Indonesia/Kepolisian Negara Republik Indonesia/badan usaha milik negara/badan usaha milik Daerah; Peserta tidak lagi masuk pemrioritasan (P1), (P2) dan (P3) dalam data kebutuhan intervensi penanggulangan kemiskinan Jawa Tengah; dan/atau Peserta tidak lagi bekerja sebagai Pekerja Rentan."
+      ]
+    },
+    {
+      "id": "SO002",
+      "question": "Setelah Dinas Sosial menerima tagihan iuran dari BPJS Ketenagakerjaan untuk penerima bantuan yang sudah ditetapkan, apa saja tahapan yang harus dilakukan sebelum dana bisa ditransfer, dan siapa yang bertanggung jawab melaporkan pemantauan kegiatannya?",
+      "expected_route": "sosial",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-21-2025#pasal:26",
+          "id:sosial-perbup-21-2025#pasal:24"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Setelah menerima tagihan iuran dari BPJS Ketenagakerjaan, Dinas Sosial harus melakukan verifikasi tagihan dan mengajukan permohonan pencairan kepada Bendahara Umum Daerah, melampirkan berbagai dokumen pendukung seperti surat pengajuan pembayaran dan surat tagihan. Kepala Dinas Sosial bertanggung jawab melaporkan pemantauan dan evaluasi kegiatan BLT DBHCHT serta pemberian bantuan iuran jaminan sosial ketenagakerjaan kepada Bupati secara berkala atau sewaktu-waktu jika diperlukan.",
+      "expected_facts": [
+        "Dinas Sosial melakukan verifikasi atas tagihan iuran dari BPJS Ketenagakerjaan dan mengajukan permohonan pencairan kepada bendahara umum Daerah.",
+        "Permohonan pencairan kepada bendahara umum Daerah harus dilampiri dengan surat pengajuan pembayaran-surat perintah membayar, surat tagihan dari BPJS Ketenagakerjaan, tanda bukti pengeluaran, fotokopi dokumen penggunaan anggaran, fotokopi surat penyediaan dana, surat pernyataan tanggungjawab mutlak dari Dinas, dan surat pernyataan verifikasi pejabat penatausahaan keuangan satuan kerja Perangkat Daerah dilampiri checklist kelengkapan dokumen.",
+        "Kepala Dinas Sosial melaporkan pemantauan dan evaluasi kegiatan BLT DBHCHT dan pemberian bantuan iuran jaminan sosial ketenagakerjaan kepada Bupati secara berkala atau sewaktu-waktu jika diperlukan."
+      ]
+    },
+    {
+      "id": "SO003",
+      "question": "Apa perbedaan utama antara Sistem Jaringan Jalan Primer dan Sistem Jaringan Jalan Sekunder dalam pelayanan distribusi barang dan jasa?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-5-2014#preamble.15"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Sistem jaringan jalan primer berfungsi melayani distribusi barang dan jasa untuk perkembangan wilayah di tingkat nasional, menghubungkan pusat-pusat kegiatan. Sedangkan sistem jaringan jalan sekunder berfungsi melayani distribusi barang dan jasa untuk masyarakat di dalam kawasan perkotaan.",
+      "expected_facts": [
+        "Sistem jaringan jalan primer melayani distribusi barang dan jasa untuk perkembangan semua wilayah di tingkat nasional.",
+        "Sistem jaringan jalan primer menghubungkan semua simpul jasa distribusi yang berwujud pusat-pusat kegiatan.",
+        "Sistem jaringan jalan sekunder melayani distribusi barang dan jasa untuk masyarakat di dalam kawasan perkotaan."
+      ]
+    },
+    {
+      "id": "SO004",
+      "question": "Kepada siapa harus dilaporkan jika jenazah akan dibawa dari wilayah Kabupaten Batang ke luar wilayah Indonesia?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-2-2016#pasal:11.4"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Jenazah yang akan dibawa dari dalam wilayah Daerah keluar wilayah Indonesia harus dilaporkan kepada Camat, Dinas Kesehatan Kabupaten Batang, dan Kementerian Luar Negeri.",
+      "expected_facts": [
+        "Jenazah yang akan dibawa dari dalam wilayah Daerah keluar wilayah Indonesia harus dilaporkan kepada Camat.",
+        "Jenazah yang akan dibawa dari dalam wilayah Daerah keluar wilayah Indonesia harus dilaporkan kepada Dinas Kesehatan Kabupaten Batang.",
+        "Jenazah yang akan dibawa dari dalam wilayah Daerah keluar wilayah Indonesia harus dilaporkan kepada Kementerian Luar Negeri."
+      ]
+    },
+    {
+      "id": "SO005",
+      "expected_route": "sosial",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "question": "Siapa yang menjabat sebagai Ketua dan Kepala Sekretariat Pokja Pengarusutamaan Gender (PUG) tingkat kabupaten/kota, dan apa saja tugas utama Pokja PUG?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-42-2024#pasal:8.19",
+          "id:sosial-perbup-42-2024#pasal:8.110"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Bupati/Walikota menunjuk Kepala Badan Perencanaan Pembangunan Daerah (Bappeda) sebagai Ketua Pokja PUG kabupaten/kota, sementara Kepala OPD yang bertanggung jawab atas pemberdayaan perempuan diangkat sebagai Kepala Sekretariat Pokja PUG kabupaten/kota. Tugas Pokja PUG kabupaten/kota antara lain mempromosikan dan memfasilitasi PUG kepada masing-masing OPD, melaksanakan sosialisasi dan advokasi PUG kepada camat, kepala desa, dan lurah, menyusun program kerja setiap tahun, serta mendorong terwujudnya Perencanaan dan Penganggaran yang Responsif Gender.",
+      "expected_facts": [
+        "Kepala Bappeda ditunjuk sebagai Ketua Pokja PUG kabupaten/kota.",
+        "Kepala OPD yang bertanggung jawab atas pemberdayaan perempuan diangkat sebagai Kepala Sekretariat Pokja PUG kabupaten/kota.",
+        "Tugas Pokja PUG antara lain mempromosikan dan memfasilitasi PUG kepada masing-masing OPD, dan melaksanakan sosialisasi/advokasi PUG kepada camat, kepala desa, dan lurah.",
+        "Tugas Pokja PUG juga meliputi menyusun program kerja setiap tahun dan mendorong terwujudnya Perencanaan dan Penganggaran yang Responsif Gender."
+      ]
+    },
+    {
+      "id": "SO006",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "question": "Mengapa Pemerintah Kabupaten Batang merasa perlu untuk menyatukan peraturan mengenai Lalu Lintas dan Angkutan Jalan (LLAJ) serta Perkeretaapian ke dalam satu Peraturan Daerah tentang Penyelenggaraan Transportasi Darat?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-1-2016#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Penyatuan ini diperlukan untuk mewujudkan keamanan, keselamatan, ketertiban, dan kelancaran transportasi darat dalam rangka mendukung pembangunan dan pertumbuhan ekonomi daerah. Selain itu, sistem transportasi darat perlu diselenggarakan dengan mengintegrasikan semua komponen lalu lintas, angkutan jalan, dan perkeretaapian ke dalam satu kesatuan, berdasarkan kewenangan pemerintah daerah.",
+      "expected_facts": [
+        "Penyatuan diperlukan untuk mewujudkan keamanan, keselamatan, ketertiban, dan kelancaran transportasi darat dalam rangka mendukung pembangunan dan pertumbuhan ekonomi daerah.",
+        "Sistem transportasi darat perlu diselenggarakan dengan mengintegrasikan semua komponen LLAJ dan perkeretaapian ke dalam satu kesatuan.",
+        "Integrasi ini dilakukan berdasarkan kewenangan pemerintah daerah."
+      ]
+    },
+    {
+      "id": "SO007",
+      "expected_route": "sosial",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "question": "Apa model alternatif yang diusulkan untuk pemulihan hak-hak korban tindak pidana kekerasan seksual terhadap perempuan dan anak di Kabupaten Batang, dan siapa yang berperan memberdayakannya?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-artikel-2-2023#narr:11",
+          "id:sosial-artikel-2-2023#narr:12"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Model yang diusulkan adalah Healing Village, sebuah alternatif pemulihan berbasis pemberdayaan desa yang ramah terhadap korban kekerasan seksual. Berdasarkan Pasal 5 huruf (e) Peraturan Bupati Batang Nomor 97 Tahun 2021 tentang pembinaan umum dan teknis di bidang pemberdayaan perempuan dan perlindungan anak, DP3AP2KB Kabupaten Batang berperan memberdayakan model ini. Hak korban yang diakomodasi melalui Healing Village meliputi rehabilitasi mental dan sosial, pemberdayaan sosial, serta reintegrasi sosial.",
+      "expected_facts": [
+        "Model alternatif yang diusulkan adalah Healing Village, berbasis pemberdayaan desa yang ramah terhadap korban kekerasan seksual.",
+        "Dasar kewenangannya adalah Pasal 5 huruf (e) Peraturan Bupati Batang Nomor 97 Tahun 2021 tentang pembinaan umum dan teknis di bidang pemberdayaan perempuan dan perlindungan anak.",
+        "DP3AP2KB Kabupaten Batang berperan memberdayakan model Healing Village.",
+        "Hak korban yang diakomodasi meliputi rehabilitasi mental dan sosial, pemberdayaan sosial, serta reintegrasi sosial."
+      ]
+    },
+    {
+      "id": "SO008",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "question": "Apa saja asas yang disebutkan dalam aturan Pengarusutamaan Gender di Kabupaten Batang?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-2-2024#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Asas-asas yang disebutkan adalah keadilan, kesetaraan, inklusi, partisipatif, non diskriminatif, penghormatan terhadap Hak Asasi Manusia, dan sinergitas.",
+      "expected_facts": [
+        "Asas yang disebutkan meliputi keadilan, kesetaraan, dan inklusi.",
+        "Asas yang disebutkan juga meliputi partisipatif dan non diskriminatif.",
+        "Asas yang disebutkan juga meliputi penghormatan terhadap Hak Asasi Manusia dan sinergitas."
+      ]
+    },
+    {
+      "id": "SO009",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "question": "Pihak-pihak mana saja yang dapat bekerja sama dengan Pemerintah Daerah dalam menyediakan layanan rehabilitasi bagi anak-anak, seperti yang disebutkan dalam peraturan ini?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-11-2019#pasal:14"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pemerintah Daerah dapat bekerja sama dengan instansi vertikal, pemerintah provinsi, pemerintah kabupaten/kota lainnya, pemerintah desa, lembaga swadaya masyarakat, pihak swasta, masyarakat, dan/atau keluarga.",
+      "expected_facts": [
+        "Pemerintah Daerah dapat bekerja sama dengan instansi vertikal, pemerintah provinsi, dan pemerintah kabupaten/kota lainnya.",
+        "Pemerintah Daerah dapat bekerja sama dengan pemerintah desa dan lembaga swadaya masyarakat.",
+        "Pemerintah Daerah dapat bekerja sama dengan pihak swasta, masyarakat, dan/atau keluarga."
+      ]
+    },
+    {
+      "id": "SO010",
+      "question": "Dalam konteks penyelenggaraan kesejahteraan sosial di Kabupaten Batang, apa saja contoh fasilitas yang didanai oleh anggaran pemerintah daerah dan/atau pusat untuk mendukung fungsi tersebut?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-4-2014#penjelasan:24"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Contoh fasilitas yang didanai oleh APBD dan/atau APBN untuk menunjang fungsi kesejahteraan sosial meliputi Rumah Sakit Daerah, Shelter, Rumah Singgah, Kendaraan Angkut Sosial, serta fasilitas di Panti Jompo, Panti Asuhan, dan Yayasan.",
+      "expected_facts": [
+        "Sarana dan prasarana adalah segala fasilitas yang didanai dan diperoleh dari APBD dan/atau APBN.",
+        "Fasilitas tersebut berfungsi untuk menunjang kesejahteraan sosial.",
+        "Contoh fasilitasnya antara lain Rumah Sakit Daerah, Shelter, Rumah Singgah, Kendaraan Angkut Sosial, fasilitas di Panti Jompo, Panti Asuhan, dan Yayasan."
+      ]
+    },
+    {
+      "id": "SO011",
+      "question": "Di Kabupaten Batang, tempat apa saja yang termasuk kawasan dilarang merokok?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-6-2018#pasal:7"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Area yang ditetapkan sebagai tempat dilarangnya merokok meliputi fasilitas pelayanan kesehatan, tempat proses belajar mengajar dan kawasan belajar mengajar, tempat anak bermain, tempat ibadah, angkutan umum, tempat kerja, dan tempat umum.",
+      "expected_facts": [
+        "KTR meliputi fasilitas pelayanan kesehatan.",
+        "KTR meliputi tempat proses belajar mengajar dan kawasan belajar mengajar.",
+        "KTR meliputi tempat anak bermain.",
+        "KTR meliputi tempat ibadah.",
+        "KTR meliputi angkutan umum.",
+        "KTR meliputi tempat kerja.",
+        "KTR meliputi tempat umum."
+      ]
+    },
+    {
+      "id": "SO012",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "question": "Kalau seseorang datang ke objek wisata untuk bekerja sebagai penjual jasa pariwisata, apakah dia tetap termasuk pengunjung objek wisata?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-7-2019#preamble.24"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Ya, tetap termasuk. Definisi pengunjung objek wisata mencakup semua orang yang datang ke lokasi objek wisata, baik sebagai wisatawan, studi, kunjungan kerja, penelitian, maupun sebagai penjual jasa pariwisata.",
+      "expected_facts": [
+        "Pengunjung objek wisata adalah semua orang yang datang ke lokasi objek wisata.",
+        "Definisi tersebut mencakup wisatawan, studi, kunjungan kerja, penelitian, maupun penjual jasa pariwisata."
+      ]
+    },
+    {
+      "id": "SO013",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "question": "Menurut Peraturan Daerah Kabupaten Batang tentang Kawasan Tanpa Rokok, mengapa Pemerintah Kabupaten Batang perlu mengatur wilayah bebas rokok, dan regulasi apa yang disebutkan sebagai landasan hukumnya dalam Perda tersebut?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-6-2018#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Menurut Perda ini, pengaturan wilayah bebas rokok diperlukan untuk melindungi hak asasi manusia dalam mendapatkan derajat kesehatan yang tinggi, serta untuk mencegah dampak negatif rokok pada kesehatan individu dan lingkungan. Regulasi yang disebutkan sebagai landasan hukumnya dalam Perda ini adalah Undang-Undang Nomor 36 Tahun 2009 tentang Kesehatan dan Peraturan Pemerintah Nomor 109 Tahun 2012 tentang Pengamanan Bahan yang Mengandung Zat Adiktif Berupa Produk Tembakau bagi Kesehatan.",
+      "expected_facts": [
+        "Perda ini mengatur wilayah bebas rokok untuk melindungi hak atas derajat kesehatan yang tinggi dan mencegah dampak negatif rokok.",
+        "Perda ini menyebutkan Undang-Undang Nomor 36 Tahun 2009 tentang Kesehatan sebagai landasan hukum.",
+        "Perda ini juga menyebutkan Peraturan Pemerintah Nomor 109 Tahun 2012 tentang Pengamanan Bahan yang Mengandung Zat Adiktif Berupa Produk Tembakau bagi Kesehatan sebagai landasan hukum."
+      ]
+    },
+    {
+      "id": "SO014",
+      "question": "Dalam penyusunan Rencana Aksi Daerah Kabupaten Layak Anak (RAD KLA), aspek apa saja yang menjadi pertimbangan utama, terutama terkait dengan penguatan institusi anak dan pemenuhan hak-hak mereka?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-ranperbup-f2666423-2025#pasal:12"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Penyusunan RAD KLA mempertimbangkan kebutuhan yang terintegrasi dengan Rencana Pembangunan Jangka Panjang, Menengah, dan Rencana Kerja Pemerintah Daerah. Selain itu, upaya penguatan kelembagaan Anak dan pemenuhan Hak Anak dalam 5 (lima) klaster KLA juga menjadi pertimbangan utama.",
+      "expected_facts": [
+        "RAD KLA disusun dengan memperhatikan kebutuhan yang terintegrasi dengan Rencana Pembangunan Jangka Panjang Daerah, Rencana Pembangunan Jangka Menengah Daerah dan Rencana Kerja Pemerintah Daerah.",
+        "RAD KLA disusun dengan memperhatikan upaya penguatan kelembagaan Anak dan pemenuhan Hak Anak dalam 5 (lima) klaster KLA."
+      ]
+    },
+    {
+      "id": "SO015",
+      "question": "Mengapa Pemerintah Kabupaten Batang merasa perlu mengatur keberadaan toko swalayan melalui sebuah peraturan daerah?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-5-2014#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pemerintah Kabupaten Batang melihat munculnya toko swalayan yang kurang terencana, khususnya dalam lokasi dan sinergi dengan pasar tradisional serta pedagang kecil. Oleh karena itu, regulasi diperlukan untuk melindungi dan membina pasar rakyat agar tetap eksis dan tidak tersingkir oleh toko swalayan, serta menata pertumbuhan toko swalayan agar tidak menekan perkembangan UMKM dan Koperasi.",
+      "expected_facts": [
+        "Munculnya toko swalayan di Kabupaten Batang kurang terencana, terutama dalam lokasi dan sinergi dengan pasar rakyat, pedagang kecil, menengah, dan Koperasi.",
+        "Peraturan daerah diperlukan untuk melindungi dan membina pasar rakyat agar tetap eksis berdampingan dengan toko swalayan dan tidak tersingkir.",
+        "Penataan dan pembinaan toko swalayan bertujuan agar Pedagang Mikro, Kecil dan Menengah, Koperasi, serta Pasar Rakyat dapat tumbuh dan berkembang mengisi peluang usaha yang terbuka."
+      ]
+    },
+    {
+      "id": "SO016",
+      "question": "Bagaimana Undang-Undang Nomor 23 Tahun 2014 mengatur pembagian kewenangan antara pemerintah pusat dan daerah dalam penyelenggaraan pemerintahan?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-naskah-akademis-f4b90f06-2022#preamble.113"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Undang-Undang Nomor 23 Tahun 2014 menekankan asas otonomi daerah, yang memberikan hak, wewenang, dan kewajiban kepada daerah otonom untuk mengatur serta mengurus urusan pemerintahan dan kepentingan masyarakat setempat. Ini berarti kewenangan pusat dilimpahkan ke daerah, dengan pemerintah pusat memiliki kewenangan absolut dan pemerintah daerah memiliki kewenangan konkuren yang dibagi menjadi urusan pelayanan dasar dan non-pelayanan dasar.",
+      "expected_facts": [
+        "Undang-undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah menekankan pada asas otonomi daerah.",
+        "Asas otonomi daerah memberikan hak, wewenang, dan kewajiban daerah otonom untuk mengatur dan mengurus sendiri Urusan Pemerintahan dan kepentingan masyarakat setempat.",
+        "Pemerintah Pusat memiliki kewenangan absolut sedangkan pemerintahan daerah memiliki kewenangan konkuren, yang dibagi menjadi Urusan Pemerintahan yang berkaitan dengan pelayanan dasar dan yang tidak berkaitan dengan pelayanan dasar."
+      ]
+    },
+    {
+      "id": "SO017",
+      "question": "Apa sasaran utama dari peninjauan ulang (reviu) Rencana Aksi Daerah Pengarusutamaan Gender (RAD PUG) menurut Peraturan Bupati Batang?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-70-2025#pasal:22.76"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Sasaran utama dari peninjauan ulang (reviu) Rencana Aksi Daerah Pengarusutamaan Gender (RAD PUG) adalah untuk memastikan bahwa dokumen tersebut telah disusun sesuai dengan ketentuan, norma, standar, prosedur, dan kriteria yang berlaku. Hal ini bertujuan untuk membantu Bupati dalam meningkatkan kualitas dokumen perencanaan.",
+      "expected_facts": [
+        "Reviu Dokumen Rancangan RAD PUG bertujuan untuk memperoleh keyakinan secara terbatas bahwa dokumen Rencana Aksi Daerah Pengarusutamaan Gender telah disusun sesuai ketentuan atau norma, standar, prosedur, kriteria.",
+        "Reviu Dokumen Rancangan RAD PUG merupakan upaya membantu Bupati meningkatkan kualitas dokumen perencanaan."
+      ]
+    },
+    {
+      "id": "SO018",
+      "question": "Apa saja kewajiban Pemerintah Daerah Batang terkait penyelenggaraan program Jaminan Sosial?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-2-2023#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pemerintah Daerah berkewajiban untuk mendukung setiap penyelenggaraan program Jaminan Sosial di Daerah, baik Jaminan Sosial Kesehatan maupun Jaminan Sosial Ketenagakerjaan. Upaya yang dilakukan meliputi peningkatan pencapaian kepesertaan, peningkatan kepatuhan pembayaran iuran, dan peningkatan pelayanan Kesehatan.",
+      "expected_facts": [
+        "Pemerintah Daerah berkewajiban untuk mendukung setiap penyelenggaraan program Jaminan Sosial di Daerah.",
+        "Pemerintah Daerah mendukung program Jaminan Sosial Kesehatan yang diselenggarakan oleh BPJS Kesehatan.",
+        "Pemerintah Daerah mendukung program Jaminan Sosial Ketenagakerjaan yang diselenggarakan oleh BPJS Ketenagakerjaan.",
+        "Upaya Pemerintah Daerah adalah meningkatkan pencapaian kepesertaan di wilayahnya.",
+        "Upaya Pemerintah Daerah adalah meningkatkan kepatuhan pembayaran iuran.",
+        "Upaya Pemerintah Daerah adalah peningkatan pelayanan Kesehatan sesuai dengan ketentuan peraturan perundang-undangan."
+      ]
+    },
+    {
+      "id": "SO019",
+      "question": "Dalam tahapan persiapan Pengawasan Pengarusutamaan Gender (PPRG) di lingkungan Pemerintah Kabupaten Batang, apa saja persyaratan yang berkaitan dengan aspek kelembagaan?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-70-2025#pasal:22.169"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Persyaratan kelembagaan dalam tahap persiapan PPRG meliputi keberadaan Kelompok Kerja Pengarusutamaan Gender (Pokja PUG) beserta strukturnya, penunjukan focal point, penyusunan rencana kerja Pokja PUG, penetapan mekanisme kerja Pokja PUG, laporan kerja Pokja PUG, dan pembentukan Tim Teknis Penyusunan PPRG.",
+      "expected_facts": [
+        "Aspek kelembagaan dalam tahapan persiapan PPRG mencakup Pokja PUG.",
+        "Struktur Pokja PUG merupakan bagian dari aspek kelembagaan.",
+        "Focal point termasuk dalam persyaratan kelembagaan PPRG.",
+        "Rencana Kerja Pokja PUG adalah salah satu unsur kelembagaan.",
+        "Mekanisme kerja Pokja PUG merupakan persyaratan kelembagaan.",
+        "Laporan kerja Pokja PUG termasuk dalam aspek kelembagaan.",
+        "Tim Teknis Penyusunan PPRG merupakan bagian dari persyaratan kelembagaan."
+      ]
+    },
+    {
+      "id": "SO020",
+      "question": "Mengapa Pemerintah Kabupaten Batang merasa perlu untuk membuat regulasi mengenai ketertiban dan ketenteraman masyarakat?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-7-2019#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Pemerintah Kabupaten Batang berkewajiban menyelenggarakan urusan pemerintahan wajib terkait pelayanan dasar untuk memenuhi kebutuhan hukum masyarakat, serta untuk melindungi dan meningkatkan kualitas hidup warga. Adanya peraturan ini diharapkan dapat menjadi pedoman bagi aparat pemerintah daerah dalam menciptakan kondisi yang tertib dan tenteram.",
+      "expected_facts": [
+        "Penyelenggaraan ketertiban umum dan ketenteraman masyarakat adalah Urusan Pemerintahan Wajib yang berkaitan dengan Pelayanan Dasar.",
+        "Pemerintah daerah berkewajiban menciptakan suatu perangkat kebijakan yang dapat memenuhi kebutuhan hukum masyarakat.",
+        "Pemerintah Kabupaten Batang berkomitmen untuk menyelenggarakan urusan wajib dalam rangka melindungi dan meningkatkan kualitas hidup masyarakat.",
+        "Peraturan Daerah tentang Ketertiban Umum ini diharapkan dapat menjadi acuan yuridis bagi aparat pemerintah daerah dalam melaksanakan tugas pokok dan fungsinya."
+      ]
+    },
+    {
+      "id": "SO021",
+      "question": "Bentuk dukungan finansial langsung apa saja yang disediakan untuk individu atau kelompok yang membutuhkan, khususnya terkait dengan perbaikan fasilitas dasar, kesehatan, pendidikan, dan penanganan masalah sosial?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-69-2021#narr:8"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Bantuan finansial langsung mencakup perbaikan sanitasi dan air minum, rehabilitasi rumah tidak layak huni, pemberian makanan tambahan untuk anak sekolah dan balita, asistensi bagi lansia terlantar dan penyandang cacat berat, santunan kematian bagi warga miskin, serta bantuan operasional pengobatan. Selain itu, ada bantuan darurat rumah tangga akibat bencana, transport bagi orang terlantar, bantuan untuk yayasan yatim piatu, santunan anak yatim/piatu, bantuan pendidikan bagi siswa/mahasiswa berprestasi dari keluarga miskin, serta bantuan di bidang ketenagakerjaan dan bagi ABK atau keluarga pekerja migran yang terkena musibah.",
+      "expected_facts": [
+        "Bansos berupa uang diberikan secara langsung kepada penerima.",
+        "Bansos mencakup bantuan pembangunan prasarana sanitasi dan/atau air minum, rehab rumah tidak layak huni, pemberian makanan tambahan, serta asistensi bagi lansia terlantar dan penyandang cacat berat.",
+        "Bansos juga meliputi santunan kematian bagi warga miskin, bantuan operasional pengobatan, bantuan darurat akibat bencana, bantuan transport bagi orang terlantar, serta bantuan untuk yayasan yatim piatu dan santunan anak yatim/piatu.",
+        "Bantuan biaya pendidikan menengah bagi peserta didik atau mahasiswa yang berprestasi dari keluarga miskin juga termasuk dalam bansos.",
+        "Bansos juga diberikan di bidang ketenagakerjaan, serta bagi anak buah kapal dan keluarga pekerja migran yang terkena musibah."
+      ]
+    },
+    {
+      "id": "SO022",
+      "question": "Dalam konteks Perlindungan Anak di Kabupaten Batang, apa yang dimaksud dengan 'nondiskriminasi' menurut Peraturan Daerah Nomor 11 Tahun 2019?",
+      "expected_route": "sosial",
+      "query_type": "semantic",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-11-2019#penjelasan-preamble"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Yang dimaksud dengan “nondiskriminasi” adalah perlindungan kepada semua anak, anak sebagai korban, pelaku dan saksi kekerasan, eksploitasi, penelantaran dan perlakuan salah tanpa membedakan suku, agama, ras, golongan, jenis kelamin, etnis, budaya dan bahasa, status hukum dan kondisi fisik maupun mental.",
+      "expected_facts": [
+        "Nondiskriminasi adalah perlindungan kepada semua anak.",
+        "Nondiskriminasi berlaku untuk anak sebagai korban, pelaku, dan saksi kekerasan, eksploitasi, penelantaran, dan perlakuan salah.",
+        "Perlindungan nondiskriminasi tidak membedakan suku, agama, ras, golongan, jenis kelamin, etnis, budaya, bahasa, status hukum, kondisi fisik, maupun mental."
+      ]
+    },
+    {
+      "id": "SO023",
+      "question": "Apa saja tugas utama Forum Tanggung Jawab Sosial Perusahaan (TJSP) di Kabupaten Batang dan siapa saja anggotanya?",
+      "expected_route": "sosial",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-37-2024#pasal:10",
+          "id:sosial-perbup-37-2024#pasal:13"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Forum TJSP bertugas membantu memfasilitasi perencanaan, pelaksanaan, pembinaan, pengawasan, dan evaluasi TJSP, serta menyiapkan data program prioritas pembangunan daerah yang akan disinergikan dengan Program TJSP. Anggota Forum TJSP terdiri dari unsur Perusahaan, Pemerintah Daerah, masyarakat, akademisi, dan unsur lain sesuai kebutuhan.",
+      "expected_facts": [
+        "Forum TJSP bertugas membantu dalam memfasilitasi perencanaan program, fasilitas pelaksanaan, pembinaan, pengawasan, dan evaluasi TJSP.",
+        "Tugas Forum TJSP juga meliputi menyiapkan data program skala prioritas pembangunan Pemerintah Daerah yang akan disinergikan dengan Program TJSP.",
+        "Forum TJSP beranggotakan unsur: a. Perusahaan, b. Pemerintah Daerah; c. masyarakat; d. akademisi; dan e. unsur lain sesuai dengan kebutuhan."
+      ]
+    },
+    {
+      "id": "SO024",
+      "question": "Di Kabupaten Batang, siapa yang berwenang melakukan razia dan apa saja objek razia terkait perbuatan cabul atau pelacuran?",
+      "expected_route": "sosial",
+      "query_type": "complex",
+      "chunk_scope": "multi",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-4-2015#pasal:10",
+          "id:sosial-perda-4-2015#pasal:6"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Bupati atau Kepala Satuan Kerja Perangkat Daerah yang bertugas di bidang penegakan peraturan daerah berwenang melakukan razia. Objek razia meliputi tempat/rumah yang digunakan sebagai tempat pelacuran, orang yang bersikap sebagai pelacur, orang yang melakukan perbuatan cabul di tempat umum, dan orang yang melakukan perzinahan di tempat-tempat umum atau yang kelihatan oleh umum.",
+      "expected_facts": [
+        "Bupati atau Kepala Satuan Kerja Perangkat Daerah yang mempunyai tugas di bidang penegakan peraturan daerah berwenang melakukan razia.",
+        "Razia dapat dilakukan terhadap tempat/rumah yang digunakan sebagai tempat pelacuran, orang yang sikapnya sebagai pelacur, orang yang melakukan perbuatan cabul dengan orang lain di tempat umum atau di tempat-tempat yang kelihatan oleh umum, dan orang yang melakukan perzinahan di tempat-tempat umum.",
+        "Peraturan Daerah Nomor 4 Tahun 2015 melarang setiap orang melakukan perbuatan cabul secara sendiri-sendiri atau bersama-sama, baik di tempat umum atau di tempat yang kelihatan oleh umum."
+      ]
+    },
+    {
+      "id": "SO025",
+      "question": "Saya pengusaha logistik yang ingin mengangkut barang khusus yang tidak berbahaya di wilayah Batang. Apa saja langkah dan persyaratan utama agar operasional angkutan barang khusus saya sesuai aturan, terutama yang membutuhkan persetujuan atau penetapan dari pihak berwenang?",
+      "expected_route": "sosial",
+      "query_type": "lexical",
+      "chunk_scope": "single",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-1-2016#pasal:111"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Untuk mengangkut barang khusus tidak berbahaya, pengusaha harus melalui jalur yang ditetapkan oleh Bupati, memastikan mobil barang angkutan khusus sesuai peruntukannya, dan memiliki dokumen pengangkutan yang sah serta rekomendasi dari instansi berwenang. Selain itu, pengusaha juga wajib menyediakan tempat serta fasilitas memuat dan membongkar, dengan layanan yang bersifat lambat.",
+      "expected_facts": [
+        "Syarat pengangkutan barang khusus tidak berbahaya meliputi melalui jalur yang ditetapkan oleh Bupati.",
+        "Syarat pengangkutan barang khusus tidak berbahaya meliputi mempunyai dokumen pengangkutan barang khusus yang sah dan rekomendasi dari instansi yang berwenang.",
+        "Syarat pengangkutan barang khusus tidak berbahaya meliputi dilayani dengan mobil barang angkutan barang khusus sesuai dengan peruntukannya."
+      ]
+    },
+    {
+      "id": "CR001",
+      "question": "Jika seorang bidan yang menjadi korban bencana alam ingin memperpanjang Izin Praktik Bidan dan foto KTP-el-nya rusak, dokumen apa saja yang perlu disiapkan dan bagaimana proses penggantian foto KTP-el-nya?",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:44"
+        ],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-bidan"
+        ]
+      },
+      "expected_answer": "Untuk memperpanjang Izin Praktik Bidan, bidan perlu menyiapkan Foto KTP Pemohon, STR & SIP yang dimiliki, Surat Pernyataan Tempat Praktik, dan Ceklist Izin Praktik Mandiri Bidan. Jika foto KTP-el rusak karena bencana, perubahan elemen data pas foto dilakukan dengan mengajukan permohonan kepada Dinas Kependudukan dan Pencatatan Sipil Kabupaten/Kota, pencatatan perubahan nama melalui SIAK, dan perubahan elemen data pas foto pada biodata penduduk sebagai dasar penerbitan KTP-el yang baru.",
+      "expected_facts": [
+        "Persyaratan Izin Praktik Bidan meliputi Foto KTP Pemohon, STR & SIP yang dimiliki, Surat Pernyataan Tempat Praktik, dan Ceklist Izin Praktik Mandiri Bidan.",
+        "Perubahan elemen data pas foto pada KTP-el dapat dilakukan apabila penduduk mengalami perubahan fisik secara permanen atau adanya kerusakan fisik KTP-el.",
+        "Proses penggantian foto KTP-el melibatkan pengajuan permohonan kepada Dinas Kependudukan dan Pencatatan Sipil Kabupaten/Kota, pencatatan perubahan nama melalui SIAK, dan perubahan elemen data pas foto pada biodata penduduk sebagai dasar penerbitan KTP-el yang baru."
+      ]
+    },
+    {
+      "id": "CR002",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Jika seorang warga negara asing yang memenuhi syarat ingin mengurus KTP-el, apakah Dinas Komunikasi dan Informatika dapat membantu proses pendaftarannya?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:40"
+        ],
+        "opd": [
+          "nomor:21"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Tidak, Dinas Komunikasi dan Informatika tidak dapat membantu proses pendaftaran KTP-el bagi orang asing. Proses pendaftaran KTP-el dilakukan oleh Dinas yang menerbitkan KTP-el, bukan Dinas Komunikasi dan Informatika.",
+      "expected_facts": [
+        "Orang asing boleh memiliki KTP-el jika memiliki Izin Tinggal tetap dan terdaftar sebagai penduduk, dengan persyaratan tertentu.",
+        "Proses pendaftaran KTP-el dilakukan dengan penduduk mengisi formulir dan melampirkan persyaratan, kemudian Dinas menerbitkan KTP-el.",
+        "Dinas Komunikasi dan Informatika adalah sebuah OPD dengan alamat Jl. RA Kartini No. 1 Batang dan email diskominfo@batangkab.go.id, namun tidak disebutkan memiliki fungsi pendaftaran KTP-el."
+      ]
+    },
+    {
+      "id": "CR003",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Jika seorang bidan yang baru pindah domisili dan belum mengurus pendaftaran penduduk nonpermanen ingin memperpanjang Izin Praktik Bidan, apakah Dinas Dukcapil akan mengeluarkan Surat Keterangan Domisili sebagai salah satu syarat perpanjangan izin tersebut?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:80"
+        ],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-bidan"
+        ]
+      },
+      "expected_answer": "Dinas Dukcapil tidak mengeluarkan Surat Keterangan Domisili karena hal itu tidak diperbolehkan oleh berbagai undang-undang dan peraturan. Selain itu, Surat Keterangan Domisili juga tidak tercantum sebagai persyaratan untuk perpanjangan Izin Praktik Bidan.",
+      "expected_facts": [
+        "Dinas Dukcapil tidak mengeluarkan Surat Keterangan Domisili karena hal itu tidak diperbolehkan oleh UU Nomor 23 Tahun 2006 ataupun UU Nomor 24 Tahun 2013 beserta PP Nomor 40 Tahun 2019 dan Peraturan Presiden Nomor 96 Tahun 2018 serta Permendagri Nomor 108 Tahun 2019.",
+        "Jika bertempat tinggal tidak sesuai KTP-el dan tidak bertujuan menetap, maka dapat melakukan pendaftaran penduduk nonpermanen di Disdukcapil daerah domisili sesuai amanat Permendagri Nomor 74 Tahun 2022.",
+        "Persyaratan untuk Izin Praktik Bidan (Perpanjangan) meliputi Foto KTP Pemohon, STR & SIP yang dimiliki, Surat Pernyataan Tempat Praktek, dan Ceklist Ijin Praktek Mandiri Bidan."
+      ]
+    },
+    {
+      "id": "CR004",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Saya mau tanya-tanya soal proses pengajuan Izin Praktik Perawat sebelum saya datang langsung. Kemana saya bisa menghubungi lewat telepon atau email?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:13"
+        ],
+        "perizinan": [
+          "id:izin-praktik-perawat"
+        ]
+      },
+      "expected_answer": "Anda bisa menghubungi DPMPTSP (Dinas Penanaman Modal, Pelayanan Terpadu Satu Pintu dan Tenaga Kerja) Kabupaten Batang, karena mekanisme pelayanan Izin Praktik Perawat dimulai dengan pemohon datang langsung ke DPMPTSP. Kontaknya adalah email dpmptspnaker@batangkab.go.id, telepon (0285) 4493081, beralamat di Jl. Urip Sumoharjo No. 13 Batang.",
+      "expected_facts": [
+        "Mekanisme pelayanan Izin Praktik Perawat dimulai dengan pemohon datang langsung ke DPMPTSP.",
+        "DPMPTSP Kabupaten Batang beralamat di Jl. Urip Sumoharjo No. 13 Batang.",
+        "Kontak DPMPTSP: email dpmptspnaker@batangkab.go.id, telepon (0285) 4493081."
+      ]
+    },
+    {
+      "id": "CR005",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Saya WNI yang menikah di luar negeri dan baru kembali ke Indonesia. Saya harus lapor kemana untuk mencatatkan perkawinan saya, dan apa kontak resmi kantornya di Batang?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:125"
+        ],
+        "opd": [
+          "nomor:18"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Anda harus melaporkan perkawinan tersebut kepada Disdukcapil Kabupaten/Kota di tempat Anda berdomisili, paling lambat 30 hari sejak kembali ke Indonesia, dengan melampirkan bukti pelaporan perkawinan dari Perwakilan RI dan kutipan akta perkawinan. Disdukcapil akan merekam pelaporan dalam basis data kependudukan dan menerbitkan surat keterangan pelaporan. Untuk Kabupaten Batang, kontak Dinas Kependudukan dan Pencatatan Sipil adalah email disdukpencapil@batangkab.go.id, telepon (0285) 391083, beralamat di Jl. Urip Sumoharjo No. 11A Batang.",
+      "expected_facts": [
+        "Peristiwa perkawinan WNI di luar negeri dilaporkan ke Disdukcapil Kabupaten/Kota tempat berdomisili paling lambat 30 hari sejak kembali ke Indonesia.",
+        "Persyaratannya adalah bukti pelaporan perkawinan dari Perwakilan RI dan kutipan akta perkawinan.",
+        "Kontak Dinas Kependudukan dan Pencatatan Sipil Kabupaten Batang: email disdukpencapil@batangkab.go.id, telepon (0285) 391083, Jl. Urip Sumoharjo No. 11A Batang."
+      ]
+    },
+    {
+      "id": "CR006",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Ada WNA yang meninggal dunia di Kabupaten Batang dan keluarganya ingin membawa jenazahnya kembali ke negara asalnya. Apa saja yang perlu diurus, baik dari sisi pencatatan sipil maupun izin membawa jenazah keluar negeri?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-2-2016#pasal:11.4"
+        ],
+        "dukcapil": [
+          "page:140"
+        ],
+        "opd": [],
+        "perizinan": []
+      },
+      "expected_answer": "Dari sisi pencatatan sipil, pelaporan kematian di wilayah NKRI (termasuk bagi orang asing) memerlukan fotokopi surat kematian, fotokopi Dokumen Perjalanan Republik Indonesia bagi orang asing, dan fotokopi KK/KTP milik yang meninggal dunia -- orang asing mengisi Formulir Pelaporan Pencatatan Sipil (F-2.01). Dari sisi izin membawa jenazah keluar negeri, hal ini harus dilaporkan kepada Camat, Dinas Kesehatan Kabupaten Batang, dan Kementerian Luar Negeri.",
+      "expected_facts": [
+        "Pencatatan kematian orang asing memerlukan fotokopi surat kematian, fotokopi Dokumen Perjalanan RI bagi orang asing, dan fotokopi KK/KTP yang meninggal dunia.",
+        "Orang asing mengisi Formulir Pelaporan Pencatatan Sipil (F-2.01).",
+        "Jenazah yang akan dibawa keluar wilayah Indonesia harus dilaporkan kepada Camat, Dinas Kesehatan Kabupaten Batang, dan Kementerian Luar Negeri."
+      ]
+    },
+    {
+      "id": "CR007",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Saya mau mengajukan Izin Praktik Dokter dan dengar katanya butuh rekomendasi dari Dinas Kesehatan dulu. Benar begitu, dan bagaimana saya bisa menghubungi Dinas Kesehatan Batang?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:15"
+        ],
+        "perizinan": [
+          "id:izin-praktik-dokter"
+        ]
+      },
+      "expected_answer": "Ya, benar. Estimasi penyelesaian Izin Praktik Dokter adalah 7 hari kerja setelah rekomendasi dari Dinas Kesehatan. Dinas Kesehatan Kabupaten Batang beralamat di Jl. Jendral Sudirman No. 17 Batang, email dinkes@batangkab.go.id, telepon (0285) 391479.",
+      "expected_facts": [
+        "Estimasi selesai Izin Praktik Dokter adalah 7 hari kerja, setelah rekomendasi dari Dinas Kesehatan.",
+        "Dinas Kesehatan Kabupaten Batang beralamat di Jl. Jendral Sudirman No. 17 Batang.",
+        "Kontak Dinas Kesehatan: email dinkes@batangkab.go.id, telepon (0285) 391479."
+      ]
+    },
+    {
+      "id": "CR008",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Saya baru saja mengurus Izin Praktik Bidan untuk buka praktik mandiri. Apakah tempat praktik saya termasuk kawasan yang wajib bebas asap rokok menurut aturan di Batang?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-6-2018#pasal:7",
+          "id:sosial-perda-6-2018#pasal:8"
+        ],
+        "dukcapil": [],
+        "opd": [],
+        "perizinan": [
+          "id:izin-praktik-bidan"
+        ]
+      },
+      "expected_answer": "Ya. Berdasarkan Pasal 7 Perda 6/2018, fasilitas pelayanan kesehatan termasuk salah satu Kawasan Tanpa Rokok (KTR), dan Pasal 8 ayat (1) huruf f menjelaskan bahwa 'tempat praktik profesi kesehatan' termasuk kategori fasilitas pelayanan kesehatan tersebut. Karena Izin Praktik Bidan menghasilkan tempat praktik profesi kesehatan, tempat praktik Anda otomatis termasuk KTR.",
+      "expected_facts": [
+        "Pasal 7 Perda 6/2018 menetapkan fasilitas pelayanan kesehatan sebagai salah satu Kawasan Tanpa Rokok (KTR).",
+        "Pasal 8 ayat (1) huruf f merinci 'tempat praktik profesi kesehatan' sebagai bagian dari fasilitas pelayanan kesehatan.",
+        "Izin Praktik Bidan menghasilkan tempat praktik profesi kesehatan."
+      ]
+    },
+    {
+      "id": "CR009",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Siapa yang menjabat Ketua Pokja Pengarusutamaan Gender kabupaten/kota, dan bagaimana saya bisa menghubungi kantornya?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-42-2024#pasal:8.110"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:4"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Bupati/Walikota menunjuk Kepala Badan Perencanaan Pembangunan Daerah (Bappeda) sebagai Ketua Pokja PUG kabupaten/kota. Untuk Kabupaten Batang, itu adalah Badan Perencanaan, Penelitian dan Pengembangan, beralamat di Jl. RA Kartini No. 1 Batang, email perencanaandanlitbang@batangkab.go.id, telepon (0285) 391131.",
+      "expected_facts": [
+        "Bupati/Walikota menunjuk Kepala Bappeda sebagai Ketua Pokja PUG kabupaten/kota.",
+        "Badan Perencanaan, Penelitian dan Pengembangan Kabupaten Batang beralamat di Jl. RA Kartini No. 1 Batang.",
+        "Kontak: email perencanaandanlitbang@batangkab.go.id, telepon (0285) 391131."
+      ]
+    },
+    {
+      "id": "CR010",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Siapa yang menjabat Kepala Sekretariat Pokja Pengarusutamaan Gender kabupaten/kota, dan apa kontak kantornya?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-42-2024#pasal:8.110"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:9"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kepala OPD yang bertanggung jawab atas pemberdayaan perempuan diangkat sebagai Kepala Sekretariat Pokja PUG kabupaten/kota. Untuk Kabupaten Batang, itu adalah Dinas Pemberdayaan Perempuan, Perlindungan Anak, Pengendalian Penduduk dan Keluarga Berencana (DP3AP2KB), beralamat di Jl. Dr. Sutomo No. 58 Batang, email dp3ap2kb@batangkab.go.id, telepon (0285) 391271.",
+      "expected_facts": [
+        "Kepala OPD yang bertanggung jawab atas pemberdayaan perempuan diangkat sebagai Kepala Sekretariat Pokja PUG kabupaten/kota.",
+        "DP3AP2KB Kabupaten Batang beralamat di Jl. Dr. Sutomo No. 58 Batang.",
+        "Kontak: email dp3ap2kb@batangkab.go.id, telepon (0285) 391271."
+      ]
+    },
+    {
+      "id": "CR011",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Kalau saya melihat ada pelanggaran ketertiban umum di lingkungan saya dan ingin melapor, saya bisa hubungi siapa saja, dan bagaimana kontak Satpol PP Batang?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-7-2019#pasal:67"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:8"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Berdasarkan Pasal 67 Perda 7/2019, setiap orang/badan dapat melapor kepada: perangkat daerah teknis pelaksana peraturan daerah, satuan perlindungan masyarakat, dan/atau Satpol PP. Kontak Satpol PP Kabupaten Batang: email satpolpp@batangkab.go.id, telepon (0285) 391146, Jl. Veteran No. 10 Batang.",
+      "expected_facts": [
+        "Pasal 67 Perda 7/2019: pelaporan pelanggaran ketertiban umum dapat ke perangkat daerah teknis pelaksana peraturan daerah, satuan perlindungan masyarakat, dan/atau Satpol PP.",
+        "Satpol PP Kabupaten Batang beralamat di Jl. Veteran No. 10 Batang.",
+        "Kontak: email satpolpp@batangkab.go.id, telepon (0285) 391146."
+      ]
+    },
+    {
+      "id": "CR012",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Kalau saya ingin melaporkan adanya tempat yang diduga digunakan untuk pelacuran, saya bisa menghubungi instansi apa dan bagaimana kontaknya?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perda-4-2015#pasal:10",
+          "id:sosial-perda-4-2015#pasal:13"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:8"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Berdasarkan Pasal 13 Perda Nomor 4 Tahun 2015 (perubahan Perda Pemberantasan Pelacuran), setiap orang berkewajiban melapor kepada petugas/pejabat yang berwenang. Razia terhadap tempat pelacuran dilakukan oleh Bupati atau Kepala Satuan Kerja Perangkat Daerah yang bertugas di bidang penegakan peraturan daerah (Pasal 10) -- yaitu Satpol PP. Kontak Satpol PP Kabupaten Batang: email satpolpp@batangkab.go.id, telepon (0285) 391146, Jl. Veteran No. 10 Batang.",
+      "expected_facts": [
+        "Pasal 13 Perda 4/2015: setiap orang berkewajiban melaporkan tempat yang diduga digunakan untuk pelacuran kepada petugas/pejabat yang berwenang.",
+        "Pasal 10 Perda 4/2015: razia dilakukan oleh Bupati atau Kepala SKPD bidang penegakan peraturan daerah, yaitu Satpol PP.",
+        "Kontak Satpol PP: email satpolpp@batangkab.go.id, telepon (0285) 391146."
+      ]
+    },
+    {
+      "id": "CR013",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Saya penerima Bantuan Langsung Tunai DBHCHT dan mau menanyakan status pencairan dana saya. Saya harus menghubungi dinas apa, dan bagaimana kontaknya?",
+      "gold_chunks": {
+        "sosial": [
+          "id:sosial-perbup-21-2025#pasal:11"
+        ],
+        "dukcapil": [],
+        "opd": [
+          "nomor:23"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Kepala Dinas Sosial yang mengajukan surat permohonan pencairan BLT DBHCHT kepada Kepala Badan Pengelolaan Keuangan, Pendapatan, dan Aset Daerah, jadi Dinas Sosial adalah instansi yang tepat untuk ditanyakan soal status pencairan. Kontak Dinas Sosial Kabupaten Batang: email dinsos@batangkab.go.id, telepon (0285) 392320, Jl. Letjen Suprapto No. 4 Batang.",
+      "expected_facts": [
+        "Pasal 11 Perbup 21/2025: Kepala Dinas Sosial mengajukan surat permohonan pencairan BLT DBHCHT kepada Kepala Badan Pengelolaan Keuangan, Pendapatan, dan Aset Daerah.",
+        "Dinas Sosial Kabupaten Batang beralamat di Jl. Letjen Suprapto No. 4 Batang.",
+        "Kontak: email dinsos@batangkab.go.id, telepon (0285) 392320."
+      ]
+    },
+    {
+      "id": "CR014",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Ayah saya meninggal dunia tapi datanya belum terdaftar di KK dan database kependudukan. Katanya Lurah bisa menerbitkan surat keterangan kematian -- benar begitu, dan bagaimana saya bisa menghubungi Kelurahan Kasepuhan?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [
+          "page:106"
+        ],
+        "opd": [
+          "nomor:25.c"
+        ],
+        "perizinan": []
+      },
+      "expected_answer": "Ya, benar. Pencatatan kematian penduduk yang tidak terdaftar dalam KK dan database kependudukan dapat dilakukan tanpa penetapan pengadilan, dengan dokumen pendukung seperti buku nikah/akta perkawinan, KK/KTP lama, ijazah, dokumen perjalanan (paspor), dikuatkan dengan surat kematian dari kepala desa/lurah, serta Surat Pernyataan Tanggung Jawab Mutlak (SPTJM) dengan 2 orang saksi. Kelurahan Kasepuhan beralamat di Jl. Lapangan Kanoman No. 7 Batang, email kel_kasepuhan@batangkab.go.id, telepon (0285) 392268.",
+      "expected_facts": [
+        "Pencatatan kematian penduduk tidak terdaftar KK dapat dilakukan tanpa penetapan pengadilan, dikuatkan surat kematian dari kepala desa/lurah dan SPTJM dengan 2 saksi.",
+        "Kelurahan Kasepuhan beralamat di Jl. Lapangan Kanoman No. 7 Batang.",
+        "Kontak: email kel_kasepuhan@batangkab.go.id, telepon (0285) 392268."
+      ]
+    },
+    {
+      "id": "CR015",
+      "expected_route": "both",
+      "query_type": "complex",
+      "chunk_scope": "cross_store",
+      "question": "Saya baru pindah ke Kecamatan Wonotunggal dan ingin memperpanjang Izin Praktik Penata Anestesi. Saya harus mengurusnya di kantor kecamatan atau langsung ke DPMPTSP, dan dokumen apa saja yang perlu saya siapkan?",
+      "gold_chunks": {
+        "sosial": [],
+        "dukcapil": [],
+        "opd": [
+          "nomor:27"
+        ],
+        "perizinan": [
+          "id:izin-praktik-penata-anestesi"
+        ]
+      },
+      "expected_answer": "Bukan di kecamatan -- langsung ke DPMPTSP. Dokumen yang perlu disiapkan: Foto KTP Pemohon, STR & SIP yang dimiliki, Surat Pernyataan Tempat Praktik (mencantumkan SIP ke-1/ke-2/ke-3, alamat & masa berlaku).",
+      "expected_facts": [
+        "Pengurusan Izin Praktik Penata Anestesi dilakukan di DPMPTSP, bukan di kecamatan.",
+        "Dokumen: Foto KTP Pemohon, STR & SIP yang dimiliki, Surat Pernyataan Tempat Praktik."
+      ]
+    }
+  ]
+}

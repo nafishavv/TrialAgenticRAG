@@ -1,11 +1,11 @@
-"""Runner: evaluasi intent gate (VALID/INVALID) atas SELURUH testset.json (198 soal).
+"""Runner: evaluasi intent gate (VALID/INVALID) atas SELURUH candidate_testset.json (198 soal).
 
-Beda dari run_intent_eval.py (yang pakai eval/intent_testset.json — 40 soal
-dedicated, balanced 50/50, hanya domain kependudukan+opd+chitchat/oos):
-ini reuse testset.json (198 soal, retrieval eval) dan menurunkan expected_intent
+Beda dari run_intent_eval.py (yang pakai eval/intent_testset.json — 25 soal OOS
+murni, 5 kategori, tanpa contoh valid/chitchat lagi setelah revisi):
+ini reuse candidate_testset.json (198 soal, retrieval eval) dan menurunkan expected_intent
 dari expected_route ("none" -> invalid, selainnya -> valid). Trade-off: coverage
 domain penuh (sosial/perizinan ikut teruji) tapi imbalanced (189 valid / 9
-invalid) dan tanpa contoh chitchat (testset.json cuma punya out_of_scope).
+invalid) dan tanpa contoh chitchat (candidate_testset.json cuma punya out_of_scope).
 
 Cara pakai (dari root project):
     python -m eval.run_intent_eval_full
@@ -95,7 +95,7 @@ def print_summary(system: str, s: Dict[str, Any]) -> None:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--testset", default=str(ROOT / "eval" / "testset.json"))
+    ap.add_argument("--testset", default=str(ROOT / "eval" / "candidate_testset.json"))
     ap.add_argument("--outdir", default=str(ROOT / "eval" / "results"))
     ap.add_argument("--systems", nargs="+", default=["naive", "enhanced", "agentic"],
                     choices=["naive", "enhanced", "agentic"])

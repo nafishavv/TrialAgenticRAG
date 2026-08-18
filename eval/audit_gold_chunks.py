@@ -1,6 +1,6 @@
 """Read-only manual-audit dump: soal x chunk asli (vector-store-identik).
 
-Gak manggil LLM, gak nulis ke testset.json. Cuma baca chunk lewat pipeline
+Gak manggil LLM, gak nulis ke candidate_testset.json. Cuma baca chunk lewat pipeline
 chunking yang sama persis dipakai buat build vectorstore (eval/generation/chunks.py),
 terus tulis side-by-side ke satu file txt biar gampang di-scroll & dibandingin manual.
 
@@ -41,7 +41,7 @@ def build_gold_index(domains: list[str]) -> dict[str, dict[str, str]]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--testset", default="eval/testset.json")
+    ap.add_argument("--testset", default="eval/candidate_testset.json")
     ap.add_argument("--out", default="eval/results/audit_dump.txt")
     ap.add_argument("--domain", choices=DOMAINS, help="filter cuma 1 domain")
     ap.add_argument("--id", help="filter cuma 1 question id (mis. SO004)")

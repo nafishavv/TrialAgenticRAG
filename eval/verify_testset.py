@@ -1,4 +1,4 @@
-"""Validate eval/testset.json — schema, gold-id existence, consistency, distribution.
+"""Validate eval/candidate_testset.json — schema, gold-id existence, consistency, distribution.
 
 Default run is pure-Python (no API). The gold-id existence check is the load-
 bearing gate: every gold_chunks entry must resolve to a real chunk in its domain,
@@ -30,7 +30,7 @@ from eval.generation.schema import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT = ROOT / "eval" / "testset.json"
+DEFAULT = ROOT / "eval" / "candidate_testset.json"
 
 _REQUIRED = ["id", "question", "expected_route", "difficulty", "query_type",
              "chunk_scope", "gold_chunks", "expected_answer", "expected_facts", "notes"]

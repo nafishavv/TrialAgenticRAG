@@ -1,4 +1,4 @@
-"""Generate eval/testset.json synthetically, grounded on real chunks.
+"""Generate eval/candidate_testset.json synthetically, grounded on real chunks.
 
 Usage:
     python -m eval.gen_testset --domain all --dry-run        # plumbing, no API
@@ -37,7 +37,7 @@ from eval.generation.llm_client import DryRunLLM, GenLLM, LLMClient
 from eval.generation.schema import ID_PREFIX, QRecord, to_dict
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_OUT = ROOT / "eval" / "testset.json"
+DEFAULT_OUT = ROOT / "eval" / "candidate_testset.json"
 
 # Out-of-scope seed phrases (style only) — borrowed from the intent gate.
 _NONE_SEEDS = [

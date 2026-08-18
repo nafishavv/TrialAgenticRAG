@@ -1,18 +1,25 @@
-"""Runner: jalankan agentic & naive-combined RAG pada testset, simpan hasil per-query.
+"""Fase GENERATE: jalankan tiap arsitektur RAG pada testset, simpan hasil per-query.
+
+Skrip ini HANYA menghasilkan + menilai retrieval/routing. Kualitas jawaban dinilai
+terpisah oleh fase evaluasi RAGAS (eval/run_ragas.py), yang membaca `answer` +
+`retrieved_context` dari file output di sini. Pemisahan ini disengaja: generation
+adalah langkah mahal dan rate-bound, sedangkan penilaian bisa diulang murah.
 
 Cara pakai (dari root project):
+    python -m eval.run_eval --testset eval/main_testset.json --outdir eval/results/main
     python -m eval.run_eval --systems agentic naive --k 5
     python -m eval.run_eval --systems agentic --k 5 --limit 5   # cepet, test 5 soal
-    python -m eval.run_eval --no-judge                          # skip LLM judge (cepet, retrieval-only)
     python -m eval.run_eval --systems agentic --resume          # lanjutkan run yg terputus
+
+Lalu nilai jawabannya:
+    .venv-ragas/Scripts/python.exe eval/run_ragas.py --results-dir eval/results/main
 
 Checkpointing: hasil ditulis ulang (atomik) tiap SATU soal selesai, jadi run yg
 mati di tengah (Ctrl-C / crash kuota / laptop sleep) tetap simpan progresnya.
 Pakai --resume untuk lanjut: soal yg sudah sukses dilewati, yg error/belum diulang.
 
 Output:
-    eval/results/per_query_<system>.json   — full per-query record
-    eval/results/timing_<system>.json      — flat timing snapshot
+    <outdir>/per_query_<system>.json   — full per-query record
 """
 from __future__ import annotations
 
@@ -31,9 +38,6 @@ from eval.eval_core import (
     recall_at_k,
     precision_at_k,
     mrr,
-    judge_faithfulness,
-    judge_refusal,
-    judge_answer_relevance,
     store_correct,
 )
 
@@ -71,7 +75,6 @@ def run_one_query(
     q: Dict[str, Any],
     system: str,
     k: int,
-    use_judge: bool,
     ask_fn,
 ) -> Dict[str, Any]:
     """Run one question through one system, compute all metrics."""
@@ -90,16 +93,15 @@ def run_one_query(
 
     gold_set = gold_chunks_to_set(q["gold_chunks"])
 
-    # 2) Routing — AGENTIC ONLY. Enhanced retrieves globally (router='none'), so a
-    #    routing metric is moot there; naive has no route. Only agentic makes a
-    #    domain decision worth scoring.
+    # 2) Routing — AGENTIC ONLY. Enhanced and naive both retrieve globally (no
+    #    domain routing exists outside the agent), so a routing metric is moot
+    #    there. Only agentic makes a domain decision worth scoring.
     routing = None
     if system == "agentic":
         routing = {
             "predicted_route": result.get("route", ""),
             "expected_route": q["expected_route"],
             "correct": result.get("route") == q["expected_route"],
-            "route_reason": result.get("route_reason", ""),
             "source_used": result.get("source_used", ""),
             "store_correct": store_correct(q["expected_route"], result.get("source_used", "")),
         }
@@ -112,40 +114,23 @@ def run_one_query(
             f"hit@{k}": hit_at_k(retrieved_ids, gold_set, k=k),
             f"recall@{k}": recall_at_k(retrieved_ids, gold_set, k=k),
             f"precision@{k}": precision_at_k(retrieved_ids, gold_set, k=k),
-            "mrr": mrr(retrieved_ids, gold_set, k=10),
+            f"mrr@{k}": mrr(retrieved_ids, gold_set, k=k),
         }
 
-    # 4) Persist retrieval context (page_content of retrieved docs) so the judge
-    #    phase (run_judge.py) can score faithfulness OFFLINE without re-running the
-    #    pipeline. Stored as a list of strings; joined at judge time.
+    # 4) Persist retrieval context (page_content of retrieved docs) — inilah teks
+    #    chunk yang BENAR-BENAR diberikan ke generator. Fase RAGAS (run_ragas.py)
+    #    memakainya sebagai `retrieved_contexts` untuk Faithfulness, sehingga
+    #    penilaian tidak perlu menjalankan retrieval ulang.
     retrieved_context = [d.page_content for d in docs]
 
-    # 5) Answer quality (LLM judges) — OPTIONAL inline convenience path.
-    #    The recommended flow is the GENERATE phase (--no-judge) + a separate,
-    #    cacheable judge phase (eval.run_judge). fact_recall is DROPPED (circular:
-    #    LLM-generated key judged by an LLM). Only faithfulness/answer_relevance/
-    #    refusal remain — the same three run_judge computes. Correctness -> experts.
-    answer_eval: Dict[str, Any] = {}
-    if use_judge:
-        ref = judge_refusal(answer)
-        answer_eval["refused"] = ref["refused"]
-        # For 'none' queries, refusal=YES is the correct behavior.
-        if q["expected_route"] == "none":
-            answer_eval["refusal_correct"] = ref["refused"]
-        else:
-            # Faithfulness vs retrieved context + answer relevance (non-none only).
-            ctx = "\n\n---\n\n".join(retrieved_context)
-            answer_eval["faithfulness"] = judge_faithfulness(answer, ctx)["faithfulness"]
-            answer_eval["answer_relevance"] = judge_answer_relevance(question, answer)["answer_relevance"]
-
-    # 6) Timing
+    # 5) Timing
     timings = result.get("timings", {}) or {}
 
     return {
         "id": q["id"],
         "question": question,
         "expected_route": q["expected_route"],
-        "difficulty": q["difficulty"],
+        "difficulty": q.get("difficulty"),
         "query_type": q["query_type"],
         "chunk_scope": q["chunk_scope"],
         "system": system,
@@ -155,7 +140,6 @@ def run_one_query(
         "gold_ids": sorted(gold_set),
         "routing": routing,
         "retrieval": retrieval,
-        "answer_eval": answer_eval,
         "timings": {**timings, "wall": wall},
         # Normalized execution log + agent trace (observability for self-correction).
         "decisions": result.get("decisions", {}),
@@ -165,16 +149,16 @@ def run_one_query(
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--testset", default=str(ROOT / "eval" / "testset.json"))
+    ap.add_argument("--testset", default=str(ROOT / "eval" / "main_testset.json"))
     ap.add_argument("--outdir", default=str(ROOT / "eval" / "results"))
     ap.add_argument("--systems", nargs="+", default=["naive", "enhanced", "agentic"],
-                    help="naive | agentic | enhanced | enhanced@<preset> "
-                         "(presets: default, dense_only, hybrid_no_rerank, rerank_no_hybrid, no_intent)")
+                    help="naive | enhanced | enhanced@<preset> | agentic | agentic@<preset> "
+                         "(enhanced presets: default, dense_only, hybrid_no_rerank, rerank_no_hybrid, "
+                         "no_intent; agentic presets: default, single_shot, no_rewrite, "
+                         "no_self_correction)")
     ap.add_argument("--k", type=int, default=5, help="top-k for retrieval metrics")
     ap.add_argument("--limit", type=int, default=None,
                     help="run only first N questions (smoke test)")
-    ap.add_argument("--no-judge", action="store_true",
-                    help="skip LLM-as-judge (retrieval & routing only)")
     ap.add_argument("--ids", nargs="+", default=None,
                     help="run only specific question IDs (e.g. DK001 OP005)")
     ap.add_argument("--sleep", type=float, default=0.0,
@@ -186,7 +170,6 @@ def main():
 
     out = Path(args.outdir)
     out.mkdir(parents=True, exist_ok=True)
-    use_judge = not args.no_judge
 
     testset = load_testset(Path(args.testset))
     if args.ids:
@@ -194,26 +177,33 @@ def main():
     if args.limit:
         testset = testset[: args.limit]
 
-    print(f"Loaded {len(testset)} questions. systems={args.systems}  k={args.k}  judge={use_judge}")
+    print(f"Loaded {len(testset)} questions. systems={args.systems}  k={args.k}")
 
     # System registry — add/swap a system here; metrics stay system-agnostic
     # because every system returns a RagResult. Enhanced ablation cells are
     # addressed as "enhanced@<preset>" (e.g. enhanced@dense_only); bare "enhanced"
-    # == enhanced@default. The pipeline is built ONCE per system (reuses the
-    # reranker model + intent router across queries).
+    # == enhanced@default. Agentic self-correction cells work the same way via
+    # "agentic@<preset>" (see ragtrial.rag.agentic.PRESETS). The pipeline is
+    # built ONCE per system (reuses the reranker model + intent router across
+    # queries).
     def _mk_enhanced(preset: str):
         from ragtrial.rag.enhanced import PRESETS, build_enhanced
         rag = build_enhanced(PRESETS[preset])
         return lambda q, verbose=False: rag.ask(q, verbose=verbose)
+
+    def _mk_agentic(preset: str):
+        from ragtrial.rag.agentic import PRESETS, ask_agentic
+        cfg = PRESETS[preset]
+        return lambda q, verbose=False: ask_agentic(q, verbose=verbose, config=cfg)
 
     ask_fns = {}
     for system in args.systems:
         if system == "naive":
             from ragtrial.rag.naive import ask_naive
             ask_fns[system] = ask_naive
-        elif system == "agentic":
-            from ragtrial.rag.agentic import ask_agentic
-            ask_fns[system] = ask_agentic
+        elif system == "agentic" or system.startswith("agentic@"):
+            preset = system.split("@", 1)[1] if "@" in system else "default"
+            ask_fns[system] = _mk_agentic(preset)
         elif system == "enhanced" or system.startswith("enhanced@"):
             preset = system.split("@", 1)[1] if "@" in system else "default"
             ask_fns[system] = _mk_enhanced(preset)
@@ -246,7 +236,7 @@ def main():
                 continue
             print(f"  [{i}/{len(testset)}] {q['id']}: {q['question'][:60]}...")
             try:
-                by_id[q["id"]] = run_one_query(q, system, args.k, use_judge, ask)
+                by_id[q["id"]] = run_one_query(q, system, args.k, ask)
             except Exception as e:
                 print(f"    ERROR on {q['id']}: {e}")
                 by_id[q["id"]] = {

@@ -1,4 +1,4 @@
-"""Eval utilities — metrics, judges, gold ID normalization.
+"""Eval utilities — retrieval/routing metrics, gold ID normalization.
 
 Designed to be system-agnostic: works on dict output of `ask_agentic(...)` (with
 route + documents + answer) and `ask_main(...)` (without route).
@@ -8,20 +8,18 @@ Gold ID format:
     opd       → "nomor:<nomor>"
     sosial    → "id:<id>"
 
-Judges (LLM-as-judge) menggunakan Gemini dengan temperature=0 untuk konsistensi.
+Kualitas jawaban TIDAK dinilai di sini. Custom LLM-as-a-Judge yang dulu menghuni
+file ini sudah dipensiunkan (18 Agustus 2026) dan dipindah ke
+archive/eval_judge/custom_judge.py. Penggantinya: evaluasi berbasis RAGAS di
+eval/run_ragas.py (Faithfulness + Semantic Similarity).
 """
 from __future__ import annotations
 
-import re
 from typing import Any, Dict, List, Optional
 
 from langchain_core.documents import Document
 
 from ragtrial.capabilities.registry import CAPABILITIES, SEARCHABLE_CAPABILITIES
-from ragtrial.llm import invoke_with_retry, make_judge_llm
-
-# ---------- LLM judge setup ----------
-_judge_llm = make_judge_llm(temperature=0.0, max_tokens=256)
 
 
 # ============================================================
@@ -91,7 +89,7 @@ def precision_at_k(retrieved_ids: List[str], gold_ids: set[str], k: int = 5) -> 
     return sum(1 for gid in topk if gid in gold_ids) / len(topk)
 
 
-def mrr(retrieved_ids: List[str], gold_ids: set[str], k: int = 10) -> float:
+def mrr(retrieved_ids: List[str], gold_ids: set[str], k: int = 5) -> float:
     """Mean Reciprocal Rank: 1/rank of first gold hit, else 0."""
     if not gold_ids:
         return float("nan")
@@ -163,161 +161,7 @@ def intent_eval(predictions: List[str], gold: List[str]) -> Dict[str, Any]:
 
 
 # ============================================================
-# 4. LLM-AS-JUDGE
-# ============================================================
-JUDGE_FACT_PROMPT = """Kamu evaluator. Cek apakah FAKTA berikut benar-benar terkandung dalam JAWABAN (boleh berbeda kata, asal makna sama dan tidak bertentangan).
-
-FAKTA: {fact}
-
-JAWABAN:
-{answer}
-
-ATURAN OUTPUT:
-- Jawab HANYA "YES" atau "NO" (tanpa penjelasan).
-- "YES" kalau fakta tercakup di jawaban (eksplisit atau paraphrased).
-- "NO" kalau fakta tidak ada / kontradiktif / tidak dapat diverifikasi dari jawaban.
-"""
-
-JUDGE_FAITHFULNESS_PROMPT = """Kamu evaluator faithfulness. Periksa apakah JAWABAN hanya mengandung klaim yang didukung oleh KONTEKS. Jawaban tidak boleh menambah info di luar konteks.
-
-KONTEKS:
-{context}
-
-JAWABAN:
-{answer}
-
-ATURAN OUTPUT:
-- Skor 0-2 saja:
-  - "2" = semua klaim didukung konteks (faithful)
-  - "1" = sebagian klaim didukung, sebagian tidak ada di konteks (mixed)
-  - "0" = ada klaim yang bertentangan dengan konteks atau jelas halusinasi
-- Jawab HANYA angka 0/1/2 (tanpa penjelasan).
-"""
-
-JUDGE_REFUSAL_PROMPT = """Kamu evaluator. Periksa apakah JAWABAN berisi refusal/pernyataan bahwa info tidak tersedia atau pertanyaan di luar cakupan.
-
-JAWABAN:
-{answer}
-
-ATURAN OUTPUT:
-- Jawab "YES" kalau jawaban benar-benar nolak / bilang "tidak ditemukan" / "di luar cakupan" / sejenis.
-- Jawab "NO" kalau jawaban tetap mencoba memberi info substantif.
-"""
-
-JUDGE_ANSWER_RELEVANCE_PROMPT = """Kamu evaluator relevansi. Periksa apakah JAWABAN menjawab PERTANYAAN secara langsung dan substansial.
-
-PERTANYAAN: {question}
-
-JAWABAN: {answer}
-
-ATURAN OUTPUT:
-- Skor 0-2:
-  - "2" = jawaban langsung menjawab pertanyaan dengan informasi substansial.
-  - "1" = jawaban menyentuh topik tapi kurang fokus / kurang lengkap.
-  - "0" = jawaban tidak nyambung / off-topic / hanya menolak padahal info ada.
-- Jawab HANYA angka 0/1/2.
-"""
-
-
-def _judge_invoke(prompt: str) -> str:
-    """Single LLM call, returns stripped text."""
-    return invoke_with_retry(_judge_llm, prompt).content.strip()
-
-
-def judge_fact_recall(answer: str, expected_facts: List[str]) -> Dict[str, Any]:
-    """For each expected fact, ask judge if it's present in answer.
-
-    Returns:
-      {"fact_recall": 0.83, "per_fact": [{"fact": ..., "present": True}, ...]}
-    """
-    # Skip TODO placeholders
-    real_facts = [f for f in expected_facts if not f.startswith("TODO_")]
-    if not real_facts:
-        return {"fact_recall": float("nan"), "per_fact": [], "skipped": True}
-
-    per_fact = []
-    hits = 0
-    for fact in real_facts:
-        prompt = JUDGE_FACT_PROMPT.format(fact=fact, answer=answer)
-        raw = _judge_invoke(prompt).upper()
-        present = "YES" in raw
-        per_fact.append({"fact": fact, "present": present, "raw": raw})
-        if present:
-            hits += 1
-    return {
-        "fact_recall": hits / len(real_facts),
-        "per_fact": per_fact,
-        "skipped": False,
-    }
-
-
-def judge_faithfulness(answer: str, context: str) -> Dict[str, Any]:
-    """LLM-judged 0/1/2 score. Returns dict with score & raw."""
-    if not context.strip():
-        return {"faithfulness": float("nan"), "raw": "no_context"}
-    prompt = JUDGE_FAITHFULNESS_PROMPT.format(context=context, answer=answer)
-    raw = _judge_invoke(prompt)
-    m = re.search(r"\b([012])\b", raw)
-    score = int(m.group(1)) / 2.0 if m else float("nan")
-    return {"faithfulness": score, "raw": raw}
-
-
-def judge_refusal(answer: str) -> Dict[str, Any]:
-    """Boolean: did the answer refuse / say info not found?"""
-    prompt = JUDGE_REFUSAL_PROMPT.format(answer=answer)
-    raw = _judge_invoke(prompt).upper()
-    refused = "YES" in raw
-    return {"refused": refused, "raw": raw}
-
-
-def judge_answer_relevance(question: str, answer: str) -> Dict[str, Any]:
-    prompt = JUDGE_ANSWER_RELEVANCE_PROMPT.format(question=question, answer=answer)
-    raw = _judge_invoke(prompt)
-    m = re.search(r"\b([012])\b", raw)
-    score = int(m.group(1)) / 2.0 if m else float("nan")
-    return {"answer_relevance": score, "raw": raw}
-
-
-# ============================================================
-# 5. OPTIONAL RAGAS WRAPPER
-# ============================================================
-def ragas_eval_single(
-    question: str,
-    answer: str,
-    contexts: List[str],
-    ground_truth: str | None = None,
-) -> Dict[str, float]:
-    """Optional: run RAGAS metrics (faithfulness, answer_relevancy) for ONE sample.
-
-    Returns empty dict on import error or RAGAS failure (so eval pipeline tetap jalan).
-    """
-    try:
-        from ragas import evaluate
-        from ragas.metrics import faithfulness, answer_relevancy
-        from datasets import Dataset
-    except ImportError:
-        return {"_ragas_status": "not_installed"}
-
-    try:
-        ds = Dataset.from_dict({
-            "question": [question],
-            "answer": [answer],
-            "contexts": [contexts],
-            "ground_truth": [ground_truth or ""],
-        })
-        result = evaluate(
-            ds,
-            metrics=[faithfulness, answer_relevancy],
-            llm=_judge_llm,
-        )
-        return {k: float(v) for k, v in result.to_pandas().iloc[0].to_dict().items()
-                if isinstance(v, (int, float))}
-    except Exception as e:
-        return {"_ragas_status": f"error: {e}"}
-
-
-# ============================================================
-# 6. STORE-CORRECTNESS (agentic only)
+# 4. STORE-CORRECTNESS (agentic only)
 # ============================================================
 def store_correct(expected_route: str, source_used: str) -> Optional[bool]:
     """Did agentic query the correct store(s)?
@@ -329,7 +173,7 @@ def store_correct(expected_route: str, source_used: str) -> Optional[bool]:
 
 
 # ============================================================
-# 7. AGGREGATION HELPERS
+# 5. AGGREGATION HELPERS
 # ============================================================
 def nanmean(xs: List[float]) -> float:
     vals = [x for x in xs if isinstance(x, (int, float)) and x == x]  # filter NaN

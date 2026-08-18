@@ -47,29 +47,17 @@ def aggregate(records: List[Dict[str, Any]], k: int = 5) -> Dict[str, Any]:
         summary["routing"]["store_correct_rate"] = nanmean([1.0 if x else 0.0 for x in store_oks])
 
     # ---- Retrieval ----
-    retr_keys = [f"hit@{k}", f"recall@{k}", f"precision@{k}", "mrr"]
+    retr_keys = [f"hit@{k}", f"recall@{k}", f"precision@{k}", f"mrr@{k}"]
     retr = {}
     for key in retr_keys:
         vals = [r["retrieval"].get(key) for r in non_none if r.get("retrieval") and key in r["retrieval"]]
         retr[key] = nanmean(vals)
     summary["retrieval"] = retr
 
-    # ---- Answer quality ---- (fact_recall DROPPED: circular LLM-key metric)
-    aq = {}
-    for key in ["faithfulness", "answer_relevance"]:
-        vals = [r["answer_eval"].get(key) for r in non_none if r.get("answer_eval") and key in r["answer_eval"]]
-        aq[key] = nanmean(vals)
-    # Refusal correctness (only for none queries)
-    if none_only:
-        refusal_correct = [r["answer_eval"].get("refusal_correct", False) for r in none_only
-                           if r.get("answer_eval")]
-        aq["refusal_correct_rate"] = nanmean([1.0 if x else 0.0 for x in refusal_correct])
-    # Refusal rate over non-none (lower is better — agent shouldn't refuse when info exists)
-    if non_none:
-        refused_non_none = [r["answer_eval"].get("refused", False) for r in non_none
-                            if r.get("answer_eval")]
-        aq["false_refusal_rate"] = nanmean([1.0 if x else 0.0 for x in refused_non_none])
-    summary["answer"] = aq
+    # ---- Answer quality ----
+    # DIPINDAH ke fase RAGAS: lihat eval/run_ragas.py -> summary_ragas_<system>.json
+    # (faithfulness + semantic_similarity). Custom judge lama diarsipkan di
+    # archive/eval_judge/. Skrip ini sekarang murni retrieval/routing/latency.
 
     # ---- Latency (per-stage) ----
     # Union across tiers; keys absent for a tier are simply skipped. Zero-valued
@@ -150,10 +138,6 @@ def print_summary(name: str, s: Dict[str, Any]) -> None:
         rt = s["retrieval"]
         print(f"Retrieval:  " + "  ".join(f"{k}={v:.3f}" for k, v in rt.items() if v == v))
 
-    if "answer" in s:
-        a = s["answer"]
-        print(f"Answer:     " + "  ".join(f"{k}={v:.3f}" for k, v in a.items() if v == v))
-
     if "latency" in s:
         lat = s["latency"]
         for k, v in lat.items():
@@ -195,15 +179,11 @@ def print_comparison(summaries: Dict[str, Dict[str, Any]], k: int = 5) -> None:
     rows = []
 
     # Retrieval
-    for key in [f"hit@{k}", f"recall@{k}", f"precision@{k}", "mrr"]:
+    for key in [f"hit@{k}", f"recall@{k}", f"precision@{k}", f"mrr@{k}"]:
         vals = [summaries[s].get("retrieval", {}).get(key, float("nan")) for s in systems]
         rows.append((f"retrieval.{key}", vals))
 
-    # Answer quality (fact_recall dropped)
-    for key in ["faithfulness", "answer_relevance",
-                "refusal_correct_rate", "false_refusal_rate"]:
-        vals = [summaries[s].get("answer", {}).get(key, float("nan")) for s in systems]
-        rows.append((f"answer.{key}", vals))
+    # Answer quality -> lihat eval/results/ragas/SUMMARY_ragas.txt (fase RAGAS).
 
     # Routing (agentic/enhanced only)
     for key in ["accuracy", "store_correct_rate"]:
@@ -250,7 +230,7 @@ def main():
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--ids", nargs="+", default=None,
                     help="aggregate over ONLY these question ids (subset agregasi)")
-    ap.add_argument("--testset", default=str(ROOT / "eval" / "testset.json"),
+    ap.add_argument("--testset", default=str(ROOT / "eval" / "candidate_testset.json"),
                     help="testset for stale-id detection (ids in results not in testset)")
     ap.add_argument("--save", action="store_true",
                     help="simpan summary ke eval/results/summary_<system>.json")
@@ -295,9 +275,6 @@ def main():
                 if "retrieval" in sub and sub["retrieval"]:
                     line_parts.append(f"hit@{args.k}={sub['retrieval'].get(f'hit@{args.k}', float('nan')):.2f}")
                     line_parts.append(f"recall={sub['retrieval'].get(f'recall@{args.k}', float('nan')):.2f}")
-                if "answer" in sub:
-                    line_parts.append(f"faith={sub['answer'].get('faithfulness', float('nan')):.2f}")
-                    line_parts.append(f"rel={sub['answer'].get('answer_relevance', float('nan')):.2f}")
                 print("   " + "  ".join(line_parts))
 
         if args.save:

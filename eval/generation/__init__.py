@@ -1,6 +1,6 @@
 """Synthetic test-set generation package.
 
-Builds eval/testset.json by grounding LLM-generated questions on real chunks
+Builds eval/candidate_testset.json by grounding LLM-generated questions on real chunks
 (the exact embed-ready chunks produced by `SOURCES[domain].chunk(...)`), so every
 gold_chunks entry resolves to a chunk the retriever can actually return.
 

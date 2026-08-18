@@ -1,6 +1,6 @@
 """Automated audit + selection of the final in-scope eval set from the 202 candidates.
 
-Read-only w.r.t. testset.json. Resolves every gold_id back to the *actual* chunk text
+Read-only w.r.t. candidate_testset.json. Resolves every gold_id back to the *actual* chunk text
 (same chunking pipeline as build_vectorstore), scores each candidate on evidence
 grounding / answer support / retrieval usefulness / redundancy, re-classifies query
 type from the evidence rather than the AI-written label, then picks the final set under
@@ -469,7 +469,7 @@ def write_report(path: Path, audits: dict, pool: dict, oos: List[str],
     w = L.append
 
     w("# Testset Curation — in-scope selection dari 202 kandidat\n")
-    w("Dihasilkan oleh `eval/curate_testset.py` (read-only terhadap `eval/testset.json`). "
+    w("Dihasilkan oleh `eval/curate_testset.py` (read-only terhadap `eval/candidate_testset.json`). "
       "Setiap `gold_chunks` di-resolve balik ke teks chunk asli lewat pipeline chunking yang "
       "sama dengan `scripts/build_vectorstore.py`, jadi penilaian evidence-nya dilakukan "
       "terhadap teks yang benar-benar bisa di-retrieve, bukan terhadap label bawaan.\n")
@@ -610,7 +610,7 @@ def write_report(path: Path, audits: dict, pool: dict, oos: List[str],
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--testset", default="eval/testset.json")
+    ap.add_argument("--testset", default="eval/candidate_testset.json")
     ap.add_argument("--out-selection", default="eval/selection_inscope_110.json")
     ap.add_argument("--out-audit", default="eval/results/curation_audit.json")
     ap.add_argument("--out-report", default="docs/TESTSET_CURATION.md")

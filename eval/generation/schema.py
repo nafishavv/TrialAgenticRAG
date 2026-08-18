@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
-# ---- enums (kept identical to the existing eval/testset.json _meta) ----
+# ---- enums (kept identical to the existing eval/candidate_testset.json _meta) ----
 DOMAINS: List[str] = ["sosial", "dukcapil", "opd", "perizinan"]  # gold_chunks keys
 ROUTES = {"sosial", "dukcapil", "opd", "perizinan", "both", "none"}
 DIFFICULTIES = {"easy", "medium", "hard"}
@@ -29,7 +29,7 @@ ID_PREFIX = {
 
 @dataclass
 class QRecord:
-    """One test question. Field order mirrors the existing testset.json."""
+    """One test question. Field order mirrors the existing candidate_testset.json."""
 
     id: str
     question: str
